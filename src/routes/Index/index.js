@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'dva';
-import styles from './IndexPage.less';
+import styles from './index.less';
 import Slider from 'react-slick';
 
-import arrow from '../assets/arrow-right.svg';
+import arrow from '../../assets/arrow-right.svg';
 
 function IndexPage() {
   const settings = {

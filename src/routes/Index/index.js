@@ -4,6 +4,7 @@ import styles from './index.less';
 import Slider from 'react-slick';
 
 import arrow from '../../assets/arrow-right.svg';
+import { BottomBar } from '../../components/';
 
 function IndexPage() {
   const settings = {
@@ -17,6 +18,7 @@ function IndexPage() {
   };
   return (
     <div className={styles.normal}>
+      <BottomBar selected={0}></BottomBar>
       <Slider className={styles.slider} {...settings}>
         <div><img src="http://img.hotelpal.cn/1509955038138.jpg"/></div>
         <div><img src="http://img.hotelpal.cn/1509955038138.jpg"/></div>

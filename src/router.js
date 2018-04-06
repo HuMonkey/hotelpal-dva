@@ -7,6 +7,11 @@ import Jdbs from './routes/Jdbs/';
 import Profile from './routes/Profile/';
 import Bought from './routes/Bought/';
 import CourseDetail from './routes/CourseDetail/';
+import BoughtRecord from './routes/BoughtRecord/';
+import About from './routes/About/';
+import WeChat from './routes/WeChat/';
+import Modify from './routes/Modify/';
+import Login from './routes/Login/';
 
 function RouterConfig({ history }) {
   return (
@@ -19,7 +24,12 @@ function RouterConfig({ history }) {
         <Route path="/profile" exact component={Profile} />
         <Route path="/bought" exact component={Bought} />
         <Route path="/jdbs" exact component={Jdbs} />
+        <Route path="/br" exact component={BoughtRecord} />
         <Route path="/coursedetail" exact component={CourseDetail} />
+        <Route path="/about" exact component={About} />
+        <Route path="/modify" exact component={Modify} />
+        <Route path="/wechat" exact component={WeChat} />
+        <Route path="/login" exact component={Login} />
       </Switch>
     </Router>
   );

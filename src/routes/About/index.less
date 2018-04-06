@@ -1,0 +1,162 @@
+@import '../../common.less';
+.normal {
+  width: 100%;
+  height: 100%;
+  padding-top: 1rem;
+  .logo {
+    text-align: center;
+    .version {
+      width: 0.6666rem;
+      height: 0.6666rem;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/bubble.svg");
+      line-height: 0.6666rem;
+      text-align: center;
+      color: white;
+      margin: auto;
+      position: relative;
+      top: -0.13333rem;
+      left: 1rem;
+      font-size: 10px;
+    }
+    img {
+      height: 1.52rem
+    }
+  }
+  .slogon {
+    color: @black3;
+    font-size: 0.48rem;
+    text-align: center;
+    line-height: 1;
+    width: 100%;
+    margin-top: 0.4rem;
+    font-weight: 600;
+  }
+  .desc {
+    text-align: justify;
+    padding: 0 0.6666rem;
+    font-size: 0.4rem;
+    color: @black2;
+    line-height: 1.8;
+    margin-top: 0.6666rem;
+    margin-bottom: 0.8rem;
+    div {
+      margin: 0.3rem 0;
+    }
+  }
+  .item {
+    width: 100%;
+    height: 1.306666rem;
+    line-height: 1.306666rem;
+    padding: 0 0.4rem 0 0.4rem;
+    background: white;
+    position: relative;
+    font-size: 0.4rem;
+    color: @black2;
+    margin-top: 0.26666rem;
+    .erweima {
+      width: 0.48rem;
+      height: 0.48rem;
+      background-size: 0.48rem 0.48rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/erweima.svg");
+      float: right;
+      position: relative;
+      top: 0.4rem;
+    }
+    .arrowRight {
+      position: absolute;
+      right: 0.4rem;
+      width: 0.16rem;
+      height: 100%;
+      display: inline-block;
+      background-size: 0.16rem 0.346666rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/arrow-right.svg");
+    }
+    span {
+      float: right;
+      color: @red;
+    }
+  }
+  .item.contact {
+    padding-right: 0.8rem;
+  }
+  .erweimaWindow {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    .cover {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      opacity: 0.8;
+      z-index: -1;
+    }
+    .close {
+      width: 100%;
+      height: 0.8rem;
+      background-size: 0.8rem 0.8rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/close-circle.svg");
+      margin-top: 1.06666rem;
+    }
+    .box {
+      width: 7.86666rem;
+      height: auto;
+      overflow: hidden;
+      border-radius: 10px;
+      .title {
+        width: 100%;
+        background: @red;
+        color: white;
+        height: 1.86666rem;
+        text-align: center;
+        padding-top: 0.2rem;
+        .text {
+          font-size: 0.53333rem;
+        }
+        .time {
+          font-size: 0.23333rem;
+          margin-top: 0.15rem;
+        }
+      }
+      .main {
+        width: 100%;
+        height: 6.6666rem;
+        background: white;
+        padding: 1.06666rem;
+        .erweima {
+          width: 3.73333rem;
+          height: 3.73333rem;
+          margin: auto;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .tips {
+          width: 100%;
+          margin-top: 0.26666rem;
+          font-size: 0.373333rem;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

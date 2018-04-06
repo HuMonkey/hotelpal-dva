@@ -3,4 +3,165 @@
   width: 100%;
   height: 100%;
   background: #f5f5f5;
+  .banner {
+    width: 100%;
+    height: 3.3333rem;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  .header {
+    width: 100%;
+    background: white;
+    padding-bottom: 0.26666rem;
+    .avater {
+      width: 100%;
+      margin-top: -0.93333rem;
+      height: 1.86666rem;
+      overflow: hidden;
+      .img {
+        width: 1.86666rem;
+        height: 1.86666rem;
+        border-radius: 100%;
+        margin: auto;
+        overflow: hidden;
+      }
+      .img.short {
+        img {
+          height: 100%;
+        }
+      }
+      .img.long {
+        img {
+          width: 100%;
+        }
+      }
+    }
+    .name {
+      margin-top: 0.26666rem;
+      font-size: 0.48rem;
+      color: @black2;
+      text-align: center;
+      height: 0.48rem;
+      width: 100%;
+      text-align: center;
+      .arrowRight {
+        margin-left: 0.13333rem;
+        width: 0.16rem;
+        height: 0.346666rem;
+        display: inline-block;
+        background-size: 0.16rem 0.346666rem;
+        background-position: center;
+        background-image: url("../../assets/arrow-right.svg");
+      }
+    }
+    .record {
+      width: 100%;
+      font-size: 0.4rem;
+      color: @black2;
+      text-align: center;
+      margin-top: 0.8rem;
+      .icon {
+        width: 0.4rem;
+        height: 0.4rem;
+        background-size: 0.4rem auto;
+        background-image: url('../../assets/book.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        display: inline-block;
+        position: relative;
+        top: 0.08rem;
+        margin-right: 0.13333rem;
+      }
+      span {
+        font-size: 0.293333rem;
+        color: @black1;
+        margin-right: 0.13333rem;
+      }
+    }
+    .infos {
+      width: 100%;
+      margin-top: 0.53333rem;
+      overflow: hidden;
+      .item {
+        width: 33.33%;
+        float: left;
+        text-align: center;
+        border-right: #f5f5f5 solid thin;
+        .value {
+          font-size: 0.4rem;
+          color: @black2;
+        }
+        .label {
+          font-size: 0.293333rem;
+          color: @black1;
+          margin-top: 0.213333rem;
+        }
+      }
+      .item:last-child {
+        border-right: none;
+      }
+    }
+  }
+  .row {
+    width: 100%;
+    height: 1.3rem;
+    line-height: 1.3rem;
+    padding: 0 0.4rem 0 1.44rem;
+    background: white;
+    position: relative;
+    font-size: 0.4rem;
+    color: @black2;
+    a {
+      color: @black2;
+    }
+    .icon {
+      width: 0.64rem;
+      height: 0.64rem;
+      background-size: 0.4rem 0.4rem;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      left: 0.4rem;
+      top: 0.33rem;
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+    .shoppingcar {
+      background-color: #f0944b;
+      background-image: url('../../assets/shoppingcar.svg');
+    }
+    .jiudianbang {
+      background-size: 0.64rem 0.64rem;
+      background-image: url('../../assets/jiudianbang-big.png');
+    }
+    .gongzhonghao {
+      background-color: #49ab54;
+      background-image: url('../../assets/public.svg');
+    }
+    .arrowRight {
+      position: absolute;
+      right: 0.4rem;
+      width: 0.16rem;
+      height: 100%;
+      display: inline-block;
+      background-size: 0.16rem 0.346666rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/arrow-right.svg");
+    }
+  }
+  .bought, .about {
+    margin-top: 0.26666rem;
+  }
+  .hr {
+    width: 100%;
+    height: 1px;
+    background: white;
+    padding-left: 1.44rem;
+    .inner {
+      border-top: @border;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import styles from './index.less';
 import Slider from 'react-slick';
 
@@ -28,7 +29,7 @@ function IndexPage() {
         <div className={styles.header}>
           <div className={styles.inner}>
             <div className={styles.item}>成长专栏&nbsp;|&nbsp;免费</div>
-            <div className={styles.item}>查看全部<img src={arrow} /></div>
+            <div className={styles.item}><Link to={`/jdbs`}>查看全部<img src={arrow} /></Link></div>
           </div>
         </div>
         <div className={styles.list}>

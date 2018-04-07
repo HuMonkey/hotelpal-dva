@@ -2,12 +2,16 @@
 
 .audioPlayer {
     width: 100%;
-    background: white;
     height: 3.226666rem;
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 99;
+    .player {
+        display: none;
+    }
     .wrapper {
+        background: white;
         position: relative;
         padding-bottom: 0.53333rem;
         box-shadow: 0 0 5px #cccccc;
@@ -39,48 +43,15 @@
                     position: relative;
                     display: table-cell;
                     vertical-align: middle;
-                    padding: 0 0.2rem;
-                    .duration {
-                        width: 100%;
-                        height: 3px;
-                        background: #cccccc;
-                        position: relative;
-                        .inner {
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            z-index: 2;
-                            width: 0;
-                            height: 100%;
-                            background: @red;
-                        }
-                        .loaded {
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            z-index: 1;
-                            width: 0%;
-                            height: 100%;
-                            background: #bbbbbb;
-                        }
+                    padding: 0 0.3rem;
+                    position: relative;
+                    top: 1px;
+                    :global(.rc-slider-handle) {
+                        border: none;
+                        background-color: @red;
                     }
-                    .dot {
-                        position: absolute;
-                        top: -0.4rem;
-                        left: 0;
-                        width: 1.2rem;
-                        height: 1.2rem;
-                        overflow: hidden;
-                        margin-left: -0.4rem;
-                        z-index: 3;
-                        .dotInner {
-                            width: 0.4rem;
-                            height: 0.4rem;
-                            border-radius: 100%;
-                            margin-left: 0.4rem;
-                            margin-top: 0.4rem;
-                            background: @red;
-                        }
+                    :global(.rc-slider-track) {
+                        background: @red;
                     }
                 }
             }

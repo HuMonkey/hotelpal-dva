@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import ReactPlayer from 'react-player';
 import styles from './index.less';
 
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
 class AudioPlayer extends Component {
   constructor(props) {
     super(props);
@@ -41,8 +44,35 @@ class AudioPlayer extends Component {
     this.setState({ duration })
   }
 
+  skip (offset) {
+    const { duration, playedSeconds } = this.state;
+    this.refs.player.seekTo(playedSeconds + offset);
+    this.setState({
+      played: (playedSeconds + offset) / duration,
+      playedSeconds: playedSeconds + offset,
+    })
+  }
+
   onError () {
     console.log('onError');
+  }
+
+  onSliderChange (value) {
+    this.refs.player.seekTo(value / 100);
+    this.setState({
+      played: value / 100,
+      playedSeconds: this.state.duration * value / 100,
+    })
+  }
+
+  onEnded () {
+    console.log('onEnded');
+    this.refs.player.seekTo(0);
+    this.setState({
+      played: 0,
+      playedSeconds: 0,
+      playing: false,
+    });
   }
 
   render() {
@@ -54,8 +84,14 @@ class AudioPlayer extends Component {
     playSecond = playSecond < 10 ? '0' + playSecond : playSecond;
 
     let durationMinute = Math.floor((duration - playedSeconds) / 60);
+    if (durationMinute < 0) {
+      durationMinute = 0;
+    }
     durationMinute = durationMinute < 10 ? '0' + durationMinute : durationMinute;
-    let durationSecond = Math.ceil((duration - playedSeconds) % 60);
+    let durationSecond = Math.floor((duration - playedSeconds) % 60);
+    if (durationSecond < 0) {
+      durationSecond = 0;
+    }
     durationSecond = durationSecond < 10 ? '0' + durationSecond : durationSecond;
 
     const playClass = playing ? ' ' + styles.playing : '';
@@ -68,13 +104,7 @@ class AudioPlayer extends Component {
             <div className={styles.progress}>
               <div className={styles.current}>{playMinute}:{playSecond}</div> 
               <div className={styles.bar}>
-                <div className={styles.duration}>
-                  <div className={styles.inner} style={ { width: `${played * 100}%` } }></div>
-                  <div className={styles.loaded} style={ { width: `${loaded * 100}%` } }></div>
-                </div> 
-                <div className={styles.dot} style={ { left: `${played * 100}%` } }>
-                  <div className={styles.dotInner}></div>
-                </div>
+                <Slider min={0} max={100} onChange={this.onSliderChange.bind(this)} value={played * 100}/>
               </div> 
               <div className={styles.left}>{durationMinute}:{durationSecond}</div>
             </div> 
@@ -82,7 +112,7 @@ class AudioPlayer extends Component {
           </div> 
           <div className={styles.bottom}>
             <div className={styles.cell + ' ' + styles.small}>
-              <div className={styles.previous15}>
+              <div className={styles.previous15} onClick={() => this.skip.call(this, -15)}>
                 <div className={styles.bg}></div>
                 15
               </div> 
@@ -101,19 +131,22 @@ class AudioPlayer extends Component {
               <div className={styles.next}></div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
-              <div className={styles.next15}>
+              <div className={styles.next15} onClick={() => this.skip.call(this, 15)}>
                 <div className={styles.bg}></div>
                 15
               </div>
             </div>
           </div>
         </div>
-        <ReactPlayer key={'player'}
+        <ReactPlayer className={styles.player} key={'player'}
+          ref={`player`}
           url='//storage.googleapis.com/media-session/elephants-dream/the-wires.mp3' 
           playing={playing}
+          playsinline={true}
           onProgress={this.onProgress.bind(this)}
           onDuration={this.onDuration.bind(this)}
           onError={this.onError.bind(this)}
+          onEnded={this.onEnded.bind(this)}
         />
       </div>
     )

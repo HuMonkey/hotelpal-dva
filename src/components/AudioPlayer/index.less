@@ -2,5 +2,197 @@
 
 .audioPlayer {
     width: 100%;
-    height: 100%;
+    background: white;
+    height: 3.226666rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    .wrapper {
+        position: relative;
+        padding-bottom: 0.53333rem;
+        box-shadow: 0 0 5px #cccccc;
+        audio {
+            display: none;
+        }
+        .top {
+            width: 100%;
+            padding: 0.4rem 0.4rem;
+            color: @black1;
+            font-size: 0.26666rem;
+            overflow: hidden;
+            .progress {
+                width: 7.5rem;
+                display: table;
+                float: left;
+                position: relative;
+                top: 0.16rem;
+                .current, .left {
+                    height: 0.4rem;
+                    width: 0.8rem;
+                    text-align: center;
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+                .bar {
+                    width: 5.6rem;
+                    height: 0.4rem;
+                    position: relative;
+                    display: table-cell;
+                    vertical-align: middle;
+                    padding: 0 0.2rem;
+                    .duration {
+                        width: 100%;
+                        height: 3px;
+                        background: #cccccc;
+                        position: relative;
+                        .inner {
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            z-index: 2;
+                            width: 0;
+                            height: 100%;
+                            background: @red;
+                        }
+                        .loaded {
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            z-index: 1;
+                            width: 0%;
+                            height: 100%;
+                            background: #bbbbbb;
+                        }
+                    }
+                    .dot {
+                        position: absolute;
+                        top: -0.4rem;
+                        left: 0;
+                        width: 1.2rem;
+                        height: 1.2rem;
+                        overflow: hidden;
+                        margin-left: -0.4rem;
+                        z-index: 3;
+                        .dotInner {
+                            width: 0.4rem;
+                            height: 0.4rem;
+                            border-radius: 100%;
+                            margin-left: 0.4rem;
+                            margin-top: 0.4rem;
+                            background: @red;
+                        }
+                    }
+                }
+            }
+            .goOn {
+                float: right;
+                width: 1.4rem;
+                height: 0.8rem;
+                text-align: center;
+                background-image: url('../../assets/goon-grey.svg');
+                background-size: 1.4rem 0.8rem;
+                transform: scale(0.8);
+                line-height: 0.7rem;
+                &.clicked {
+                    color: @red;
+                    background-image: url('../../assets/goon-red.svg');
+                }
+            }
+        }
+        .bottom {
+            width: 100%;
+            height: 1.28rem;
+            padding: 0 0.4rem;
+            color: @black1;
+            .cell {
+                width: 28%;
+                height: 100%;
+                float: left;
+                overflow: hidden;
+                &.small {
+                    width: 18%;
+                }
+            }
+            .playOrPause {
+                width: 100%;
+                height: 100%;
+                .inner {
+                    width: 1.28rem;
+                    height: 1.28rem;
+                    margin: auto;
+                    background-image: url('../../assets/loading-play.svg');
+                    background-size: auto 0.53333rem;
+                    background-position: 0.5rem center;
+                    background-repeat: no-repeat;
+                    &.playing {
+                        background-image: url('../../assets/pause.svg');
+                        background-position: center;
+                    } 
+                    .borderSolid {
+                        width: 1.28rem;
+                        height: 1.28rem;
+                        background-image: url('../../assets/play-border.svg');
+                        background-size: 1.2rem 1.2rem;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
+                }
+            }
+            .previous15, .next15 {
+                width: 0.8rem;
+                height: 0.8rem;
+                margin-top: 0.24rem;
+                position: relative;
+                font-size: 0.32rem;
+                text-align: center;
+                line-height: 0.8rem;
+                transform: scale(0.8);
+                .bg {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('../../assets/15.svg');
+                    background-size: 0.75rem 0.75rem;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                }
+            }
+            .previous15 {
+                padding-left: 0.1rem;
+                float: left;
+                .bg {
+                    -moz-transform:scaleX(-1);
+                    -webkit-transform:scaleX(-1);
+                    -o-transform:scaleX(-1);
+                    transform:scaleX(-1);
+                } 
+            }
+            .next15 {
+                padding-right: 0.1rem;
+                float: right;
+            }
+            .previous, .next {
+                width: 0.53333rem;
+                height: 0.53333rem;
+                margin-top: 0.37rem;
+                margin-left: auto;
+                margin-right: auto;
+                background-image: url('../../assets/previous.svg');
+                background-size: 0.52333rem 0.52333rem;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .next {
+                background-image: url('../../assets/next.svg');
+            }
+            .previous.empty {
+                background-image: url('../../assets/previous-grey.svg');
+            }
+            .next.empty {
+                background-image: url('../../assets/next-grey.svg');
+            }
+        }
+    }
 }

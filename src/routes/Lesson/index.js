@@ -2,9 +2,12 @@ import React from 'react';
 import { connect } from 'dva';
 import styles from './index.less';
 
+import { AudioPlayer } from '../../components';
+
 function Lesson() {
   return (
     <div className={styles.normal}>
+      <AudioPlayer></AudioPlayer>
       <div className={styles.paid}>
         <div className={styles.main}>
           <div className={styles.courseTitle}>02&nbsp;|&nbsp;影响流量的九大要素之一（上）</div>

@@ -1,67 +1,122 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import styles from './index.less';
 
-function Live() {
-  return (
-    <div className={styles.normal}>
-      <div className={styles.banner}>
-        <div className={styles.count}>
-          <div className={styles.icon}></div>
-          <div className={styles.label}>倒计时</div>
-          <div className={styles.tick}>
-            <span className={styles.item}>00</span>
-            :
-            <span className={styles.item}>02</span>
-            :
-            <span className={styles.item}>26</span>
-            :
-            <span className={styles.item}>24</span>
+class Live extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      posterShow: true,
+      page: 'detail', // detail or chat
+    };
+  }
+
+  closePoster () {
+    this.setState({
+      posterShow: false,
+    })
+  }
+
+  changePage (page) {
+    this.setState({
+      page
+    })
+  }
+
+  render () {
+    const { posterShow, page } = this.state;
+
+    const detailClass = page === 'detail' ? ' ' + styles.active : '';
+    const chatClass = page === 'chat' ? ' ' + styles.active : '';
+    return (
+      <div className={styles.normal}>
+        <div className={styles.banner}>
+          <div className={styles.count}>
+            <div className={styles.icon}></div>
+            <div className={styles.label}>倒计时</div>
+            <div className={styles.tick}>
+              <span className={styles.item}>00</span>
+              :
+              <span className={styles.item}>02</span>
+              :
+              <span className={styles.item}>26</span>
+              :
+              <span className={styles.item}>24</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div className={styles.switches}>
-        <div className={styles.item + ' ' + styles.active}>课程</div>
-        <div className={styles.item}>互动</div>
-      </div>
-      <div className={styles.course}>
-        <div className={styles.left}>
-          <div className={styles.tag + ' ' + styles.before}>
-            直播中
-            <div className={styles.tri}></div>
+        <div className={styles.switches}>
+          <div 
+            className={styles.item + detailClass} 
+            onClick={() => this.changePage.call(this, 'detail')}>
+            课程
           </div>
-          <div className={styles.time}>03-19&nbsp;周四&nbsp;20:00</div>
+          <div className={styles.item + chatClass} onClick={() => this.changePage.call(this, 'chat')}>互动</div>
         </div>
-        <div className={styles.right}>已有200000人报名</div>
-      </div>
-      <div className={styles.signups}>
-        <div className={styles.item}>
-          <div className={styles.left}>
-            <div className={styles.inner}>直播价&nbsp;￥49</div>
+        {
+          page === 'detail' && <div>
+            <div className={styles.course}>
+              <div className={styles.left}>
+                <div className={styles.tag + ' ' + styles.before}>
+                  直播中
+                  <div className={styles.tri}></div>
+                </div>
+                <div className={styles.time}>03-19&nbsp;周四&nbsp;20:00</div>
+              </div>
+              <div className={styles.right}>已有200000人报名</div>
+            </div>
+            <div className={styles.signups}>
+              <div className={styles.item}>
+                <div className={styles.left}>
+                  <div className={styles.inner}>直播价&nbsp;￥49</div>
+                </div>
+                <div className={styles.right}>我要付费报名</div>
+              </div>
+              <div className={styles.item}>
+                <div className={styles.left}>
+                  <div className={styles.inner}>邀请5个好友可以免费</div>
+                </div>
+                <div className={styles.right}>我要免费报名</div>
+              </div>
+            </div>
+            <div className={styles.intro}>
+              <div className={styles.title}>公开课介绍</div>
+              <div className={styles.content}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>
+            </div>
+            <div className={styles.know}>
+              <div className={styles.title}>公开课须知</div>
+              <div className={styles.content}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>
+            </div>
           </div>
-          <div className={styles.right}>我要付费报名</div>
-        </div>
-        <div className={styles.item}>
-          <div className={styles.left}>
-            <div className={styles.inner}>邀请5个好友可以免费</div>
+        }
+        {
+          page === 'chat' && <div>
+            互动
           </div>
-          <div className={styles.right}>我要免费报名</div>
-        </div>
+        }
+        {
+          posterShow && <div className={styles.poster}>
+            <div className={styles.main}>
+              <div className={styles.header}>
+                <div className={styles.numbers}>
+                  <div className={styles.vl}></div>
+                  <div className={styles.item}>1</div>
+                  <div className={styles.item}>2</div>
+                  <div className={styles.item}>3</div>
+                </div>
+                <div className={styles.row}>将专属邀请卡分享给好友</div>
+                <div className={styles.row}>5个好友点击报名（免费/付费均可）</div>
+                <div className={styles.row}>可享受免费报名！</div>
+              </div>
+              <div className={styles.image}></div>
+              <div className={styles.btn}>长按保存图片</div>
+            </div>
+            <div className={styles.close} onClick={this.closePoster.bind(this)}></div>
+          </div>
+        }
       </div>
-      <div className={styles.intro}>
-        <div className={styles.title}>公开课介绍</div>
-        <div className={styles.content}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>
-      </div>
-      <div className={styles.know}>
-        <div className={styles.title}>公开课须知</div>
-        <div className={styles.content}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>
-      </div>
-      <div className={styles.poster}>
-        <div className={styles.main}></div>
-        <div className={styles.close}></div>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 Live.propTypes = {

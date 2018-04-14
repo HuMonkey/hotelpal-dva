@@ -1,0 +1,220 @@
+@import '../../common.less';
+.normal {
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+  font-weight: normal;
+  position: relative;
+  .banner {
+    width: 100%;
+    height: 5.6rem;
+    position: relative;
+    background: white;
+    .count {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1.06666rem;
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      padding: 0.26666rem .4rem;
+      font-size: 0.293333rem;
+      color: white;
+      .icon {
+        width: 0.4rem;
+        height: 0.4rem;
+        background-image: url('../../assets/countdown.svg');
+        background-size: 100% 100%;
+        float: left;
+        position: relative;
+        top: 0.08rem;
+      }
+      .label {
+        margin-left: 0.08rem;
+        margin-right: 0.2rem;
+        float: left;
+        line-height: 0.56rem;
+      }
+      .tick {
+        float: left;
+        span {
+          display: inline-block;
+          width: .53333rem;
+          height: .53333rem;
+          border-radius: 2px;
+          border: solid thin rgba(255, 255, 255, .6);
+          line-height: 0.5rem;
+          text-align: center;
+          margin: 0 .08rem;
+        }
+      }
+    }
+  }
+  .switches {
+    width: 100%;
+    height: 1.253333rem;
+    background: #f4f4f4;
+    .item {
+      width: 50%;
+      height: 100%;
+      line-height: 1.2rem;
+      text-align: center;
+      float: left;
+      border-bottom: #f4f4f4 solid 4px;
+      color: @black2;
+      font-weight: bold;
+      font-size: 0.426666rem;
+      &.active {
+        color: @red;
+        border-bottom: @red solid 4px;
+      }
+    }
+  }
+  .course {
+    width: 100%;
+    height: 1.28rem;
+    padding: 0.4rem;
+    background: white;
+    .left {
+      float: left;
+      display: table;
+      font-size: 0.293333rem;
+      .tag, time {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      .tag {
+        width: 1.46666rem;
+        height: 0.48rem;
+        text-align: center;
+        line-height: 0.48rem;
+        color: white;
+        border-radius: 2px;
+        position: relative;
+        .tri {
+          position: absolute;
+          right: -0.12rem;
+          top: 0.09rem;
+          width: 0;
+          height: 0;
+          border-top: 0.12rem solid transparent;
+          border-bottom: 0.12rem solid transparent; 
+        }
+        &.before {
+          background: @orange;
+          .tri {
+            border-left: 0.16rem solid @orange;
+          }
+        }
+        &.ing {
+          background: @red;
+          .tri {
+            border-left: 0.16rem solid @red;
+          }
+        }
+      }
+      .time {
+        margin-left: 0.24rem;
+        color: @black1;
+      }
+    }
+    .right {
+      float: right;
+      font-size: 0.293333rem;
+      line-height: 0.48rem;
+      color: #cccccc;
+    }
+  }
+  .signups {
+    padding-bottom: 0.186666rem;
+    width: 100%;
+    padding: 0 0.4rem;
+    background: white;
+    .item {
+      height: 1.4rem;
+      padding-bottom: .4rem;
+      border-bottom: thin #f5f5f5 solid;
+      .left {
+        float: left;
+        height: 100%;
+        padding: 0.27rem 0;
+        line-height: 1;
+        color: @black2;
+        .inner {
+          height: 0.46rem;
+          border-left: @orange 4px solid;
+          padding-left: 0.2rem;
+          font-size: 0.4rem;
+          line-height: 0.46rem;
+        }
+      }
+      .right {
+        float: right;
+        height: 100%;
+        width: 3.33333rem;
+        border-radius: 4px;
+        line-height: 1rem;
+        color: white;
+        text-align: center;
+        font-size: 0.4rem;
+        background: @orange;
+      }
+      &:last-child {
+        border-bottom: none;
+        margin-top: 0.4rem;
+        .left {
+          .inner {
+            border-left: @red 4px solid;
+          }
+        }
+        .right {
+          background: @red;
+        }
+      }
+    }
+  }
+  .intro, .know {
+    margin-top: 0.26666rem;
+    background: white;
+    padding: 0.4rem;
+    .title {
+      font-size: .426666rem;
+      color: @black3;
+      margin-bottom: .4rem;
+    }
+    .content {
+      font-size: 0.4rem;
+      color: @black2;
+      line-height: 1.8;
+    }
+  }
+  .poster {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .main {
+      width: 8.26666rem;
+      height: 13.3333rem;
+      background: white;
+      border-radius: 6px;
+      padding: 0.53rem 1.28rem;
+    }
+    .close {
+      width: 100%;
+      height: 0.8rem;
+      background-size: 0.8rem 0.8rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/close-circle.svg");
+      margin-top: 0.8rem;
+    }
+  }
+}

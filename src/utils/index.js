@@ -2,7 +2,7 @@
  * 判断userAgent的一些方法
  */
 const userAgent = navigator.userAgent.toLowerCase();
-util.ua = {
+const ua = {
     wechat: userAgent.indexOf('micromessenger') > -1, // 判断是否在微信里
     xinhuashe: userAgent.indexOf('xyapp') > -1, // 判断是否在新华社app里
     iOS: userAgent.indexOf('iphone') > -1, // 判断是否在ios里
@@ -11,23 +11,28 @@ util.ua = {
     android: userAgent.indexOf('Android') > -1 || userAgent.indexOf('android') > -1 || userAgent.indexOf('Adr') > -1, // 判断是否在android里
 };
 
+// 判断是否登录
+const isLogin = function () {
+    return true;
+}
+ 
 const config = {
     host: '//hotelpal.cn', // 线上
     appId: 'wxfe666ebbf0e42897'
 }
 
 const setCookie = function (key, value, extime) {
-    const extimeExt = extime.substr(-1);
-    const extimeInt = parseInt(extime);
-    const extimeSec = {
+    let extimeExt = extime.substr(-1);
+    let extimeInt = parseInt(extime);
+    let extimeSec = {
         "s": 1000,
         "m": 60 * 1000,
         "h": 3600 * 1000,
         "d": 24 * 3600 * 1000
     };
     if (!extimeSec[extimeExt]) extimeExt = 's';
-    const sec = extimeInt * extimeSec[extimeExt];
-    const exp = new Date();
+    let sec = extimeInt * extimeSec[extimeExt];
+    let exp = new Date();
     exp.setTime(exp.getTime() + sec);
     document.cookie = key + "=" + escape(value) + ";path=/;expires=" + exp.toGMTString();
 }
@@ -47,7 +52,7 @@ const textLength = function (para, fontSize) {
         return 0;
     }
     para = util.getHtmlContent(para);
-    const length = 0;
+    let length = 0;
     for (var i = 0; i < para.length; i++) {
         const ch = para[i];
         if (ch >= 'A' && ch <= 'Z') {
@@ -113,7 +118,7 @@ const getHtmlContent = function (str) {
 }
 
 export {
-    ua, config,
+    ua, isLogin, config,
     setCookie, getCookie,
     textLength, getHtmlContent,
     formatNum, formatTime,

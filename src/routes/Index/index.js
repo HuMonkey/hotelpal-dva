@@ -25,6 +25,32 @@ function IndexPage() {
         <div><img src="http://img.hotelpal.cn/1509955038138.jpg"/></div>
         <div><img src="http://img.hotelpal.cn/1509955038138.jpg"/></div>
       </Slider>
+      <div className={styles.open}>
+        <div className={styles.header}>
+          <div className={styles.inner}>
+            <div className={styles.item}>公开课&nbsp;|&nbsp;直播</div>
+          </div>
+        </div>
+        <div className={styles.list}>
+          <div className={styles.item}>
+            <div className={styles.top}>
+              <div className={styles.left}>
+                <div className={styles.tag + ' ' + styles.before}>
+                  直播中
+                  <div className={styles.tri}></div>
+                </div>
+                <div className={styles.time}>03-19&nbsp;周四&nbsp;20:00</div>
+              </div>
+              <div className={styles.right}>已有200000人报名</div>
+            </div>
+            <div className={styles.detail}>
+              <div className={styles.title}>一学就会的酒店营销科</div>
+              <div className={styles.infos}>Feekr CEO&nbsp;李洋&nbsp;教你策划一场刷屏活动</div>
+              <div className={styles.arrowRight}></div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className={styles.free}>
         <div className={styles.header}>
           <div className={styles.inner}>

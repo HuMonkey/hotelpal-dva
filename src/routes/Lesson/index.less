@@ -400,6 +400,152 @@
       color: #cccccc; 
     } 
   }
+
+  .notPaid {
+    padding: 0.4rem;
+    .payFinish {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      .cover {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        opacity: 0.6;
+      }
+      .box {
+        border-radius: 10px;
+        width: 3.12rem;
+        height: 2.293333rem;
+        background: white;
+        position: relative;
+        z-index: 1;
+        .icon {
+          width: 1rem;
+          height: 1rem;
+          margin: auto;
+          margin-top: 0.4rem;
+          background-image: url('../../assets/finish-arrow.svg');
+          background-size: 1rem 1rem;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+        .text {
+          font-size: 0.4rem;
+          color: @black1;
+          width: 100%;
+          text-align: center;
+          margin-top: 0.13333rem;
+        }
+      }
+    }
+    .box {
+      border-radius: 4px;
+      background: white;
+      overflow: hidden;
+      position: relative;
+      .top {
+        height: 4rem;
+        background: @red;
+        align-items: center;
+        display: flex;
+        color: white;
+        font-size: 0.4rem;
+        .text {
+          width: 100%;
+          text-align: center;
+          line-height: 1.8;
+          .price {
+            font-size: 0.48rem;
+            font-weight: 600;
+          }
+        }
+      }
+      .avater {
+        position: absolute;
+        top: 3.06666rem;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        .img {
+          width: 1.92rem;
+          height: 1.92rem;
+          border-radius: 1.92rem;
+          overflow: hidden;
+          display: inline-block;
+          img {
+            width: 1.92rem;
+            height: auto;
+          }
+        }
+      }
+      .bottom {
+        background: white;
+        padding-bottom: 0.853333rem;
+        .name {
+          width: 100%;
+          text-align: center;
+          margin-top: 1.2rem;
+          font-size: 0.4rem;
+          font-weight: 600;
+          color: @black2;
+        }
+        .who {
+          width: 100%;
+          text-align: center;
+          margin-top: 0.1rem;
+          font-size: 0.32rem;
+          color: @black1;
+        }
+        .course {
+          width: 100%;
+          text-align: center;
+          margin-top: 0.6666rem;
+          font-size: 0.4rem;
+          color: @black2;
+        }
+        .desc {
+          width: 100%;
+          text-align: center;
+          margin-top: 0.1rem;
+          font-size: 0.32rem;
+          color: @black1;
+        }
+        .btn {
+          height: 1rem;
+          line-height: 1rem;
+          width: 8.4rem;
+          margin: 0.53333rem auto 0 auto;
+          text-align: center;
+          background: @red;
+          color: white;
+          font-size: 0.426666rem;
+          border-radius: 4px;
+        }
+      }
+    }
+    .log {
+      width: 100%;
+      margin-top: 0.8rem;
+      font-size: 0.4rem;
+      text-align: center;
+      color: @black1;
+      span {
+        color: @red;
+        margin-left: 0.23333rem;
+      }
+    }
+  }
+
 }
 
 @keyframes shake {

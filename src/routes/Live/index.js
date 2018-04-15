@@ -2,13 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import styles from './index.less';
 
+import { Navs } from '../../components';
+
 class Live extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posterShow: true,
+      posterShow: false,
       page: 'detail', // detail or chat
+      signup: 'free', // inviting init paid vip free
+      state: 'ing', // before ing after
     };
+  }
+
+  openPoster () {
+    this.setState({
+      posterShow: true,
+    })
   }
 
   closePoster () {
@@ -24,12 +34,37 @@ class Live extends Component {
   }
 
   render () {
-    const { posterShow, page } = this.state;
+    const { posterShow, page, signup } = this.state;
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
+
+    const invitingDom = signup === 'init' ? (
+      <div className={styles.item}>
+        <div className={styles.left}>
+          <div className={styles.inner}>邀请5个好友可以免费</div>
+        </div>
+        <div className={styles.right}>我要免费报名</div>
+      </div>
+    ) : (
+      <div className={styles.item + ' ' + styles.big}>
+        <div className={styles.left}>
+          <div className={styles.inner}>{ signup === 'inviting' ? `再邀请2个好友即可免费` : `你已经邀请了五个好友，报名成功！`}</div>
+          <div className={styles.users}>
+            <div className={styles.avatar}></div>
+            <div className={styles.avatar}></div>
+            <div className={styles.avatar}></div>
+            <div className={styles.avatar}></div>
+            <div className={styles.avatar}></div>
+          </div>
+        </div>
+        { signup === 'inviting' && <div className={styles.right + ' ' + styles.big}>我要免费报名</div> }
+      </div>
+    ); // 邀请中的样式
+
     return (
       <div className={styles.normal}>
+        <Navs/>
         <div className={styles.banner}>
           <div className={styles.count}>
             <div className={styles.icon}></div>
@@ -63,22 +98,26 @@ class Live extends Component {
                 </div>
                 <div className={styles.time}>03-19&nbsp;周四&nbsp;20:00</div>
               </div>
-              <div className={styles.right}>已有200000人报名</div>
+              { signup === 'paid' || signup === 'free' ? <div className={styles.paid}></div> : <div className={styles.right}>已有200000人报名</div> }
             </div>
-            <div className={styles.signups}>
-              <div className={styles.item}>
-                <div className={styles.left}>
-                  <div className={styles.inner}>直播价&nbsp;￥49</div>
+            { 
+              signup !== 'paid' && signup !== 'free' && <div className={styles.signups}>
+                <div className={styles.item}>
+                  <div className={styles.left}>
+                    <div className={styles.inner}>直播价&nbsp;￥49</div>
+                  </div>
+                  <div className={styles.right}>我要付费报名</div>
                 </div>
-                <div className={styles.right}>我要付费报名</div>
+                {
+                  invitingDom
+                }
               </div>
-              <div className={styles.item}>
-                <div className={styles.left}>
-                  <div className={styles.inner}>邀请5个好友可以免费</div>
-                </div>
-                <div className={styles.right}>我要免费报名</div>
+            }
+            {
+              signup === 'free' && <div className={styles.signups}>
+                { invitingDom }
               </div>
-            </div>
+            }
             <div className={styles.intro}>
               <div className={styles.title}>公开课介绍</div>
               <div className={styles.content}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>

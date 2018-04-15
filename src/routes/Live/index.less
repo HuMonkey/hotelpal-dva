@@ -76,6 +76,8 @@
     height: 1.28rem;
     padding: 0.4rem;
     background: white;
+    position: relative;
+    overflow: hidden;
     .left {
       float: left;
       display: table;
@@ -119,6 +121,15 @@
         color: @black1;
       }
     }
+    .paid {
+      position: absolute;
+      right: 0.4rem;
+      bottom: 0;
+      width: 1.493333rem;
+      height: 1.493333rem;
+      background-image: url('../../assets/paid-mark.svg');
+      background-size: 100% 100%;
+    }
     .right {
       float: right;
       font-size: 0.293333rem;
@@ -134,6 +145,7 @@
     .item {
       height: 1.4rem;
       padding-bottom: .4rem;
+      margin-bottom: .4rem;
       border-bottom: thin #f5f5f5 solid;
       .left {
         float: left;
@@ -162,7 +174,8 @@
       }
       &:last-child {
         border-bottom: none;
-        margin-top: 0.4rem;
+        margin-bottom: 0;
+        // margin-top: 0.4rem;
         .left {
           .inner {
             border-left: @red 4px solid;
@@ -170,6 +183,30 @@
         }
         .right {
           background: @red;
+        }
+      }
+      &.big {
+        padding: 0;
+        height: 1.9rem;
+        padding-bottom: .4rem;
+        .left {
+          padding: 0;
+        }
+        .users {
+          margin-top: .26666rem;
+          overflow: hidden;
+          .avatar {
+            border-radius: 50%;
+            background: #f5f5f5;
+            width: .8rem;
+            height: .8rem;
+            margin-right: .26666rem;
+            float: left;
+          }
+        }
+        .right {
+          height: 1rem;
+          margin-top: 0.25rem;
         }
       }
     }

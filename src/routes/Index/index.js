@@ -32,7 +32,7 @@ function IndexPage() {
           </div>
         </div>
         <div className={styles.list}>
-          <div className={styles.item}>
+          <Link to={`/live/2`}><div className={styles.item}>
             <div className={styles.top}>
               <div className={styles.left}>
                 <div className={styles.tag + ' ' + styles.before}>
@@ -48,7 +48,7 @@ function IndexPage() {
               <div className={styles.infos}>Feekr CEO&nbsp;李洋&nbsp;教你策划一场刷屏活动</div>
               <div className={styles.arrowRight}></div>
             </div>
-          </div>
+          </div></Link>
         </div>
       </div>
       <div className={styles.free}>

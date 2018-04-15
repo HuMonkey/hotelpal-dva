@@ -10,6 +10,7 @@ class Lesson extends Component {
     super(props);
     this.state = {
       replying: false,
+      paid: false,
     };
   }
 
@@ -20,7 +21,38 @@ class Lesson extends Component {
   }
 
   render () {
-    const { replying } = this.state;
+    const { replying, paid } = this.state;
+
+    if (!paid) {
+      return (
+        <div className={styles.normal}>
+          <div className={styles.notPaid}>
+            <div className={styles.box}>
+              <div className={styles.top}>
+                <div className={styles.text}>
+                  你需要先购买课程<br /> 
+                  <span className={styles.price}>¥ 99 / 7课时</span>
+                </div>
+              </div> 
+              <div className={styles.avater}>
+                <div className={styles.img}>
+                  <img src="http://img.hotelpal.cn/1505472718419.jpg" />
+                </div>
+              </div> 
+              <div className={styles.bottom}>
+                <div className={styles.name}>金杜</div> 
+                <div className={styles.who}>宛若故里 创始人</div> 
+                <div className={styles.course}>民宿创业的七条军规</div> 
+                <div className={styles.desc}>1000万学费买来的经验</div> 
+                <div className={styles.btn}>购买课程  获取知识</div>
+              </div>
+            </div> 
+            <div className={styles.log}>你已经购买？<span>绑定其他账号</span></div>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className={styles.normal}>
         <AudioPlayer></AudioPlayer>

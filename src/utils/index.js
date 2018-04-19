@@ -1,3 +1,5 @@
+import request from './request';
+
 /**
  * 判断userAgent的一些方法
  */
@@ -17,7 +19,7 @@ const isLogin = function () {
 }
  
 const config = {
-    host: '//hotelpal.cn', // 线上
+    host: 'http://hotelpal.cn/api', // 线上
     appId: 'wxfe666ebbf0e42897'
 }
 
@@ -117,9 +119,47 @@ const getHtmlContent = function (str) {
     return str.replace(/<style(.|\n)*\/style>/g, "").replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ");
 }
 
+/**
+ * 获取url里的参数
+ */
+const getParam = function (name) {
+    const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    const r = window.location.search.substr(1).match(reg);
+    if (r != null) return (r[2]);
+    return null;
+}
+
+const removeParam = function (key) {
+    const sourceURL = location.href.split('#')[0];
+    const hash = location.href.split('#')[1];
+    let rtn = sourceURL.split("?")[0],
+        param,
+        params_arr = [],
+        queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+    if (queryString !== "") {
+        params_arr = queryString.split("&");
+        for (let i = params_arr.length - 1; i >= 0; i -= 1) {
+            param = params_arr[i].split("=")[0];
+            if (param === key) {
+                params_arr.splice(i, 1);
+            }
+        }
+        rtn = rtn + "?" + params_arr.join("&");
+    }
+    if (hash) {
+        rtn = rtn + "#" + hash;
+    }
+    return rtn;
+}
+
+const getToken = function () {
+    return getCookie('jdbtk');
+}
+
 export {
     ua, isLogin, config,
-    setCookie, getCookie,
+    setCookie, getCookie, getParam,
     textLength, getHtmlContent,
     formatNum, formatTime,
+    getToken,
 }

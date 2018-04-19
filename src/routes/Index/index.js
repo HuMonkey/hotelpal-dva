@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
@@ -7,7 +8,11 @@ import Slider from 'react-slick';
 import arrow from '../../assets/arrow-right.svg';
 import { BottomBar } from '../../components/';
 
-function IndexPage() {
+function IndexPage({ common, index }) {
+  if (!index) {
+    return <div></div>
+  }
+
   const settings = {
     dots: true,
     infinite: true,
@@ -17,6 +22,7 @@ function IndexPage() {
     autoplaySpeed: 5000,
     draggable: false,
   };
+  
   return (
     <div className={styles.normal}>
       <BottomBar selected={0}></BottomBar>
@@ -59,33 +65,20 @@ function IndexPage() {
           </div>
         </div>
         <div className={styles.list}>
-          <div className={styles.item}>
-            <div className={styles.cell}>
-              <div className={styles.arrow}></div>
-              一直被唱衰的经济型酒店，出路究竟在哪？
-            </div>
-            <div className={styles.cell}>
-              01-25
-            </div>
-          </div>
-          <div className={styles.item}>
-            <div className={styles.cell}>
-              <div className={styles.arrow}></div>
-              一直被唱衰的经济型酒店，出路究竟在哪？
-            </div>
-            <div className={styles.cell}>
-              01-25
-            </div>
-          </div>
-          <div className={styles.item}>
-            <div className={styles.cell}>
-              <div className={styles.arrow}></div>
-              一直被唱衰的经济型酒店，出路究竟在哪？
-            </div>
-            <div className={styles.cell}>
-              01-25
-            </div>
-          </div>
+          {
+            index.innerCourseList.map((d, i) => {
+              const time = moment(d.publishTime).format('MM-DD');
+              return <div key={i} className={styles.item}>
+                <div className={styles.cell}>
+                  <div className={styles.arrow}></div>
+                  {d.title}
+                </div>
+                <div className={styles.cell}>
+                  {time}
+                </div>
+              </div>
+            })
+          }
         </div>
       </div>
       <div className={styles.courses}>
@@ -96,23 +89,26 @@ function IndexPage() {
         </div>
         <div className={styles.list}>
           {
-            [1, 1, 1, 1].map((d, i) => {
+            index.courseList.map((d, i) => {
               return <div key={i} className={styles.item}>
-                <div className={styles.avatar}></div>
+                <div className={styles.avatar} style={{ backgroundImage: `url(${d.headImg})` }}></div>
                 <div className={styles.right}>
-                  <div className={styles.title}>酒店电商公式从0到1</div>
+                  <div className={styles.title}>{d.title}</div>
                   <div className={styles.who}>
-                    <span>葛健</span>
+                    <span>{d.userName}</span>
                     <span className={styles.split}>·</span>
-                    <span>酒店哥 CEO</span>
+                    <span>{d.company + ' ' + d.userTitle}</span>
                   </div>
-                  <div className={styles.slogan}>解决所有电商问题</div>
+                  <div className={styles.slogan}>{d.subtitle}</div>
                   <div className={styles.bottom}>
                     <div className={styles.tags}>
-                      <div className={styles.tag}>电商1</div>
-                      <div className={styles.tag}>电商2</div>
+                      {
+                        d.tag.map((dd, ii) => {
+                          return <div key={ii} className={styles.tag}>{dd.name}</div>
+                        })
+                      }
                     </div>
-                    <div className={styles.price}>￥197 / 18课时</div>
+                    <div className={styles.price}>￥{d.charge / 100} / {d.lessonCount}课时</div>
                   </div>
                 </div>
               </div>
@@ -127,4 +123,8 @@ function IndexPage() {
 IndexPage.propTypes = {
 };
 
-export default connect()(IndexPage);
+const mapStateToProps = (state) => {
+  return { common: state.common, index: state.index };
+}
+
+export default connect(mapStateToProps)(IndexPage);

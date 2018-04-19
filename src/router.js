@@ -15,17 +15,12 @@ import Modify from './routes/Modify/';
 import Login from './routes/Login/';
 import GotoWechat from './routes/GotoWechat/';
 
-import { ua, isLogin } from './utils';
+import { ua } from './utils';
 
-function requireWechatAndAuth (Component, location) {
-  // TODO 判断是否微信，判断是否登录
-  // console.log(222, location.href)
-  // if (!ua.wechat) {
-  //   return <Redirect to="/gotoWechat"/>;
-  // }
-  // if (!isLogin) {
-  //   return <Redirect to="/login"/>
-  // }
+function requireWechat (Component) {
+  if (!ua.wechat) {
+    return <Redirect to="/gotoWechat"/>;
+  }
   return <Component />
 }
 
@@ -33,19 +28,19 @@ function RouterConfig({ history }) {
   return (
     <Router history={history}>
       <Switch>
-        <Route path="/" exact render={() => requireWechatAndAuth(Index, location)} />
-        <Route path="/live/:id" exact render={() => requireWechatAndAuth(Live)} />
-        <Route path="/course/:id" exact render={() => requireWechatAndAuth(Course)} />
-        <Route path="/lesson/:id" exact render={() => requireWechatAndAuth(Lesson)} />
-        <Route path="/jdbs" exact render={() => requireWechatAndAuth(Jdbs)} />
-        <Route path="/profile" exact render={() => requireWechatAndAuth(Profile)} />
-        <Route path="/bought" exact render={() => requireWechatAndAuth(Bought)} />
-        <Route path="/jdbs" exact render={() => requireWechatAndAuth(Jdbs)} />
-        <Route path="/br" exact render={() => requireWechatAndAuth(BoughtRecord)} />
-        <Route path="/coursedetail" exact render={() => requireWechatAndAuth(CourseDetail)} />
-        <Route path="/about" exact render={() => requireWechatAndAuth(About)} />
-        <Route path="/modify" exact render={() => requireWechatAndAuth(Modify)} />
-        <Route path="/wechat" exact render={() => requireWechatAndAuth(WeChat)} />
+        <Route path="/" exact render={() => requireWechat(Index)} />
+        <Route path="/live/:id" exact render={() => requireWechat(Live)} />
+        <Route path="/course/:id" exact render={() => requireWechat(Course)} />
+        <Route path="/lesson/:id" exact render={() => requireWechat(Lesson)} />
+        <Route path="/jdbs" exact render={() => requireWechat(Jdbs)} />
+        <Route path="/profile" exact render={() => requireWechat(Profile)} />
+        <Route path="/bought" exact render={() => requireWechat(Bought)} />
+        <Route path="/jdbs" exact render={() => requireWechat(Jdbs)} />
+        <Route path="/br" exact render={() => requireWechat(BoughtRecord)} />
+        <Route path="/coursedetail" exact render={() => requireWechat(CourseDetail)} />
+        <Route path="/about" exact render={() => requireWechat(About)} />
+        <Route path="/modify" exact render={() => requireWechat(Modify)} />
+        <Route path="/wechat" exact render={() => requireWechat(WeChat)} />
         <Route path="/login" exact component={Login} />
         <Route path="/login/:redirect" exact component={Login} />
         <Route path="/gotoWechat" exact render={() => {

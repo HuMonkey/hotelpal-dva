@@ -83,12 +83,7 @@
           height: 0.48rem;
           .left {
             float: left;
-            display: table;
             font-size: 0.293333rem;
-            .tag, time {
-              display: table-cell;
-              vertical-align: middle;
-            }
             .tag {
               width: 1.46666rem;
               height: 0.48rem;
@@ -97,6 +92,7 @@
               color: white;
               border-radius: 2px;
               position: relative;
+              float: left;
               .tri {
                 position: absolute;
                 right: -0.12rem;
@@ -122,6 +118,8 @@
             .time {
               margin-left: 0.24rem;
               color: @black1;
+              float: left;
+              line-height: 0.48rem;
             }
           }
           .right {
@@ -188,6 +186,7 @@
           &:last-child {
             font-size: .293333rem;
             color: @black1;
+            text-align: right;
           }
           .arrow {
             display: inline-block;
@@ -226,7 +225,6 @@
           overflow: hidden;
           background-size: cover;
           background-position: center;
-          background-image: url("http://img.hotelpal.cn/1509937424911.jpg");
         }
         .right {
           margin-left: 2.4rem;

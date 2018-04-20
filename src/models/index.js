@@ -7,13 +7,21 @@ export default {
   state: {
     courseList: [],
     innerCourseList: [],
+    bannerList: [],
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname, query }) => {
+        if (pathname != '/') {
+          return false;
+        }
         dispatch({
           type: 'fetchCourseList',
+          payload: {},
+        });
+        dispatch({
+          type: 'fetchBanner',
           payload: {},
         });
         dispatch({
@@ -65,6 +73,25 @@ export default {
           type: 'save',
           payload: {
             innerCourseList: [],
+          },
+        });
+      }
+    },
+    *fetchBanner({ payload }, { call, put }) {  // eslint-disable-line
+      const res = yield call(indexService.fetchBanner, payload.data || {});
+      if (res.data.code === 0) {
+        const bannerList = res.data.data.list;
+        yield put({
+          type: 'save',
+          payload: {
+            bannerList
+          },
+        });
+      } else {
+        yield put({
+          type: 'save',
+          payload: {
+            bannerList: [],
           },
         });
       }

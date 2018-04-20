@@ -10,3 +10,8 @@ export function fetchInnerCourse({start, n, order}) {
   const jdbtk = getToken();
   return request(`${config.host}/hotelpal/lesson/getInternalLessonList?token=${jdbtk}&start=${start}&n=${n}&order=${order}`);
 }
+
+export function fetchBanner() {
+  const jdbtk = getToken();
+  return request(`${config.host}/hotelpal/course/getMainBanner?token=${jdbtk}`);
+}

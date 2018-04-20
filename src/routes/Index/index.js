@@ -8,6 +8,11 @@ import Slider from 'react-slick';
 import arrow from '../../assets/arrow-right.svg';
 import { BottomBar } from '../../components/';
 
+const goto = function (link) {
+  alert(1);
+  window.location.href = link;
+}
+
 function IndexPage({ common, index }) {
   if (!index) {
     return <div></div>
@@ -15,21 +20,26 @@ function IndexPage({ common, index }) {
 
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 5000,
     draggable: false,
+    touchMove: false,
   };
-  
+
+  const { courseList, innerCourseList, bannerList } = index;
+
   return (
     <div className={styles.normal}>
       <BottomBar selected={0}></BottomBar>
       <Slider className={styles.slider} {...settings}>
-        <div><img src="http://img.hotelpal.cn/1509955038138.jpg"/></div>
-        <div><img src="http://img.hotelpal.cn/1509955038138.jpg"/></div>
-        <div><img src="http://img.hotelpal.cn/1509955038138.jpg"/></div>
+        {
+          bannerList.map((d, i) => {
+            return <a href={d.link} key={i}><img src={d.bannerImg}/></a>
+          })
+        }
       </Slider>
       <div className={styles.open}>
         <div className={styles.header}>
@@ -66,7 +76,7 @@ function IndexPage({ common, index }) {
         </div>
         <div className={styles.list}>
           {
-            index.innerCourseList.map((d, i) => {
+            innerCourseList.map((d, i) => {
               const time = moment(d.publishTime).format('MM-DD');
               return <div key={i} className={styles.item}>
                 <div className={styles.cell}>
@@ -89,7 +99,7 @@ function IndexPage({ common, index }) {
         </div>
         <div className={styles.list}>
           {
-            index.courseList.map((d, i) => {
+            courseList.map((d, i) => {
               return <div key={i} className={styles.item}>
                 <div className={styles.avatar} style={{ backgroundImage: `url(${d.headImg})` }}></div>
                 <div className={styles.right}>
@@ -124,7 +134,7 @@ IndexPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { common: state.common, index: state.index };
+  return { index: state.index };
 }
 
 export default connect(mapStateToProps)(IndexPage);

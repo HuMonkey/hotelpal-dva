@@ -6,7 +6,16 @@ import styles from './index.less';
 import bg from '../../assets/profile_bg.png';
 import { BottomBar } from '../../components/';
 
-function Profile() {
+function Profile({ common, profile }) {
+  if (!common || !profile) {
+    return <div></div>
+  }
+
+  const { userInfo } = common;
+  const { statics } = profile;
+  const listenedHour = parseInt(statics.listenedTimeInSecond / 60 / 60);
+  const listenedMinute = parseInt((statics.listenedTimeInSecond - 60 * 60 * listenedHour) / 60);
+
   return (
     <div className={styles.normal}>
       <BottomBar selected={2}></BottomBar>
@@ -16,29 +25,29 @@ function Profile() {
       <div className={styles.header}>
         <div className={styles.avater}>
           <div className={styles.img + ' ' + styles.short}>
-            <img src="http://img.hotelpal.cn/1505554345809.JPG" />
+            <img src={userInfo.headImg} />
           </div>
         </div> 
         <Link to={'/modify'}><div className={styles.name}>
-          逐梦少年1003
+          {userInfo.nickname}
           <div className={styles.arrowRight}></div>
         </div> </Link>
         <div className={styles.record}>
           <div className={styles.icon}></div> 
           <span>累计学习</span>
-          13小时52分钟
+          {listenedHour}小时{listenedMinute}分钟
         </div> 
         <div className={styles.infos}>
           <div className={styles.item}>
-            <div className={styles.value}>201天</div> 
+            <div className={styles.value}>{statics.signedDays}天</div> 
             <div className={styles.label}>加入成长营</div>
           </div> 
           <div className={styles.item}>
-            <div className={styles.value}>5个</div> 
+            <div className={styles.value}>{statics.purchasedCourseCount}个</div> 
             <div className={styles.label}>报名课程</div>
           </div> 
           <div className={styles.item}>
-            <div className={styles.value}>21节</div> 
+            <div className={styles.value}>{statics.listenedLessonCount}节</div> 
             <div className={styles.label}>学习课时</div>
           </div>
         </div>
@@ -66,4 +75,8 @@ function Profile() {
 Profile.propTypes = {
 };
 
-export default connect()(Profile);
+const mapStateToProps = (state) => {
+  return { common: state.common, profile: state.profile };
+}
+
+export default connect(mapStateToProps)(Profile);

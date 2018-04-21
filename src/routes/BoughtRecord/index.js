@@ -2,7 +2,14 @@ import React from 'react';
 import { connect } from 'dva';
 import styles from './index.less';
 
-function BoughtRecord() {
+function BoughtRecord({ bought }) {
+  if (!bought) {
+    return <div></div>
+  }
+
+  const { boughtList } = bought;
+  console.log(boughtList);
+
   return (
     <div className={styles.normal}>
       {
@@ -24,5 +31,9 @@ function BoughtRecord() {
 
 BoughtRecord.propTypes = {
 };
+
+const mapStateToProps = (state) => {
+  return { bought: state.bought };
+}
 
 export default connect()(BoughtRecord);

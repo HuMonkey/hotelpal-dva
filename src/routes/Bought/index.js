@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import moment from 'moment';
 import styles from './index.less';
 
 import { BottomBar } from '../../components/';
+import { getTimeStr } from '../../utils/';
 
 function Bought({ bought }) {
   if (!bought) {
@@ -38,9 +38,7 @@ function Bought({ bought }) {
                 return <tr key={i}>
                   {
                     list.map((dd, ii) => {
-                      const now = moment();
-                      const date = moment(dd.updateDate);
-                      const dateStr = date.year() === now.year() ? date.format('MM-DD') : date.format('YYYY-MM-DD');
+                      const dateStr = getTimeStr(dd.updateDate);
                       return <td key={ii}>
                         <Link to={`/course/${dd.id}`}>
                           <div className={styles.item}>

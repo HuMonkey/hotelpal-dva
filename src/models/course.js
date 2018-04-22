@@ -1,36 +1,41 @@
-import * as profileService from '../services/profile';
+import * as courseService from '../services/course';
 
 export default {
 
-  namespace: 'profile',
+  namespace: 'course',
 
   state: {
-    statics: {}
+    detail: {}
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname, query }) => {
-        if (pathname != '/profile') {
+        if (pathname.indexOf('/course') === -1) {
             return false;
         }
+        const courseId = pathname.split('/')[2];
         dispatch({
-          type: 'fetchStatics',
-          payload: {},
-        });
+          type: 'fetchCourseDetail',
+          payload: {
+            data: {
+              id: courseId,
+            }
+          }
+        })
       });
     },
   },
 
   effects: {
-    *fetchStatics({ payload }, { call, put }) {  // eslint-disable-line
-      const res = yield call(profileService.fetchStatics, payload.data || {});
+    *fetchCourseDetail({ payload }, { call, put }) {  // eslint-disable-line
+      const res = yield call(courseService.fetchCourseDetail, payload.data || {});
       if (res.data.code === 0) {
-        const statics = res.data.data;
+        const detail = res.data.data;
         yield put({
           type: 'save',
           payload: {
-            statics
+            detail: detail
           },
         });
       }
@@ -44,8 +49,9 @@ export default {
     reset(state, action) {
       return {
         ...state,
-        statics: {},
+        detail: {}
       };
     }
   },
+
 };

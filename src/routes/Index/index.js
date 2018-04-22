@@ -8,11 +8,6 @@ import Slider from 'react-slick';
 import arrow from '../../assets/arrow-right.svg';
 import { BottomBar } from '../../components/';
 
-const goto = function (link) {
-  alert(1);
-  window.location.href = link;
-}
-
 function IndexPage({ common, index }) {
   if (!index) {
     return <div></div>
@@ -80,8 +75,10 @@ function IndexPage({ common, index }) {
               const time = moment(d.publishTime).format('MM-DD');
               return <div key={i} className={styles.item}>
                 <div className={styles.cell}>
-                  <div className={styles.arrow}></div>
-                  {d.title}
+                  <Link to={`/lesson/free/${d.id}`}>
+                    <div className={styles.arrow}></div>
+                    {d.title}
+                  </Link>
                 </div>
                 <div className={styles.cell}>
                   {time}
@@ -100,28 +97,30 @@ function IndexPage({ common, index }) {
         <div className={styles.list}>
           {
             courseList.map((d, i) => {
-              return <div key={i} className={styles.item}>
-                <div className={styles.avatar} style={{ backgroundImage: `url(${d.headImg})` }}></div>
-                <div className={styles.right}>
-                  <div className={styles.title}>{d.title}</div>
-                  <div className={styles.who}>
-                    <span>{d.userName}</span>
-                    <span className={styles.split}>·</span>
-                    <span>{d.company + ' ' + d.userTitle}</span>
-                  </div>
-                  <div className={styles.slogan}>{d.subtitle}</div>
-                  <div className={styles.bottom}>
-                    <div className={styles.tags}>
-                      {
-                        d.tag.map((dd, ii) => {
-                          return <div key={ii} className={styles.tag}>{dd.name}</div>
-                        })
-                      }
+              return <Link key={i} to={`/course/${d.id}`}>
+                <div className={styles.item}>
+                  <div className={styles.avatar} style={{ backgroundImage: `url(${d.headImg})` }}></div>
+                  <div className={styles.right}>
+                    <div className={styles.title}>{d.title}</div>
+                    <div className={styles.who}>
+                      <span>{d.userName}</span>
+                      <span className={styles.split}>·</span>
+                      <span>{d.company + ' ' + d.userTitle}</span>
                     </div>
-                    <div className={styles.price}>￥{d.charge / 100} / {d.lessonCount}课时</div>
+                    <div className={styles.slogan}>{d.subtitle}</div>
+                    <div className={styles.bottom}>
+                      <div className={styles.tags}>
+                        {
+                          d.tag.map((dd, ii) => {
+                            return <div key={ii} className={styles.tag}>{dd.name}</div>
+                          })
+                        }
+                      </div>
+                      <div className={styles.price}>￥{d.charge / 100} / {d.lessonCount}课时</div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             })
           }
         </div>

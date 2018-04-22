@@ -10,7 +10,7 @@ class Live extends Component {
     this.state = {
       posterShow: false,
       page: 'detail', // detail or chat
-      signup: 'free', // inviting init paid vip free
+      signup: 'vip', // inviting init paid vip free
       state: 'ing', // before ing after
     };
   }
@@ -101,7 +101,7 @@ class Live extends Component {
               { signup === 'paid' || signup === 'free' ? <div className={styles.paid}></div> : <div className={styles.right}>已有200000人报名</div> }
             </div>
             { 
-              signup !== 'paid' && signup !== 'free' && <div className={styles.signups}>
+              signup === 'paid' || signup === 'init' && <div className={styles.signups}>
                 <div className={styles.item}>
                   <div className={styles.left}>
                     <div className={styles.inner}>直播价&nbsp;￥49</div>
@@ -111,6 +111,19 @@ class Live extends Component {
                 {
                   invitingDom
                 }
+              </div>
+            }
+            {
+              signup === 'vip' && <div className={styles.signups}>
+                <div className={styles.item + ' ' + styles.vip}>
+                  <div className={styles.left}>
+                    <div className={styles.inner}>
+                      <span className={styles.price}>￥49</span>
+                      你是公开课会员，可以免费收看
+                    </div>
+                  </div>
+                  <div className={styles.right}>报名</div>
+                </div>
               </div>
             }
             {

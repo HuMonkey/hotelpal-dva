@@ -183,6 +183,9 @@
           display: table-cell;
           vertical-align: middle;
           text-align: left;
+          a {
+            color: @black2;
+          }
           &:last-child {
             font-size: .293333rem;
             color: @black1;
@@ -209,79 +212,83 @@
       width: 100%;
       padding: 0 .4rem;
       padding-bottom: .3rem;
-      .item {
-        width: 100%;
-        border-bottom: 1px solid #f5f5f5;
-        padding: .3rem 0;
-        &:last-child {
-          border-bottom: none;
-        }
-        .avatar {
-          width: 2rem;
-          float: left;
-          height: 2.6666rem;
-          position: relative;
-          border-radius: .13333rem;
-          overflow: hidden;
-          background-size: cover;
-          background-position: center;
-        }
-        .right {
-          margin-left: 2.4rem;
-          width: 6.8rem;
-          height: 2.6666rem;
-          padding: .13333rem 0;
-          line-height: 1;
-          .title {
-            width: 100%;
-            font-size: .4rem;
-            height: .4rem;
-            color: @black3;
-            font-weight: 600;
+      a {
+        .item {
+          width: 100%;
+          border-bottom: 1px solid #f5f5f5;
+          padding: .3rem 0;
+          .avatar {
+            width: 2rem;
+            float: left;
+            height: 2.6666rem;
+            position: relative;
+            border-radius: .13333rem;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
           }
-          .who {
-            margin-top: .186666rem;
-            font-size: .373333rem;
-            color: @black2;
-          }
-          .slogan {
-            margin-top: .54rem;
-            color: @black1;
-            font-size: .32rem;
-          }
-          .bottom {
-            margin-top: .18rem;
-            display: table;
-            width: 100%;
-            .tags {
-              display: table-cell;
-              vertical-align: middle;
-              .tag {
-                float: left;
-                padding: 0 .16rem;
-                border: thin solid #ccc;
+          .right {
+            margin-left: 2.4rem;
+            width: 6.8rem;
+            height: 2.6666rem;
+            padding: .13333rem 0;
+            line-height: 1;
+            .title {
+              width: 100%;
+              font-size: .4rem;
+              height: .4rem;
+              color: @black3;
+              font-weight: 600;
+            }
+            .who {
+              margin-top: .186666rem;
+              font-size: .373333rem;
+              color: @black2;
+            }
+            .slogan {
+              margin-top: .54rem;
+              color: @black1;
+              font-size: .32rem;
+            }
+            .bottom {
+              margin-top: .18rem;
+              display: table;
+              width: 100%;
+              .tags {
+                display: table-cell;
+                vertical-align: middle;
+                .tag {
+                  float: left;
+                  padding: 0 .16rem;
+                  border: thin solid #ccc;
+                  font-size: .32rem;
+                  height: .48rem;
+                  line-height: .453333rem;
+                  border-radius: 2px;
+                  color: #aaa;
+                  float: left;
+                  white-space: nowrap;
+                  max-width: 2rem;
+                  margin-right: .26666rem;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
+              .price {
+                display: table-cell;
+                vertical-align: middle;
+                width: 2.5rem;
+                color: @red;
                 font-size: .32rem;
-                height: .48rem;
-                line-height: .453333rem;
-                border-radius: 2px;
-                color: #aaa;
-                float: left;
-                white-space: nowrap;
-                max-width: 2rem;
-                margin-right: .26666rem;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                text-align: right;
+                line-height: .48rem;
               }
             }
-            .price {
-              display: table-cell;
-              vertical-align: middle;
-              width: 2.5rem;
-              color: @red;
-              font-size: .32rem;
-              text-align: right;
-              line-height: .48rem;
-            }
+          }
+        }
+        &:last-child {
+          .item {
+            border-bottom: none;
           }
         }
       }

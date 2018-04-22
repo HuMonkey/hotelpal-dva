@@ -11,7 +11,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname, query }) => {
-        if (pathname != '/bought') {
+        if (pathname != '/bought' && pathname != '/br') {
             return false;
         }
         dispatch({

@@ -80,12 +80,7 @@
     overflow: hidden;
     .left {
       float: left;
-      display: table;
       font-size: 0.293333rem;
-      .tag, time {
-        display: table-cell;
-        vertical-align: middle;
-      }
       .tag {
         width: 1.46666rem;
         height: 0.48rem;
@@ -94,6 +89,7 @@
         color: white;
         border-radius: 2px;
         position: relative;
+        float: left;
         .tri {
           position: absolute;
           right: -0.12rem;
@@ -119,6 +115,8 @@
       .time {
         margin-left: 0.24rem;
         color: @black1;
+        float: left;
+        line-height: 0.48rem;
       }
     }
     .paid {
@@ -171,6 +169,19 @@
         text-align: center;
         font-size: 0.4rem;
         background: @orange;
+      }
+      &.vip {
+        .left {
+          .inner {
+            .price {
+              text-decoration: line-through;
+              margin-right: 0.4rem;
+            }
+          }
+        }
+        .right {
+          width: 1.5rem;
+        }
       }
       &:last-child {
         border-bottom: none;

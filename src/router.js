@@ -31,7 +31,8 @@ function RouterConfig({ history }) {
         <Route path="/" exact render={() => requireWechat(Index)} />
         <Route path="/live/:id" exact render={() => requireWechat(Live)} />
         <Route path="/course/:id" exact render={() => requireWechat(Course)} />
-        <Route path="/lesson/:id" exact render={() => requireWechat(Lesson)} />
+        <Route path="/lesson/pay/:id" exact render={() => requireWechat(Lesson)} />
+        <Route path="/lesson/free/:id" exact render={() => requireWechat(Lesson)} />
         <Route path="/jdbs" exact render={() => requireWechat(Jdbs)} />
         <Route path="/profile" exact render={() => requireWechat(Profile)} />
         <Route path="/bought" exact render={() => requireWechat(Bought)} />

@@ -106,18 +106,26 @@ class Jdbs extends Component {
             courses.map((d, i) => {
               const audioLen = getAudioLength(d.audioLen);
               return <li key={i} className={styles.item}>
-                <div className={styles.name}>
-                  <div className={styles.arrow}></div> 
-                  <span>{d.lessonNo}</span>
-                  <span className={styles.vr}>|</span>
-                  <span>{d.title}</span>
-                </div> 
-                <div className={styles.infos}>
-                  <span>{d.publishTime}</span> 
-                  <span>{d.resourceSize}</span> 
-                  <span>{audioLen}</span> 
-                </div>
-                <div className={styles.arrowRight}></div>
+                <Link to={`/lesson/free/${d.id}`}>
+                  <div className={styles.name}>
+                    <div className={styles.arrow}></div> 
+                    <span>{d.lessonNo}</span>
+                    <span className={styles.vr}>|</span>
+                    <span>{d.title}</span>
+                  </div> 
+                  <div className={styles.infos}>
+                    <span>{d.publishTime}</span> 
+                    <span>{d.resourceSize}</span> 
+                    <span>{audioLen}</span> 
+                    {
+                      d.listenLen && d.listenLen >= d.audioLen && <span className={styles.over}>已播完</span>
+                    }
+                    { 
+                      d.listenLen && d.listenLen < d.audioLen && <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span>
+                    }
+                  </div>
+                  <div className={styles.arrowRight}></div>
+                </Link>
               </li>
             })
           }

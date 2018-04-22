@@ -10,7 +10,7 @@ class Live extends Component {
     this.state = {
       posterShow: false,
       page: 'detail', // detail or chat
-      signup: 'vip', // inviting init paid vip free
+      signup: 'init', // inviting init paid vip free
       state: 'ing', // before ing after
     };
   }

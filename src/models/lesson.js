@@ -1,11 +1,13 @@
 import * as lessonService from '../services/lesson';
+import * as courseService from '../services/course';
 
 export default {
 
   namespace: 'lesson',
 
   state: {
-    detail: {}
+    detail: {},
+    courseDetail: {},
   },
 
   subscriptions: {
@@ -14,6 +16,7 @@ export default {
         if (pathname.indexOf('/lesson') === -1) {
             return false;
         }
+        const isCourse = pathname.split('/')[2];
         const lessonId = pathname.split('/')[3];
         dispatch({
           type: 'fetchLessonDetail',
@@ -21,6 +24,16 @@ export default {
             data: {
               id: lessonId,
             }
+          },
+          onResult (res) {
+            isCourse && dispatch({
+              type: 'fetchCourseDetail',
+              payload: {
+                data: {
+                  id: res.courseId,
+                }
+              }
+            })
           }
         })
       });
@@ -28,7 +41,7 @@ export default {
   },
 
   effects: {
-    *fetchLessonDetail({ payload }, { call, put }) {  // eslint-disable-line
+    *fetchLessonDetail({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(lessonService.fetchLessonDetail, payload.data || {});
       if (res.data.code === 0) {
         const detail = res.data.data;
@@ -36,6 +49,19 @@ export default {
           type: 'save',
           payload: {
             detail: detail
+          },
+        });
+        onResult(detail);
+      }
+    },
+    *fetchCourseDetail({ payload }, { call, put }) {  // eslint-disable-line
+      const res = yield call(courseService.fetchCourseDetail, payload.data || {});
+      if (res.data.code === 0) {
+        const courseDetail = res.data.data;
+        yield put({
+          type: 'save',
+          payload: {
+            courseDetail
           },
         });
       }
@@ -49,7 +75,8 @@ export default {
     reset(state, action) {
       return {
         ...state,
-        detail: {}
+        detail: {},
+        courseDetail: {},
       };
     }
   },

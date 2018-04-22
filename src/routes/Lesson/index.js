@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import styles from './index.less';
 
 import { AudioPlayer } from '../../components';
@@ -35,14 +36,21 @@ class Lesson extends Component {
     })
   }
 
+  scrollTop () {
+    this.refs.main.scrollTop = 0;
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'lesson/reset',
+    })
+  }
+
   render () {
     const { lesson } = this.props;
     if (!lesson) {
       return <div></div>
     }
 
-    const { detail } = lesson;
-    console.log(detail);
+    const { detail, courseDetail } = lesson;
     if (!detail.audio) {
       return <div></div>
     }
@@ -86,8 +94,22 @@ class Lesson extends Component {
 
     const overflow = showAll ? '' : ' ' + styles.overflow;
 
+    const lessonList = courseDetail.lessonList;
+    const lessonsNum = lessonList ? lessonList.length : 0;
+    let swiperWidth, swiperLeft;
+    if (isCourse && lessonList) {
+      swiperWidth = (lessonsNum * 270 + (lessonsNum - 1) * 20) / 75;
+      const former = lessonList.indexOf(lessonList.find((d) => d.id == detail.id));
+      swiperLeft = (former * 290) / 75 * (document.body.clientWidth / 10);
+      setTimeout(() => {
+        if (this.refs.lessons) {
+          this.refs.lessons.scrollLeft = swiperLeft;
+        }
+      }, 500)
+    }
+
     return (
-      <div className={styles.normal}>
+      <div className={styles.normal} ref={`main`}>
         <AudioPlayer audioUrl={detail.audio}></AudioPlayer>
         { 
           !replying && <div className={styles.commentBox + ' ' + styles.hongbao}>
@@ -144,27 +166,30 @@ class Lesson extends Component {
                   <div className={styles.hr}></div>
                   <div className={styles.course}>
                     <div className={styles.back}>
-                      <div className={styles.box}>
-                        <div className={styles.img}>
-                          <img src="http://img.hotelpal.cn/1509937424911.jpg" />
-                        </div> 
-                        <div className={styles.title}>酒店电商万能公式从0到1</div> 
-                        <div className={styles.desc}>葛健 · 酒店哥 CEO</div> 
-                        <div className={styles.arrow}></div>
-                      </div>
+                      <Link to={`/course/${courseDetail.id}`}>
+                        <div className={styles.box}>
+                          <div className={styles.img}>
+                            <img src={courseDetail.bannerImg && courseDetail.bannerImg[0]} />
+                          </div> 
+                          <div className={styles.title}>{courseDetail.title}</div> 
+                          <div className={styles.desc}>{courseDetail.userName} · {courseDetail.company} {courseDetail.userTitle}</div> 
+                          <div className={styles.arrow}></div>
+                        </div>
+                      </Link>
                     </div> 
                     <div className={styles.hr}></div> 
-                    <div className={styles.lessons}>
-                      <div className={styles.swiper}>
-                        <div className={styles.item}>
-                          <div className={styles.inner}>01 | 什么是酒店电商万能公式？</div>
-                        </div>
-                        <div className={styles.item}>
-                          <div className={styles.inner}>01 | 什么是酒店电商万能公式？</div>
-                        </div>
-                        <div className={styles.item}>
-                          <div className={styles.inner}>01 | 什么是酒店电商万能公式？</div>
-                        </div>
+                    <div className={styles.lessons} ref={`lessons`}>
+                      <div className={styles.swiper} style={{ width: swiperWidth + 'rem' }}>
+                        {
+                          courseDetail.lessonList && courseDetail.lessonList.map((d, i) => {
+                            let currentClass = d.id === detail.id ? ' ' + styles.current : '';
+                            return <div key={i} className={styles.item + currentClass} onClick={this.scrollTop.bind(this)}>
+                              <Link to={`/lesson/pay/${d.id}`}>
+                                <div className={styles.inner}>{formatNum(d.lessonOrder)} | {d.title}</div>
+                              </Link>
+                            </div>
+                          })
+                        }
                       </div>
                     </div>
                   </div>

@@ -4,7 +4,7 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import { AudioPlayer } from '../../components';
-import { formatNum, getAudioLength } from '../../utils';
+import { formatNum, getAudioLength, formatTime } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
 class Lesson extends Component {
@@ -109,6 +109,84 @@ class Lesson extends Component {
       }, 500);
     }
 
+    const commentList = detail.commentList.commentList;
+    const replyToCommentList = detail.commentList.replyToCommentList;
+    const commentDom = commentList.map((d, i) => {
+      let reply;
+      for (let j = 0; j < replyToCommentList.length; j++) {
+        if (replyToCommentList[j].id === d.replytoId) {
+          reply = replyToCommentList[j];
+          break;
+        }
+      }
+      return <div className={styles.item} key={i}>
+        <div className={styles.avatar}>
+          <img src={d.userHeadImg} />
+        </div> 
+        <div className={styles.name}>
+          {d.userName}  
+          { (d.userCompany || d.userTitle) && <span>{d.userCompany} {d.userTitle}</span> }
+          { d.isTheSpeaker === 1 && <span className={styles.tag}>主讲人</span> }
+        </div> 
+        <div className={styles.content}>
+          { d.content }
+        </div> 
+        {
+          reply && <div className={styles.quote}>
+            {reply.userName}：{reply.content}
+          </div>
+        } 
+        <div className={styles.bottom}>
+          <div className={styles.time}>{formatTime(d.creationTime)}</div> 
+          <div className={styles.box}>
+            <div className={styles.comment}>回复</div>
+            <div className={styles.like}>
+              <div className={styles.icon}></div>{d.zanCount}
+            </div>
+          </div>
+        </div>
+      </div>
+    });
+
+    const eliteCommentList = detail.commentList.commentList;
+    const eliteReplyToCommentList = detail.commentList.replyToCommentList;
+    const eliteCommentDom = eliteCommentList.map((d, i) => {
+      let reply;
+      for (let j = 0; j < eliteReplyToCommentList.length; j++) {
+        if (eliteReplyToCommentList[j].id === d.replytoId) {
+          reply = eliteReplyToCommentList[j];
+          break;
+        }
+      }
+      return <div className={styles.item} key={i}>
+        <div className={styles.avatar}>
+          <img src={d.userHeadImg} />
+        </div> 
+        <div className={styles.name}>
+          {d.userName}  
+          { (d.userCompany || d.userTitle) && <span>{d.userCompany} {d.userTitle}</span> }
+          { d.isTheSpeaker === 1 && <span className={styles.tag}>主讲人</span> }
+        </div> 
+        <div className={styles.content}>
+          { d.content }
+        </div> 
+        {
+          reply && <div className={styles.quote}>
+            {reply.userName}：{reply.content}
+          </div>
+        } 
+        <div className={styles.bottom}>
+          <div className={styles.time}>{formatTime(d.creationTime)}</div> 
+          <div className={styles.box}>
+            <div className={styles.comment}>回复</div>
+            <div className={styles.like}>
+              <div className={styles.icon}></div>{d.zanCount}
+            </div>
+          </div>
+        </div>
+      </div>
+    });
+
     return (
       <div className={styles.normal} ref={`main`}>
         <AudioPlayer courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
@@ -197,36 +275,24 @@ class Lesson extends Component {
                 </div>
               }
               <div className={styles.discuss}>
+                {
+                  eliteCommentDom.length > 0 && <div className={styles.good}>
+                    <div className={styles.title}>精选讨论</div>
+                    <div className={styles.comments}>
+                      { eliteCommentDom }
+                    </div>
+                  </div> 
+                }
                 <div className={styles.all}>
                   <div className={styles.title}>全部讨论</div>
-                  <div className={styles.comments}>
-                    <div className={styles.item}>
-                      <div className={styles.avatar}>
-                        <img src="http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJeYou1lgwzmjtF8QLz9Tr3bicNiazUkic8xr8yzic2tVuxl12dibDz59MxmYRvUstQfiavwW0CSYWMfpHA/0" />
-                      </div> 
-                      <div className={styles.name}>
-                        葛健  
-                        <span>酒店哥 创始人</span> 
-                        <span className={styles.tag}>主讲人</span>
-                      </div> 
-                      <div className={styles.content}>
-                        单体酒店更加容易做知名度，因为相比连锁品牌的各种条条框框，单体酒店更加灵活更加没有包袱，如何关于如何提升品牌知名度，在第5节课
-                      </div> 
-                      <div className={styles.quote}>
-                        当家的：单体酒店没有品牌影响力。比如光大银行下的酒店，是不是酒店名前冠光大俩字，就会提升知名度了？
-                      </div> 
-                      <div className={styles.bottom}>
-                        <div className={styles.time}>4个月前</div> 
-                        <div className={styles.box}>
-                          <div className={styles.comment}>回复</div>
-                          <div className={styles.like}>
-                            <div className={styles.icon}></div>3
-                          </div>
-                        </div>
-                      </div>
+                  {
+                    commentDom.length > 0 ? <div className={styles.comments}>
+                      {commentDom}
+                    </div> : <div className={styles.noComments}>
+                      尚无讨论，说说你的看法吧！
                     </div>
-                  </div>
-                </div> 
+                  }
+                </div>
               </div> 
             </div>
           </div>

@@ -51,16 +51,15 @@ class Lesson extends Component {
     }
 
     const { detail, courseDetail } = lesson;
-    if (!detail.audio) {
-      return <div></div>
-    }
 
     const route = location.hash;
     const isCourse = location.hash.split('/')[2] !== 'free';
 
-    const { replying, paid, showAll } = this.state;
+    if (!detail || (isCourse && !courseDetail)) {
+      return <div></div>
+    }
 
-    if (isCourse && !paid) {
+    if (courseDetail && !courseDetail.purchased && !detail.freeListen) {
       return (
         <div className={styles.normal}>
           <div className={styles.notPaid}>
@@ -68,19 +67,19 @@ class Lesson extends Component {
               <div className={styles.top}>
                 <div className={styles.text}>
                   你需要先购买课程<br /> 
-                  <span className={styles.price}>¥ 99 / 7课时</span>
+                  <span className={styles.price}>¥ {Math.round(courseDetail.charge / 100)} / {courseDetail.lessonCount}课时</span>
                 </div>
               </div> 
               <div className={styles.avater}>
                 <div className={styles.img}>
-                  <img src="http://img.hotelpal.cn/1505472718419.jpg" />
+                  <img src={courseDetail.headImg} />
                 </div>
               </div> 
               <div className={styles.bottom}>
-                <div className={styles.name}>金杜</div> 
-                <div className={styles.who}>宛若故里 创始人</div> 
-                <div className={styles.course}>民宿创业的七条军规</div> 
-                <div className={styles.desc}>1000万学费买来的经验</div> 
+                <div className={styles.name}>{courseDetail.userName}</div> 
+                <div className={styles.who}>{courseDetail.company}{courseDetail.userTitle}</div> 
+                <div className={styles.course}>{courseDetail.title}</div> 
+                <div className={styles.desc}>{courseDetail.subtitle}</div> 
                 <div className={styles.btn}>购买课程  获取知识</div>
               </div>
             </div> 
@@ -90,27 +89,29 @@ class Lesson extends Component {
       )
     }
 
+    const { replying, showAll } = this.state;
+
     function createMarkup() { return { __html: detail.content }; };
 
     const overflow = showAll ? '' : ' ' + styles.overflow;
 
-    const lessonList = courseDetail.lessonList;
+    const lessonList = courseDetail && courseDetail.lessonList;
     const lessonsNum = lessonList ? lessonList.length : 0;
     let swiperWidth, swiperLeft;
     if (isCourse && lessonList) {
       swiperWidth = (lessonsNum * 270 + (lessonsNum - 1) * 20) / 75;
-      const former = lessonList.indexOf(lessonList.find((d) => d.id == detail.id));
-      swiperLeft = (former * 290) / 75 * (document.body.clientWidth / 10);
+      const index = lessonList.indexOf(lessonList.find((d) => d.id == detail.id));
+      swiperLeft = (index * 290) / 75 * (document.body.clientWidth / 10);
       setTimeout(() => {
         if (this.refs.lessons) {
           this.refs.lessons.scrollLeft = swiperLeft;
         }
-      }, 500)
+      }, 500);
     }
 
     return (
       <div className={styles.normal} ref={`main`}>
-        <AudioPlayer audioUrl={detail.audio}></AudioPlayer>
+        <AudioPlayer courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
         { 
           !replying && <div className={styles.commentBox + ' ' + styles.hongbao}>
             <div className={styles.pen}></div> 
@@ -184,7 +185,7 @@ class Lesson extends Component {
                           courseDetail.lessonList && courseDetail.lessonList.map((d, i) => {
                             let currentClass = d.id === detail.id ? ' ' + styles.current : '';
                             return <div key={i} className={styles.item + currentClass} onClick={this.scrollTop.bind(this)}>
-                              <Link to={`/lesson/pay/${d.id}`}>
+                              <Link to={`/lesson/pay/${d.id}?courseId=${courseDetail.id}`}>
                                 <div className={styles.inner}>{formatNum(d.lessonOrder)} | {d.title}</div>
                               </Link>
                             </div>

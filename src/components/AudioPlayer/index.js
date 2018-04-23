@@ -53,8 +53,8 @@ class AudioPlayer extends Component {
     })
   }
 
-  onError () {
-    console.log('onError');
+  onError (ev) {
+    console.log('onError', ev);
   }
 
   onSliderChange (value) {
@@ -66,7 +66,10 @@ class AudioPlayer extends Component {
   }
 
   onEnded () {
-    console.log('onEnded');
+    const { goOn } = this.state;
+    if (goOn) {
+      this.nextLesson();
+    }
     this.refs.player.seekTo(0);
     this.setState({
       played: 0,
@@ -75,8 +78,20 @@ class AudioPlayer extends Component {
     });
   }
 
+  previousLesson () {
+    const { isCourse, previous, courseId } = this.props;
+    location.href = `/#/lesson/${isCourse ? 'pay' : 'free'}/${previous}${isCourse ? `?courseId=${courseId}` : ''}`;
+  }
+
+  nextLesson () {
+    const { isCourse, next, courseId } = this.props;
+    location.href = `/#/lesson/${isCourse ? 'pay' : 'free'}/${next}${isCourse ? `?courseId=${courseId}` : ''}`;
+  }
+
   render() {
     const { played, loaded, duration, playedSeconds, goOn, playing } = this.state;
+
+    const { audioUrl, previous, next } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -88,7 +103,7 @@ class AudioPlayer extends Component {
       durationMinute = 0;
     }
     durationMinute = durationMinute < 10 ? '0' + durationMinute : durationMinute;
-    let durationSecond = Math.floor((duration - playedSeconds) % 60);
+    let durationSecond = Math.ceil((duration - playedSeconds) % 60);
     if (durationSecond < 0) {
       durationSecond = 0;
     }
@@ -96,6 +111,9 @@ class AudioPlayer extends Component {
 
     const playClass = playing ? ' ' + styles.playing : '';
     const clickClass = goOn ? ' ' + styles.clicked : '';
+
+    const previousEmpty = previous == null ? ' ' + styles.empty : '';
+    const nextEmpty = next == null ? ' ' + styles.empty : '';
 
     return (
       <div className={styles.audioPlayer}>
@@ -118,7 +136,7 @@ class AudioPlayer extends Component {
               </div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
-              <div className={styles.previous + ' ' + styles.empty}></div> 
+              <div className={styles.previous + previousEmpty} onClick={this.previousLesson.bind(this)}></div> 
             </div>
             <div className={styles.cell}>
               <div className={styles.playOrPause} ref={`playOrPause`} onClick={this.setPlaying.bind(this)}>
@@ -128,7 +146,7 @@ class AudioPlayer extends Component {
               </div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
-              <div className={styles.next}></div> 
+              <div className={styles.next + nextEmpty} onClick={this.nextLesson.bind(this)}></div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
               <div className={styles.next15} onClick={() => this.skip.call(this, 15)}>
@@ -140,7 +158,7 @@ class AudioPlayer extends Component {
         </div>
         <ReactPlayer className={styles.player} key={'player'}
           ref={`player`}
-          url='//storage.googleapis.com/media-session/elephants-dream/the-wires.mp3' 
+          url={audioUrl}
           playing={playing}
           playsinline={true}
           onProgress={this.onProgress.bind(this)}

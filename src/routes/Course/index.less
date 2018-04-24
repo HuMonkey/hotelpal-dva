@@ -79,14 +79,21 @@
           display: table;
           .ltitle {
             display: inline-block;
-            width: 6rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             height: .6rem;
             line-height: .6rem;
             display: table-cell;
             vertical-align: middle;
+            div {
+              width: 8rem;
+              height: .6rem;
+              ine-height: .6rem;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .freeListen {
+              width: 6rem;
+            }
           }
           .tag {
             border: thin solid @red;

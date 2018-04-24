@@ -50,10 +50,11 @@ class Course extends Component {
           <div className={styles.list}>
             {
               detail.lessonList.map((d, i) => {
+                const freeListenClass = d.freeListen === 1 ? ' ' + styles.freeListen : '';
                 return <div key={i} className={styles.item}>
                   <Link to={`/lesson/pay/${d.id}?courseId=${detail.id}`}>
                     <div className={styles.up}>
-                      <span className={styles.ltitle}>{formatNum(d.lessonOrder)}&nbsp;|&nbsp;{d.title}</span> 
+                      <span className={styles.ltitle}><div className={freeListenClass}>{formatNum(d.lessonOrder)}&nbsp;|&nbsp;{d.title}</div></span> 
                       {d.freeListen === 1 && <span className={styles.tag}>免费试听</span>}
                     </div> 
                     <div className={styles.down}>

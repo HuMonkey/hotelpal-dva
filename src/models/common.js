@@ -65,6 +65,14 @@ export default {
                 },
             });
         },
+        * uploadAvatar({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.uploadAvatar, data || {});
+            onResult(result)
+        },
+        * submitProfileChange({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.submitProfileChange, data || {});
+            onResult(result)
+        }
     },
 
     reducers: {

@@ -4,6 +4,99 @@
   height: 100%;
   background: #ffffff;
   overflow: scroll;
+  padding-bottom: 1.2rem;
+  .label {
+    width: 100%;
+    font-size: 0.48rem;
+    margin: 0 0 0.53333rem 0;
+  }
+  .block {
+    padding: 0.53333rem 0.4rem 0 0.4rem;
+    .name {
+      width: 100%;
+      font-size: 0.32rem;
+      height: 0.426666rem;
+      border-left: @red 4px solid;
+      color: #999999;
+      display: flex;
+      align-items: center;
+      .userName {
+        margin: 0 0.26666rem;
+        color: black;
+        font-size: 0.426666rem;
+      }
+      .userTitle {
+        vertical-align: bottom;
+        display: flex;
+        align-items: flex-end;
+        height: 0.426666rem;
+      }
+    }
+    .intro {
+      width: 100%;
+      font-size: 0.4rem;
+      line-height: 1.8;
+      color: #666666;
+      margin-top: 0.26666rem;
+      text-align: justify;
+      // word-break: break-all;
+      word-wrap: break-word;
+      &.overflow {
+        overflow: hidden;
+        height: 6.4rem;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 8;
+        -webkit-box-orient: vertical;
+        -webkit-mask-image: linear-gradient(#000 10%,transparent 100%);
+        mask-image: linear-gradient(#000 30%,transparent 100%);
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+      }
+      p:last-child {
+        margin-bottom: 0;
+      }
+      img {
+        margin: 0.26666rem 0;
+      }
+    }
+    .open {
+      margin-top: 0.4rem;
+      font-size: 0.4rem;
+      text-align: center;
+      color: @red;
+    }
+    .hr {
+      border-top: @border;
+      margin-top: 0.4rem;
+    }
+  }
+  .btns {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.26666rem;
+    display: flex;
+    .item {
+      flex: 1;
+      height: 100%;
+      line-height: 1.26666rem;
+      text-align: center;
+      color: @black3;
+      font-size: 0.4rem;
+      background: white;
+      border-top: @border;
+      &.free {
+        position: relative;
+      }
+      &.buy {
+        color: white;
+        background: @red;
+        border-top: @red solid thin;
+      }
+    }
+  }
   .header {
     width: 100%;
     height: 6.6666rem;

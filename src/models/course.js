@@ -10,11 +10,17 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(({ pathname, query }) => {
-        if (pathname.indexOf('/course') === -1) {
-            return false;
+      return history.listen(({ pathname, search }) => {
+        let courseId;
+        if (pathname.indexOf('/course') > -1) {
+          courseId = pathname.split('/')[2]
         }
-        const courseId = pathname.split('/')[2];
+        if (pathname.indexOf('/coursedetail') > -1) {
+          courseId = search.split('=')[1]
+        }
+        if (!courseId) {
+          return false;
+        }
         dispatch({
           type: 'fetchCourseDetail',
           payload: {

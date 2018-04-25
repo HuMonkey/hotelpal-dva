@@ -6,6 +6,9 @@ import styles from './index.less';
 import { AudioPlayer } from '../../components';
 import { formatNum, getAudioLength, formatTime } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
+import { replace } from 'react-router-redux';
+
+const likedTemp = [];
 
 class Lesson extends Component {
   constructor(props) {
@@ -14,13 +17,16 @@ class Lesson extends Component {
       replying: false,
       paid: true,
       showAll: false,
+      replyComment: null,
     };
   }
 
-  setReply (replying) {
+  setReply (replying, replyComment) {
     this.setState({
-      replying,
-    })
+      replying, replyComment,
+    }, () => {
+      replying && this.refs.reply.focus();
+    });
   }
 
   componentWillUnmount () {
@@ -41,6 +47,75 @@ class Lesson extends Component {
     const {dispatch} = this.props;
     dispatch({
       type: 'lesson/reset',
+    })
+  }
+
+  submitComment () {
+    const { dispatch, lesson } = this.props;
+    const { replyComment } = this.state;
+    const comment = this.refs.reply.value;
+
+    if (comment.length < 20) {
+      alert('回复至少20字以上');
+      return false;
+    }
+    const that = this;
+    dispatch({
+      type: 'lesson/submitComment',
+      payload: {
+        data: {
+          lessonId: lesson.detail.id,
+          comment,
+          replyToCommentId: replyComment,
+        }
+      },
+      onResult (res) {
+        if (res.data.code === 0) {
+          // TODO
+          that.setState({
+            replying: false, replyComment: null,
+          });
+          dispatch({
+            type: 'lesson/fetchLessonDetail',
+            payload: {
+              data: {
+                id: lesson.detail.id,
+              }
+            },
+          });
+          alert('发布评论成功！');
+        } else {
+          alert('发布评论失败，请稍后重试~');
+        }
+      }
+    })
+  }
+
+  addZan (comment) {
+    const { dispatch, lesson } = this.props;
+    if (comment.liked) {
+      return false;
+    }
+    const lid = lesson.detail.id;
+    dispatch({
+      type: 'lesson/addZan',
+      payload: {
+        data: {
+          lid, cid: comment.id,
+        }
+      },
+      onResult (res) {
+        if (res.data.code === 0) {
+          dispatch({
+            type: 'lesson/fetchLessonDetail',
+            payload: {
+              data: {
+                id: lid,
+              }
+            },
+          });
+        }
+      }
     })
   }
 
@@ -119,6 +194,7 @@ class Lesson extends Component {
           break;
         }
       }
+      const likedClass = d.liked || likedTemp.indexOf(d.id) > -1 ? ' ' + styles.liked : '';
       return <div className={styles.item} key={i}>
         <div className={styles.avatar}>
           <img src={d.userHeadImg} />
@@ -139,8 +215,8 @@ class Lesson extends Component {
         <div className={styles.bottom}>
           <div className={styles.time}>{formatTime(d.creationTime)}</div> 
           <div className={styles.box}>
-            <div className={styles.comment}>回复</div>
-            <div className={styles.like}>
+            <div className={styles.comment} onClick={() => this.setReply.call(this, true, d.id)}>回复</div>
+            <div className={styles.like + likedClass} onClick={() => this.addZan.call(this, d)}>
               <div className={styles.icon}></div>{d.zanCount}
             </div>
           </div>
@@ -148,7 +224,7 @@ class Lesson extends Component {
       </div>
     });
 
-    const eliteCommentList = detail.commentList.commentList;
+    const eliteCommentList = detail.eliteCommentList.commentList;
     const eliteReplyToCommentList = detail.commentList.replyToCommentList;
     const eliteCommentDom = eliteCommentList.map((d, i) => {
       let reply;
@@ -158,6 +234,7 @@ class Lesson extends Component {
           break;
         }
       }
+      const likedClass = d.liked || likedTemp.indexOf(d.id) > -1 ? ' ' + styles.liked : '';
       return <div className={styles.item} key={i}>
         <div className={styles.avatar}>
           <img src={d.userHeadImg} />
@@ -178,8 +255,8 @@ class Lesson extends Component {
         <div className={styles.bottom}>
           <div className={styles.time}>{formatTime(d.creationTime)}</div> 
           <div className={styles.box}>
-            <div className={styles.comment}>回复</div>
-            <div className={styles.like}>
+            <div className={styles.comment} onClick={() => this.setReply.call(this, true, d.id)}>回复</div>
+            <div className={styles.like + likedClass} onClick={() => this.addZan.call(this, d)}>
               <div className={styles.icon}></div>{d.zanCount}
             </div>
           </div>
@@ -193,9 +270,9 @@ class Lesson extends Component {
         { 
           !replying && <div className={styles.commentBox + ' ' + styles.hongbao}>
             <div className={styles.pen}></div> 
-            <input onFocus={() => this.setReply.call(this, true)} type="text" name="comment" placeholder="一起来参与讨论吧！" />
+            <input onFocus={() => this.setReply.call(this, true, null)} type="text" name="comment" placeholder="一起来参与讨论吧！" />
             { 
-              isCourse && <div className={styles.hongbao}>
+              isCourse && !detail.freeListen && !lesson.isGift && detail.redPacketRemained > 0 && <div className={styles.hongbao}>
                 <img src={hongbao4} />
               </div> 
             }
@@ -203,13 +280,13 @@ class Lesson extends Component {
         }
         {
           replying && <div className={styles.replyBox}>
-            <div className={styles.cover}></div> 
+            <div className={styles.cover} onClick={() => this.setReply.call(this, false, null)}></div> 
             <div className={styles.box}>
               <div className={styles.btns}>
-                <div className={styles.cancel} onClick={() => this.setReply.call(this, false)}>取消</div> 
-                <div className={styles.confirm}>发布</div>
+                <div className={styles.cancel} onClick={() => this.setReply.call(this, false, null)}>取消</div> 
+                <div className={styles.confirm} onClick={this.submitComment.bind(this)}>发布</div>
               </div> 
-              <textarea placeholder="一起来参与讨论吧！"></textarea>
+              <textarea ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
             </div>
           </div>
         }

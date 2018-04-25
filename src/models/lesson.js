@@ -72,6 +72,14 @@ export default {
         });
       }
     },
+    *submitComment({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(lessonService.submitComment, payload.data || {});
+      onResult(res);
+    },
+    *addZan({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(lessonService.addZan, payload.data || {});
+      onResult(res);
+    },
   },
 
   reducers: {

@@ -20,7 +20,7 @@ export default {
   },
   "proxy": {
     "/api": {
-      "target": "http://hotelpal.cn/",
+      "target": "http://t.hotelpal.cn/",
       "changeOrigin": true,
       "pathRewrite": { "^/api": "" }
     }

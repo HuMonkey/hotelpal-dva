@@ -37,7 +37,12 @@ class AudioPlayer extends Component {
       played: eg.played,
       loaded: eg.loaded,
       playedSeconds: eg.playedSeconds, 
-    })
+    });
+    const { duration, playedSeconds, goOn } = this.state;
+    const { courseId, next, isCourse } = this.props;
+    if (Math.ceil(duration - playedSeconds) < 1 && goOn && next) {
+      location.href = `/#/lesson/${isCourse ? 'pay' : 'free'}/${next}${isCourse ? `?courseId=${courseId}` : ''}`;
+    }
   }
 
   onDuration (duration) {
@@ -115,6 +120,13 @@ class AudioPlayer extends Component {
     const previousEmpty = previous == null ? ' ' + styles.empty : '';
     const nextEmpty = next == null ? ' ' + styles.empty : '';
 
+    let leftDuration = Math.ceil(duration - playedSeconds);
+    const countDownDom = next && duration && leftDuration < 16 && goOn && playing ? <div className={styles.countDown}>
+      <div className={styles.tips}>{ leftDuration }s后将自动为你播放</div>
+      <div className={styles.lessonTitle}>{ 111 }</div>
+      <div className={styles.btn} onClick={this.setGoOn.bind(this)}>取消自动播放</div>
+    </div> : <div></div>
+
     return (
       <div className={styles.audioPlayer}>
         <div className={styles.wrapper}>
@@ -156,6 +168,7 @@ class AudioPlayer extends Component {
             </div>
           </div>
         </div>
+        { countDownDom }
         <ReactPlayer className={styles.player} key={'player'}
           ref={`player`}
           url={audioUrl}

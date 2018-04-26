@@ -5,70 +5,22 @@
   background: #ffffff;
   overflow: scroll;
   padding-bottom: 1.2rem;
-  .label {
+  .freeTips {
+    position: fixed;
+    z-index: 99;
+    background: @red;
+    color: white;
+    padding: 0 0.4rem;
+    height: 0.8rem;
     width: 100%;
-    font-size: 0.48rem;
-    margin: 0 0 0.53333rem 0;
-  }
-  .block {
-    padding: 0.53333rem 0.4rem 0 0.4rem;
-    .name {
-      width: 100%;
-      font-size: 0.32rem;
-      height: 0.426666rem;
-      border-left: @red 4px solid;
-      color: #999999;
-      display: flex;
-      align-items: center;
-      .userName {
-        margin: 0 0.26666rem;
-        color: black;
-        font-size: 0.426666rem;
-      }
-      .userTitle {
-        vertical-align: bottom;
-        display: flex;
-        align-items: flex-end;
-        height: 0.426666rem;
-      }
-    }
-    .intro {
-      width: 100%;
-      font-size: 0.4rem;
-      line-height: 1.8;
-      color: #666666;
-      margin-top: 0.26666rem;
-      text-align: justify;
-      // word-break: break-all;
-      word-wrap: break-word;
-      &.overflow {
-        overflow: hidden;
-        height: 6.4rem;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 8;
-        -webkit-box-orient: vertical;
-        -webkit-mask-image: linear-gradient(#000 10%,transparent 100%);
-        mask-image: linear-gradient(#000 30%,transparent 100%);
-        -webkit-mask-size: 100% 100%;
-        mask-size: 100% 100%;
-      }
-      p:last-child {
-        margin-bottom: 0;
-      }
-      img {
-        margin: 0.26666rem 0;
-      }
-    }
-    .open {
-      margin-top: 0.4rem;
-      font-size: 0.4rem;
-      text-align: center;
-      color: @red;
-    }
-    .hr {
-      border-top: @border;
-      margin-top: 0.4rem;
+    font-size: 0.32rem;
+    display: flex;
+    align-items: center;
+    img {
+      height: 0.32rem;
+      position: absolute;
+      top: 0.24rem;
+      right: 0.32rem;
     }
   }
   .btns {
@@ -94,6 +46,39 @@
         color: white;
         background: @red;
         border-top: @red solid thin;
+        position: relative;
+        .freeBubble {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 1.55rem;
+          z-index: 100;
+          width: 3.5rem;
+          text-align: center;
+          .inner {
+            padding: 0.2rem 0.1rem;
+            color: #fff;
+            line-height: 1.6;
+            text-align: center;
+            text-decoration: none;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 4px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+            font-size: 0.3rem;
+          }
+          .arrow {
+            bottom: -5px;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 5px 5px 0;
+            border-top-color: rgba(0, 0, 0, 0.75);
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: 50%;
+            margin-left: -5px;
+          }
+        }
       }
     }
   }

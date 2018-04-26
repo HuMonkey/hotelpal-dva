@@ -4,14 +4,22 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import jdb from '../../assets/jiudianbang-big.png';
+import cross from '../../assets/cross.png';
 import { formatNum, getAudioLength } from '../../utils';
+import { CourseContent } from '../../components';
 
 class Course extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      overflow: true,
+      freeTipsShow: true,
     };
+  }
+
+  closeFreeTips () {
+    this.setState({
+      freeTipsShow: false,
+    })
   }
 
   componentWillUnmount () {
@@ -25,15 +33,9 @@ class Course extends Component {
     location.href = `/#/lesson/pay/${lesson.id}?courseId=${this.props.course.detail.id}`;
   }
 
-  open () {
-    this.setState({
-      overflow: false,
-    })
-  }
-
   render () {
-    const { overflow } = this.state;
-    const { course } = this.props;
+    const { freeTipsShow } = this.state;
+    const { course, common } = this.props;
 
     if (!course) {
       return <div></div>
@@ -56,19 +58,32 @@ class Course extends Component {
       { freeListen && <div className={styles.item + ' ' + styles.free} onClick={() => {
         this.gotoFree.call(this, freeListen);
       }}>免费试听</div> }
-      <div className={styles.item + ' ' + styles.buy}>订阅：¥ { detail.charge / 100 } / { detail.lessonCount }课时</div>
+      <div className={styles.item + ' ' + styles.buy}>
+        {
+          detail.charge / 100 < 500 
+            && common.userInfo 
+            && common.userInfo.freeCourseRemained > 0 
+            && <div className={styles.freeBubble}>
+            <div className={styles.arrow}></div>
+            <div className={styles.inner}>点击可免费兑换课程</div>
+          </div>
+        }
+        订阅：¥ { detail.charge / 100 } / { detail.lessonCount }课时
+      </div>
     </div>;
 
-    function createMarkupTeacher() { return { __html: detail.speakerDescribe || '暂无' }; };
-    function createMarkupIntroduce() { return { __html: detail.introduce || '暂无' }; };
-    function createMarkupCrowd() { return { __html: detail.crowd || '暂无' }; };
-    function createMarkupGain() { return { __html: detail.gain || '暂无' }; };
-    function createMarkupSubscribe() { return { __html: detail.subscribe || '暂无' }; };
-  
-    const overflowClass = overflow ? ' ' + styles.overflow : '';
+    const freeChanceDom = detail.charge / 100 < 500 
+      && common.userInfo 
+      && common.userInfo.freeCourseRemained > 0 
+      && freeTipsShow
+      && <div className={styles.freeTips}>
+        亲爱的内邀用户，你有{ common.userInfo.freeCourseRemained }个老师课程可以免费学习
+        <img src={cross} onClick={this.closeFreeTips.bind(this)}/>
+      </div>
 
     return (
       <div className={styles.normal}>
+        {freeChanceDom}
         <div className={styles.header}>
           <img src={`${detail.bannerImg[0]}`} />
           <div className={styles.desc}>
@@ -86,44 +101,7 @@ class Course extends Component {
           </div>
         }
         {
-          !detail.purchased && <div className={styles.block + ' ' + styles.teacher}>
-            <div className={styles.label}>主讲人</div>
-            <div className={styles.name}>
-              <span className={styles.userName}>{ detail.userName }</span>
-              <span className={styles.userTitle}>{ detail.company + '·' + detail.userTitle }</span>
-            </div>
-            <div className={styles.intro} dangerouslySetInnerHTML={createMarkupTeacher()}></div>
-            <div className={styles.hr}></div>
-          </div>
-        }
-        { 
-          !detail.purchased && <div className={styles.block + ' ' + styles.courseIntro}>
-            <div className={styles.label}>课程介绍</div>
-            <div className={styles.intro + overflowClass} dangerouslySetInnerHTML={createMarkupIntroduce()}></div>
-            {overflow && <div className={styles.open} onClick={this.open.bind(this)}>{'查看完整介绍'}</div>}
-            <div className={styles.hr}></div>
-          </div>
-        }
-        {
-          !detail.purchased && <div className={styles.block + ' ' + styles.who}>
-            <div className={styles.label}>适宜人群</div>
-            <div className={styles.intro} dangerouslySetInnerHTML={createMarkupCrowd()}></div>
-            <div className={styles.hr}></div>
-          </div>
-        }
-        {
-          !detail.purchased && <div className={styles.block + ' ' + styles.getting}>
-            <div className={styles.label}>你将收获</div>
-            <div className={styles.intro} dangerouslySetInnerHTML={createMarkupGain()}></div>
-            <div className={styles.hr}></div>
-          </div>
-        }
-        {
-          !detail.purchased && <div className={styles.block + ' ' + styles.care}>
-            <div className={styles.label}>订阅须知</div>
-            <div className={styles.intro} dangerouslySetInnerHTML={createMarkupSubscribe()}></div>
-            <div className={styles.hr}></div>
-          </div>
+          !detail.purchased && <CourseContent course={detail}></CourseContent>
         }
         <div className={styles.lessons}>
           <div className={styles.title}>课时内容</div>
@@ -178,7 +156,7 @@ Course.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { course: state.course };
+  return { course: state.course, common: state.common };
 }
 
 export default connect(mapStateToProps)(Course);

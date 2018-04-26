@@ -6,7 +6,7 @@ export default {
     namespace: 'common',
 
     state: {
-        userInfo: {}
+        userInfo: null
     },
 
     subscriptions: {

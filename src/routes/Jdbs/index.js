@@ -4,7 +4,7 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import banner from '../../assets/jdbs-banner.png';
-import { getAudioLength, throttle } from '../../utils';
+import { getAudioLength, throttle, configWechat, updateWechartShare } from '../../utils';
 
 class Jdbs extends Component {
   constructor (props) {
@@ -17,9 +17,36 @@ class Jdbs extends Component {
     }
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     this.refs.jdbs.addEventListener('scroll', throttle(this.handleScroll.bind(this), 1000));
     this.updateCourse([]);
+
+    const { dispatch } = this.props;
+
+    const dict = {
+      title: '成长专栏',
+      link: location.href,
+      imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
+      desc: '给你新的启发与思考，周一到周五更新。',
+    }
+
+    await dispatch({
+      type: 'common/getWechatSign',
+      payload: {
+        data: {
+          url: location.origin + '/'
+        }
+      },
+      onResult (res) {
+        if (res.data.code === 0) {
+          const {appid, noncestr, sign, timestamp, url} = res.data.data;
+          configWechat(appid, timestamp, noncestr, sign, () => {
+            updateWechartShare(dict);
+          });
+        }
+      }
+    });
+
   }
 
   updateCourse (courses) {

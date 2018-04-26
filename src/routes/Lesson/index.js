@@ -29,6 +29,11 @@ class Lesson extends Component {
     });
   }
 
+  componentDidMount () {
+    console.log(location.href);
+    console.log(location);
+  }
+
   componentWillUnmount () {
     const {dispatch} = this.props;
     dispatch({
@@ -120,7 +125,7 @@ class Lesson extends Component {
   }
 
   render () {
-    const { lesson } = this.props;
+    const { lesson, dispatch } = this.props;
     if (!lesson) {
       return <div></div>
     }
@@ -264,15 +269,20 @@ class Lesson extends Component {
       </div>
     });
 
+    const canHongbao = isCourse && !detail.freeListen && !lesson.isGift && detail.redPacketRemained > 0;
+    const hongbaoClass = canHongbao ? ' ' + styles.hongbao : '';
+
+    const nextLesson = lessonList && lessonList.filter(d => d.id === detail.nextLessonId)[0];
+
     return (
       <div className={styles.normal} ref={`main`}>
-        <AudioPlayer courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
+        <AudioPlayer dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
         { 
-          !replying && <div className={styles.commentBox + ' ' + styles.hongbao}>
+          !replying && <div className={styles.commentBox + hongbaoClass}>
             <div className={styles.pen}></div> 
             <input onFocus={() => this.setReply.call(this, true, null)} type="text" name="comment" placeholder="一起来参与讨论吧！" />
             { 
-              isCourse && !detail.freeListen && !lesson.isGift && detail.redPacketRemained > 0 && <div className={styles.hongbao}>
+              canHongbao && <div className={styles.hongbao}>
                 <img src={hongbao4} />
               </div> 
             }

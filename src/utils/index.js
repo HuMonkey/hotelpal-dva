@@ -18,7 +18,7 @@ const ua = {
 const isLogin = function () {
     return true;
 }
- 
+
 const config = {
     host: 'http://hotelpal.cn/api', // 线上
     appId: 'wxfe666ebbf0e42897'
@@ -173,13 +173,13 @@ const throttle = function (func, wait, options) {
     var timeout = null;
     var previous = 0;
     if (!options) options = {};
-    var later = function() {
+    var later = function () {
         previous = options.leading === false ? 0 : new Date().getTime();
         timeout = null;
         result = func.apply(context, args);
         if (!timeout) context = args = null;
     };
-    return function() {
+    return function () {
         var now = new Date().getTime();
         if (!previous && options.leading === false) previous = now;
         var remaining = wait - (now - previous);
@@ -200,6 +200,57 @@ const throttle = function (func, wait, options) {
     };
 }
 
+const configWechat = function (appId, timestamp, nonceStr, signature, callback) {
+    wx.config({
+        // debug: true,
+        appId, timestamp, nonceStr, signature,
+        jsApiList: [
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'chooseImage',
+            'previewImage'
+        ]
+    });
+    wx.ready(callback)
+    wx.error(function (res) {
+        console.log(JSON.stringify(res));
+    })
+}
+
+const updateWechartShare = function (wxShareDict) {
+    wx.onMenuShareTimeline({
+        title: wxShareDict.title, // 分享标题
+        link: wxShareDict.link, // 分享链接，该链接域名需在JS安全域名中进行登记
+        imgUrl: wxShareDict.imgUrl, // 分享图标
+        success: function () {
+            // 用户确认分享后执行的回调函数
+            wxShareDict.callback && wxShareDict.callback()
+        },
+        cancel: function () {
+            // 用户取消分享后执行的回调函数
+        }
+    });
+    wx.onMenuShareAppMessage({
+        title: wxShareDict.title, // 分享标题
+        desc: wxShareDict.desc, // 分享描述
+        link: wxShareDict.link, // 分享链接，该链接域名需在JS安全域名中进行登记
+        imgUrl: wxShareDict.imgUrl, // 分享图标
+        type: 'link', // 分享类型,music、video或link，不填默认为link
+        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+        success: function () {
+            // 用户确认分享后执行的回调函数
+            wxShareDict.callback && wxShareDict.callback()
+        },
+        cancel: function () {
+            // 用户取消分享后执行的回调函数
+        }
+    });
+    document.getElementById('share-img').setAttribute('src', wxShareDict.imgUrl);
+    document.title = wxShareDict.title;
+    document.querySelector('meta[name="keywords"]').setAttribute('content', wxShareDict.title);
+    document.querySelector('meta[name="description"]').setAttribute('content', wxShareDict.desc);
+}
+
 export {
     ua, isLogin, config,
     setCookie, getCookie, getParam,
@@ -209,4 +260,5 @@ export {
     getTimeStr,
     getAudioLength,
     throttle,
+    configWechat, updateWechartShare
 }

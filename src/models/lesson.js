@@ -26,7 +26,7 @@ export default {
             }
           },
         });
-        dispatch({
+        courseId && dispatch({
           type: 'fetchCourseDetail',
           payload: {
             data: {
@@ -78,6 +78,10 @@ export default {
     },
     *addZan({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(lessonService.addZan, payload.data || {});
+      onResult(res);
+    },
+    *recordListenPos({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(lessonService.recordListenPos, payload.data || {});
       onResult(res);
     },
   },

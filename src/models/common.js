@@ -72,6 +72,10 @@ export default {
         * submitProfileChange({ payload: {data}, onResult }, { call, put }) {
             const result = yield call(commonService.submitProfileChange, data || {});
             onResult(result)
+        },
+        * getWechatSign({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.getWechatSign, data || {});
+            onResult(result)
         }
     },
 

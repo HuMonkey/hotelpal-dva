@@ -14,7 +14,7 @@ class Profile extends Component {
   
   render () {
     const { common, profile } = this.props;
-    if (!common || !profile) {
+    if (!common.userInfo || !profile) {
       return <div></div>
     }
   

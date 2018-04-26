@@ -72,7 +72,7 @@ class Course extends Component {
       </div>
     </div>;
 
-    const freeChanceDom = detail.charge / 100 < 500 
+    const freeChanceDom = !detail.purchased && detail.charge / 100 < 500 
       && common.userInfo 
       && common.userInfo.freeCourseRemained > 0 
       && freeTipsShow
@@ -121,10 +121,10 @@ class Course extends Component {
                         <span>{d.resourceSize}</span> 
                         <span>{getAudioLength(d.audioLen)}</span> 
                         {
-                          d.listenLen && d.listenLen >= d.audioLen && <span className={styles.over}>已播完</span>
+                          d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : null
                         }
                         { 
-                          d.listenLen && d.listenLen < d.audioLen && <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span>
+                          d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : null
                         }
                       </p>
                     </div> 

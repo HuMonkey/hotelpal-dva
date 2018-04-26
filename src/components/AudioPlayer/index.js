@@ -33,20 +33,27 @@ class AudioPlayer extends Component {
   }
 
   onProgress (eg) {
+    const { dispatch, lid } = this.props;
     this.setState({
       played: eg.played,
       loaded: eg.loaded,
       playedSeconds: eg.playedSeconds, 
     });
-    const { duration, playedSeconds, goOn } = this.state;
-    const { courseId, next, isCourse } = this.props;
-    if (Math.ceil(duration - playedSeconds) < 1 && goOn && next) {
-      location.href = `/#/lesson/${isCourse ? 'pay' : 'free'}/${next}${isCourse ? `?courseId=${courseId}` : ''}`;
-    }
+    const pos = Math.ceil(eg.playedSeconds);
+    console.log(Math.ceil(eg.playedSeconds));
+    dispatch && dispatch({
+      type: 'lesson/recordListenPos',
+      payload: {
+        data: {
+          lid, pos 
+        }
+      },
+      onResult () {}
+    })
   }
 
   onDuration (duration) {
-    this.setState({ duration })
+    this.setState({ duration: duration })
   }
 
   skip (offset) {
@@ -79,7 +86,7 @@ class AudioPlayer extends Component {
     this.setState({
       played: 0,
       playedSeconds: 0,
-      playing: false,
+      playing: goOn,
     });
   }
 
@@ -95,8 +102,9 @@ class AudioPlayer extends Component {
 
   render() {
     const { played, loaded, duration, playedSeconds, goOn, playing } = this.state;
+    console.log(duration, playedSeconds);
 
-    const { audioUrl, previous, next } = this.props;
+    const { audioUrl, previous, next, nextLesson } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -108,7 +116,7 @@ class AudioPlayer extends Component {
       durationMinute = 0;
     }
     durationMinute = durationMinute < 10 ? '0' + durationMinute : durationMinute;
-    let durationSecond = Math.ceil((duration - playedSeconds) % 60);
+    let durationSecond = Math.floor((duration - playedSeconds) % 60);
     if (durationSecond < 0) {
       durationSecond = 0;
     }
@@ -120,10 +128,13 @@ class AudioPlayer extends Component {
     const previousEmpty = previous == null ? ' ' + styles.empty : '';
     const nextEmpty = next == null ? ' ' + styles.empty : '';
 
-    let leftDuration = Math.ceil(duration - playedSeconds);
+    let leftDuration = Math.floor(duration - playedSeconds);
+    if (leftDuration < 0) {
+      leftDuration = 0;
+    }
     const countDownDom = next && duration && leftDuration < 16 && goOn && playing ? <div className={styles.countDown}>
       <div className={styles.tips}>{ leftDuration }s后将自动为你播放</div>
-      <div className={styles.lessonTitle}>{ 111 }</div>
+      <div className={styles.lessonTitle}>{ nextLesson || '下一节课' }</div>
       <div className={styles.btn} onClick={this.setGoOn.bind(this)}>取消自动播放</div>
     </div> : <div></div>
 

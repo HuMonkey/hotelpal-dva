@@ -31,3 +31,8 @@ export function uploadAvatar(data) {
 		body: data
 	});
 }
+
+export function getWechatSign(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/getSign?token=' + jdbtk + '&url=' + encodeURIComponent(data.url))
+}

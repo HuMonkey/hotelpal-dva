@@ -17,7 +17,7 @@ class Bought extends Component {
 
     const dict = {
       title: '酒店邦成长营',
-      link: location.origin + '/',
+      link: location.href,
       imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
       desc: '为你提供高效、有价值的行业知识服务。',
     }

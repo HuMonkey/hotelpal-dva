@@ -29,10 +29,7 @@ class Lesson extends Component {
     });
   }
 
-  componentDidMount () {
-    console.log(location.href);
-    console.log(location);
-  }
+  componentDidMount () {}
 
   componentWillUnmount () {
     const {dispatch} = this.props;

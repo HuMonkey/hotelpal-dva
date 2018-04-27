@@ -1,6 +1,8 @@
 import * as lessonService from '../services/lesson';
 import * as courseService from '../services/course';
 
+import { configWechat, updateWechartShare, getHtmlContent } from '../utils';
+
 export default {
 
   namespace: 'lesson',
@@ -12,34 +14,98 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(({ pathname, search }) => {
+      return history.listen(async ({ pathname, search }) => {
         if (pathname.indexOf('/lesson') === -1) {
             return false;
         }
         const lessonId = pathname.split('/')[3];
         const courseId = search.split('=')[1];
-        dispatch({
+        let course;
+        if (courseId) {
+          await dispatch({
+            type: 'fetchCourseDetail',
+            payload: {
+              data: {
+                id: courseId,
+              }
+            },
+            onResult (res) {
+              course = res;
+            }
+          })
+        }
+
+        let detail;
+        await dispatch({
           type: 'fetchLessonDetail',
           payload: {
             data: {
               id: lessonId,
             }
           },
+          onResult (res) {
+            detail = res;
+          }
         });
-        courseId && dispatch({
-          type: 'fetchCourseDetail',
+        console.log(course, detail);
+
+        // 微信分享
+        // 成长专栏、红包、未购买、正常
+        let dict;
+        if (!courseId) {
+          let desc = getHtmlContent(detail.content);
+          if (desc.length > 30) {
+            desc = desc.slice(0, 30) + '...';
+          }
+          dict = {
+            title: '成长专栏：' + detail.title,
+            link: location.href,
+            imgUrl: detail.coverImg,
+            desc,
+          }
+        } else if (!course.purcharsed && !detail.freeListen) {
+          dict = {
+            title: course.userName + '：' + course.title,
+            link: location.href,
+            imgUrl: course.headImg,
+            desc: course.subtitle,
+          }
+        } else {
+          let desc = getHtmlContent(detail.content);
+          if (desc.length > 30) {
+            desc = desc.slice(0, 30) + '...';
+          }
+          dict = {
+            title: detail.userName + '：' + detail.title,
+            link: location.href,
+            imgUrl: course.headImg,
+            desc
+          }
+        }
+    
+        await dispatch({
+          type: 'common/getWechatSign',
           payload: {
             data: {
-              id: courseId,
+              url: location.origin + '/'
+            }
+          },
+          onResult (res) {
+            if (res.data.code === 0) {
+              const {appid, noncestr, sign, timestamp} = res.data.data;
+              configWechat(appid, timestamp, noncestr, sign, () => {
+                updateWechartShare(dict);
+              });
             }
           }
-        })
+        });
+
       });
     },
   },
 
   effects: {
-    *fetchLessonDetail({ payload }, { call, put }) {  // eslint-disable-line
+    *fetchLessonDetail({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(lessonService.fetchLessonDetail, payload.data || {});
       if (res.data.code === 0) {
         const detail = res.data.data;
@@ -49,6 +115,7 @@ export default {
             detail: detail
           },
         });
+        onResult(res.data.data)
       } else if (res.data.code === 40301) {
         yield put({
           type: 'save',
@@ -58,9 +125,10 @@ export default {
             }
           },
         });
+        onResult(null)
       }
     },
-    *fetchCourseDetail({ payload }, { call, put }) {  // eslint-disable-line
+    *fetchCourseDetail({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(courseService.fetchCourseDetail, payload.data || {});
       if (res.data.code === 0) {
         const courseDetail = res.data.data;
@@ -70,6 +138,9 @@ export default {
             courseDetail
           },
         });
+        onResult(courseDetail);
+      } else {
+        onResult(null);
       }
     },
     *submitComment({ payload, onResult }, { call, put }) {  // eslint-disable-line

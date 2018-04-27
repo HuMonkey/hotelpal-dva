@@ -1,5 +1,7 @@
 import * as courseService from '../services/course';
 
+import { configWechat, updateWechartShare, getHtmlContent } from '../utils';
+
 export default {
 
   namespace: 'course',
@@ -10,7 +12,7 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(({ pathname, search }) => {
+      return history.listen(async ({ pathname, search }) => {
         let courseId;
         if (pathname.indexOf('/course') > -1) {
           courseId = pathname.split('/')[2]
@@ -21,20 +23,46 @@ export default {
         if (!courseId) {
           return false;
         }
-        dispatch({
+        let course;
+        await dispatch({
           type: 'fetchCourseDetail',
           payload: {
             data: {
               id: courseId,
             }
+          },
+          onResult (res) {
+            course = res;
           }
-        })
+        });
+        const dict = {
+          title: course.userName + '：' + course.title,
+          link: location.href,
+          imgUrl: course.headImg,
+          desc: course.subtitle,
+        }
+        await dispatch({
+          type: 'common/getWechatSign',
+          payload: {
+            data: {
+              url: location.origin + '/'
+            }
+          },
+          onResult (res) {
+            if (res.data.code === 0) {
+              const {appid, noncestr, sign, timestamp} = res.data.data;
+              configWechat(appid, timestamp, noncestr, sign, () => {
+                updateWechartShare(dict);
+              });
+            }
+          }
+        });
       });
     },
   },
 
   effects: {
-    *fetchCourseDetail({ payload }, { call, put }) {  // eslint-disable-line
+    *fetchCourseDetail({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(courseService.fetchCourseDetail, payload.data || {});
       if (res.data.code === 0) {
         const detail = res.data.data;
@@ -44,6 +72,9 @@ export default {
             detail: detail
           },
         });
+        onResult(detail);
+      } else {
+        onResult(null)
       }
     },
   },

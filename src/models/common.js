@@ -76,7 +76,19 @@ export default {
         * getWechatSign({ payload: {data}, onResult }, { call, put }) {
             const result = yield call(commonService.getWechatSign, data || {});
             onResult(result)
-        }
+        },
+        * sendCaptcha({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.sendCaptcha, data || {});
+            onResult(result)
+        },
+        * verifyPhone({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.verifyPhone, data || {});
+            onResult(result)
+        },
+        * newInvitedUser({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.newInvitedUser, data || {});
+            onResult(result)
+        },
     },
 
     reducers: {

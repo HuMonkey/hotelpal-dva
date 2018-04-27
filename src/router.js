@@ -43,7 +43,6 @@ function RouterConfig({ history }) {
         <Route path="/modify" exact render={() => requireWechat(Modify)} />
         <Route path="/wechat" exact render={() => requireWechat(WeChat)} />
         <Route path="/login" exact component={Login} />
-        <Route path="/login/:redirect" exact component={Login} />
         <Route path="/gotoWechat" exact render={() => {
             if (ua.wechat) {
               return <Redirect to="/"/>;

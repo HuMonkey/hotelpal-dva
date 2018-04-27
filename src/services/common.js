@@ -36,3 +36,18 @@ export function getWechatSign(data) {
   const jdbtk = getToken();
   return request(config.host + '/hotelpal/user/getSign?token=' + jdbtk + '&url=' + encodeURIComponent(data.url))
 }
+
+export function sendCaptcha(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/sendCaptcha?token=' + jdbtk + '&phone=' + data.phone)
+}
+
+export function verifyPhone(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/verifyPhone?token=' + jdbtk + '&phone=' + data.phone + '&code=' + data.code)
+}
+
+export function newInvitedUser(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/newInvitedUser?token=' + jdbtk + '&nonce=' + data.nonce)
+}

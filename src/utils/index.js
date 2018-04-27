@@ -213,7 +213,7 @@ const configWechat = function (appId, timestamp, nonceStr, signature, callback) 
     });
     wx.ready(callback)
     wx.error(function (res) {
-        console.log(JSON.stringify(res));
+        alert(JSON.stringify(res));
     })
 }
 

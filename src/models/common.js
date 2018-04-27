@@ -39,7 +39,8 @@ export default {
                             if (res.data.code === 0) {
                                 setCookie('jdbtk', res.data.data.token, '12d');
                                 window.history.pushState(null, null, location.pathname + location.hash);
-                                fetchUserInfo();
+                                // fetchUserInfo();
+                                location.reload();
                             } else {
                                 alert('微信认证失败，请刷新页面重试');
                             }

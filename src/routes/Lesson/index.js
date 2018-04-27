@@ -4,8 +4,10 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import { AudioPlayer } from '../../components';
-import { formatNum, getAudioLength, formatTime } from '../../utils';
+import { formatNum, getAudioLength, formatTime, getParam } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
+import hongbaoTipsPng from '../../assets/hongbaotips.png';
+import pointerPng from '../../assets/pointer.png';
 import { replace } from 'react-router-redux';
 
 const likedTemp = [];
@@ -121,6 +123,22 @@ class Lesson extends Component {
     })
   }
 
+  showHongbaoTips () {
+    const { lesson, dispatch } = this.props;
+
+    const { detail, courseDetail } = lesson;
+
+    const cid = courseDetail.id;
+    const lid = detail.id;
+    const redPacketNonce = detail.redPacketNonce;
+    
+    location.href = `/?courseId=${cid}&nonce=${redPacketNonce}#/hongbao/${lid}`;
+  }
+
+  hideHongbaoTips () {
+    window.history.go(-1);
+  }
+
   render () {
     const { lesson, dispatch } = this.props;
     if (!lesson) {
@@ -131,6 +149,8 @@ class Lesson extends Component {
 
     const route = location.hash;
     const isCourse = location.hash.split('/')[2] !== 'free';
+
+    const isHongbao = route.indexOf('hongbao') > -1;
 
     if (!detail || (isCourse && !courseDetail)) {
       return <div></div>
@@ -271,15 +291,25 @@ class Lesson extends Component {
 
     const nextLesson = lessonList && lessonList.filter(d => d.id === detail.nextLessonId)[0];
 
+    const fromHongbao = getParam('fromHongbao');
+    const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
+
     return (
       <div className={styles.normal} ref={`main`}>
-        <AudioPlayer dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
+        { 
+          isHongbao && <div className={styles.hongbaoTips} onClick={this.hideHongbaoTips.bind(this)}>
+            <div className={styles.cover}></div>
+            <img className={styles.text} src={hongbaoTipsPng} />
+            <img className={styles.pointer} src={pointerPng} />
+          </div> 
+        }
+        <AudioPlayer fromHongbao={fromHongbao} dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
         { 
           !replying && <div className={styles.commentBox + hongbaoClass}>
             <div className={styles.pen}></div> 
             <input onFocus={() => this.setReply.call(this, true, null)} type="text" name="comment" placeholder="一起来参与讨论吧！" />
             { 
-              canHongbao && <div className={styles.hongbao}>
+              canHongbao && <div className={styles.hongbao} onClick={this.showHongbaoTips.bind(this)}>
                 <img src={hongbao4} />
               </div> 
             }
@@ -297,7 +327,7 @@ class Lesson extends Component {
             </div>
           </div>
         }
-        <div className={styles.paid}>
+        <div className={styles.paid + fromHongbaoClass}>
           <div className={styles.main}>
             <div className={styles.courseTitle}>{formatNum(detail.lessonOrder)}&nbsp;|&nbsp;{detail.title}</div>
             <div className={styles.infos}>
@@ -346,10 +376,11 @@ class Lesson extends Component {
                         {
                           courseDetail.lessonList && courseDetail.lessonList.map((d, i) => {
                             let currentClass = d.id === detail.id ? ' ' + styles.current : '';
-                            return <div key={i} className={styles.item + currentClass} onClick={this.scrollTop.bind(this)}>
-                              <Link to={`/lesson/pay/${d.id}?courseId=${courseDetail.id}`}>
-                                <div className={styles.inner}>{formatNum(d.lessonOrder)} | {d.title}</div>
-                              </Link>
+                            return <div key={i} className={styles.item + currentClass} onClick={() => {
+                              this.scrollTop.call(this);
+                              location.href = `/?courseId=${courseDetail.id}#/lesson/pay/${d.id}`;
+                            }}>
+                              <div className={styles.inner}>{formatNum(d.lessonOrder)} | {d.title}</div>
                             </div>
                           })
                         }

@@ -80,7 +80,7 @@ class Modify extends Component {
       type: 'common/getWechatSign',
       payload: {
         data: {
-          url: location.origin + '/'
+          url: location.href.split('#')[0]
         }
       },
       onResult (res) {

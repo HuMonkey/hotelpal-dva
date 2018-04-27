@@ -5,6 +5,8 @@ import styles from './index.less';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
+import hongbaoGot from '../../assets/zshb_banner.png';
+
 class AudioPlayer extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +42,6 @@ class AudioPlayer extends Component {
       playedSeconds: eg.playedSeconds, 
     });
     const pos = Math.ceil(eg.playedSeconds);
-    console.log(Math.ceil(eg.playedSeconds));
     dispatch && dispatch({
       type: 'lesson/recordListenPos',
       payload: {
@@ -92,19 +93,18 @@ class AudioPlayer extends Component {
 
   previousLesson () {
     const { isCourse, previous, courseId } = this.props;
-    location.href = `/#/lesson/${isCourse ? 'pay' : 'free'}/${previous}${isCourse ? `?courseId=${courseId}` : ''}`;
+    location.href = `/${isCourse ? `?courseId=${courseId}` : ''}#/lesson/${isCourse ? 'pay' : 'free'}/${previous}`;
   }
 
   nextLesson () {
     const { isCourse, next, courseId } = this.props;
-    location.href = `/#/lesson/${isCourse ? 'pay' : 'free'}/${next}${isCourse ? `?courseId=${courseId}` : ''}`;
+    location.href = `/${isCourse ? `?courseId=${courseId}` : ''}#/lesson/${isCourse ? 'pay' : 'free'}/${next}`;
   }
 
   render() {
     const { played, loaded, duration, playedSeconds, goOn, playing } = this.state;
-    console.log(duration, playedSeconds);
 
-    const { audioUrl, previous, next, nextLesson } = this.props;
+    const { audioUrl, previous, next, nextLesson, fromHongbao } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -141,6 +141,7 @@ class AudioPlayer extends Component {
     return (
       <div className={styles.audioPlayer}>
         <div className={styles.wrapper}>
+          { fromHongbao && <img src={hongbaoGot} className={styles.hongbaoGot} /> }
           <div className={styles.top}>
             <div className={styles.progress}>
               <div className={styles.current}>{playMinute}:{playSecond}</div> 

@@ -14,6 +14,7 @@ import WeChat from './routes/WeChat/';
 import Modify from './routes/Modify/';
 import Login from './routes/Login/';
 import GotoWechat from './routes/GotoWechat/';
+import Hongbao from './routes/Hongbao/';
 
 import { ua } from './utils';
 
@@ -31,8 +32,10 @@ function RouterConfig({ history }) {
         <Route path="/" exact render={() => requireWechat(Index)} />
         <Route path="/live/:id" exact render={() => requireWechat(Live)} />
         <Route path="/course/:id" exact render={() => requireWechat(Course)} />
+        <Route path="/hongbao/:id" exact render={() => requireWechat(Lesson)} />
         <Route path="/lesson/pay/:id" exact render={() => requireWechat(Lesson)} />
         <Route path="/lesson/free/:id" exact render={() => requireWechat(Lesson)} />
+        <Route path="/hb/:id" exact render={() => requireWechat(Hongbao)} />
         <Route path="/jdbs" exact render={() => requireWechat(Jdbs)} />
         <Route path="/profile" exact render={() => requireWechat(Profile)} />
         <Route path="/bought" exact render={() => requireWechat(Bought)} />

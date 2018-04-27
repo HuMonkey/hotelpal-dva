@@ -1,6 +1,6 @@
 import * as courseService from '../services/course';
 
-import { configWechat, updateWechartShare, getHtmlContent } from '../utils';
+import { configWechat, updateWechartShare, getHtmlContent, getParam } from '../utils';
 
 export default {
 
@@ -18,7 +18,7 @@ export default {
           courseId = pathname.split('/')[2]
         }
         if (pathname.indexOf('/coursedetail') > -1) {
-          courseId = search.split('=')[1]
+          courseId = getParam('courseId');
         }
         if (!courseId) {
           return false;
@@ -45,7 +45,7 @@ export default {
           type: 'common/getWechatSign',
           payload: {
             data: {
-              url: location.origin + '/'
+              url: location.href.split('#')[0]
             }
           },
           onResult (res) {
@@ -76,6 +76,14 @@ export default {
       } else {
         onResult(null)
       }
+    },
+    *getFreeCourse({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(courseService.getFreeCourse, payload.data || {});
+      onResult(res);
+    },
+    *createPayOrder({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(courseService.createPayOrder, payload.data || {});
+      onResult(res);
     },
   },
 

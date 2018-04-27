@@ -1,7 +1,7 @@
 import * as lessonService from '../services/lesson';
 import * as courseService from '../services/course';
 
-import { configWechat, updateWechartShare, getHtmlContent } from '../utils';
+import { configWechat, updateWechartShare, getHtmlContent, getParam } from '../utils';
 
 export default {
 
@@ -15,11 +15,14 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(async ({ pathname, search }) => {
-        if (pathname.indexOf('/lesson') === -1) {
+        const inLesson = pathname.indexOf('/lesson') > -1;
+        const inHongbao = pathname.indexOf('/hongbao') > -1;
+        if (!inLesson && !inHongbao) {
             return false;
         }
-        const lessonId = pathname.split('/')[3];
-        const courseId = search.split('=')[1];
+        const lessonId = inLesson ? pathname.split('/')[3] : pathname.split('/')[2];
+        const courseId = getParam('courseId');
+
         let course;
         if (courseId) {
           await dispatch({
@@ -47,47 +50,60 @@ export default {
             detail = res;
           }
         });
-        console.log(course, detail);
 
         // 微信分享
         // 成长专栏、红包、未购买、正常
         let dict;
-        if (!courseId) {
+        if (inHongbao) {
+          const nonce = getParam('nonce');
           let desc = getHtmlContent(detail.content);
           if (desc.length > 30) {
             desc = desc.slice(0, 30) + '...';
           }
           dict = {
-            title: '成长专栏：' + detail.title,
-            link: location.href,
-            imgUrl: detail.coverImg,
-            desc,
-          }
-        } else if (!course.purcharsed && !detail.freeListen) {
-          dict = {
-            title: course.userName + '：' + course.title,
-            link: location.href,
-            imgUrl: course.headImg,
-            desc: course.subtitle,
-          }
-        } else {
-          let desc = getHtmlContent(detail.content);
-          if (desc.length > 30) {
-            desc = desc.slice(0, 30) + '...';
-          }
-          dict = {
-            title: detail.userName + '：' + detail.title,
-            link: location.href,
+            title: detail.userName + '：' + detail.title + '「红包分享」',
+            link: `http://hotelpal.cn/?courseId=${courseId}&lessonId=${detail.id}#/hb/${nonce}`,
             imgUrl: course.headImg,
             desc
           }
+        } else {
+          if (!courseId) {
+            let desc = getHtmlContent(detail.content);
+            if (desc.length > 30) {
+              desc = desc.slice(0, 30) + '...';
+            }
+            dict = {
+              title: '成长专栏：' + detail.title,
+              link: location.href,
+              imgUrl: detail.coverImg,
+              desc,
+            }
+          } else if (!course.purcharsed && !detail.freeListen) {
+            dict = {
+              title: course.userName + '：' + course.title,
+              link: location.href,
+              imgUrl: course.headImg,
+              desc: course.subtitle,
+            }
+          } else {
+            let desc = getHtmlContent(detail.content);
+            if (desc.length > 30) {
+              desc = desc.slice(0, 30) + '...';
+            }
+            dict = {
+              title: detail.userName + '：' + detail.title,
+              link: location.href,
+              imgUrl: course.headImg,
+              desc
+            }
+          }
         }
-    
+        
         await dispatch({
           type: 'common/getWechatSign',
           payload: {
             data: {
-              url: location.origin + '/'
+              url: location.href.split('#')[0]
             }
           },
           onResult (res) {

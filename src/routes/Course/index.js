@@ -30,7 +30,76 @@ class Course extends Component {
   }
 
   gotoFree (lesson) {
-    location.href = `/#/lesson/pay/${lesson.id}?courseId=${this.props.course.detail.id}`;
+    location.href = `/?courseId=${this.props.course.detail.id}#/lesson/pay/${lesson.id}`;
+  }
+
+  async createOrder () {
+    const { dispatch, course, common } = this.props;
+    const { detail } = course;
+    let result;
+    await dispatch({
+      type: 'course/createPayOrder',
+      payload: {
+        data: {
+          id: detail.id,
+        }
+      },
+      onResult (res) {
+        result = res;
+      }
+    });
+    if (result.data.code === 0) {
+      // TODO
+    } else {
+      alert(result.data.msg);
+    }
+  }
+
+  async buyCourse () {
+    const { dispatch, course, common } = this.props;
+    const { detail } = course;
+    const { userInfo } = common;
+
+    // 免费兑换
+    if (detail.charge / 100 < 500 && common.userInfo && common.userInfo.freeCourseRemained > 0) {
+      const useFree = confirm('将使用一次免费获取课程的机会，确认兑换？');
+      if (useFree) {
+        let result;
+        await dispatch({
+          type: 'course/getFreeCourse',
+          payload: {
+            data: {
+              id: detail.id,
+            }
+          },
+          onResult (res) {
+            result = res;
+          }
+        });
+        if (result.data.code === 0) {
+          dispatch({
+            type: 'course/fetchCourseDetail',
+            payload: {
+              data: {
+                id: detail.id,
+              }
+            },
+            onResult (res) {
+              console.log(res)
+            }
+          });
+        }
+      } else {
+        this.createOrder();
+      }
+      return false;
+    }
+    this.createOrder();
+  }
+
+  gotoDetail () {
+    const { course } = this.props;
+    location.href = `/?courseId=${course.detail.id}#/coursedetail`;
   }
 
   render () {
@@ -58,7 +127,7 @@ class Course extends Component {
       { freeListen && <div className={styles.item + ' ' + styles.free} onClick={() => {
         this.gotoFree.call(this, freeListen);
       }}>免费试听</div> }
-      <div className={styles.item + ' ' + styles.buy}>
+      <div className={styles.item + ' ' + styles.buy} onClick={this.buyCourse.bind(this)}>
         {
           detail.charge / 100 < 500 
             && common.userInfo 
@@ -92,12 +161,10 @@ class Course extends Component {
           </div>
         </div>
         { 
-          detail.purchased && <div className={styles.gotoDetail}>
-            <Link to={'/coursedetail?courseId=' + detail.id}>
+          detail.purchased && <div className={styles.gotoDetail} onClick={this.gotoDetail.bind(this)}>
               <div className={styles.title}>{detail.title}</div> 
               <div className={styles.subTitle}>{detail.subtitle}</div> 
               <div className={styles.arrow}></div>
-            </Link>
           </div>
         }
         {
@@ -109,27 +176,27 @@ class Course extends Component {
             {
               detail.lessonList.map((d, i) => {
                 const freeListenClass = d.freeListen === 1 ? ' ' + styles.freeListen : '';
-                return <div key={i} className={styles.item}>
-                  <Link to={`/lesson/pay/${d.id}?courseId=${detail.id}`}>
-                    <div className={styles.up}>
-                      <span className={styles.ltitle}><div className={freeListenClass}>{formatNum(d.lessonOrder)}&nbsp;|&nbsp;{d.title}</div></span> 
-                      {d.freeListen === 1 && <span className={styles.tag}>免费试听</span>}
-                    </div> 
-                    <div className={styles.down}>
-                      <p>
-                        <span>{d.publishTime}</span> 
-                        <span>{d.resourceSize}</span> 
-                        <span>{getAudioLength(d.audioLen)}</span> 
-                        {
-                          d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : null
-                        }
-                        { 
-                          d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : null
-                        }
-                      </p>
-                    </div> 
-                    <div className={styles.arrow}></div>
-                  </Link>
+                return <div key={i} className={styles.item} onClick={() => {
+                  location.href = `/?courseId=${detail.id}#/lesson/pay/${d.id}`;
+                }}>
+                  <div className={styles.up}>
+                    <span className={styles.ltitle}><div className={freeListenClass}>{formatNum(d.lessonOrder)}&nbsp;|&nbsp;{d.title}</div></span> 
+                    {d.freeListen === 1 && <span className={styles.tag}>免费试听</span>}
+                  </div> 
+                  <div className={styles.down}>
+                    <p>
+                      <span>{d.publishTime}</span> 
+                      <span>{d.resourceSize}</span> 
+                      <span>{getAudioLength(d.audioLen)}</span> 
+                      {
+                        d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : null
+                      }
+                      { 
+                        d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : null
+                      }
+                    </p>
+                  </div> 
+                  <div className={styles.arrow}></div>
                 </div>
               })
             }

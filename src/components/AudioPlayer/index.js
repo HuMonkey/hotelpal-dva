@@ -141,7 +141,7 @@ class AudioPlayer extends Component {
     return (
       <div className={styles.audioPlayer}>
         <div className={styles.wrapper}>
-          { fromHongbao && <img src={hongbaoGot} className={styles.hongbaoGot} /> }
+          { fromHongbao ? <img src={hongbaoGot} className={styles.hongbaoGot} /> : null }
           <div className={styles.top}>
             <div className={styles.progress}>
               <div className={styles.current}>{playMinute}:{playSecond}</div> 

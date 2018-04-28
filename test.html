@@ -19,8 +19,8 @@
     const code = getParam('code');
     const state = getParam('state');
     if (code && state) {
-        location.href = 'http://' + decodeURIComponent(origin) + '/'
-            + decodeURIComponent(search) + `&code=${code}&state=${state}`
+        location.href = decodeURIComponent(origin) + '/'
+            + decodeURIComponent(search) + `${search === '' ? '?' : '&'}code=${code}&state=${state}`
             + decodeURIComponent(hash);
     }
 </script>

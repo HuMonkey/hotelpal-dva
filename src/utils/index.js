@@ -20,7 +20,7 @@ const isLogin = function () {
 }
 
 const config = {
-    host: `${location.origin}/api`, // 线上
+    host: `${location.origin}/hotelpal`, // 线上
     appId: 'wxfe666ebbf0e42897'
 }
 

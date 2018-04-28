@@ -63,7 +63,7 @@ export default {
           }
           dict = {
             title: detail.userName + '：' + detail.title + '「红包分享」',
-            link: `http://hotelpal.cn/?courseId=${courseId}&lessonId=${detail.id}#/hb/${nonce}`,
+            link: `http://${location.origin}/?courseId=${courseId}&lessonId=${detail.id}#/hb/${nonce}`,
             imgUrl: course.headImg,
             desc
           }

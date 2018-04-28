@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>酒店邦成长营</title>
+</head>
+<body>
+  跳转中...
+</body>
+<script type="text/javascript">
+    const getParam = function (name) {
+        const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        const r = window.location.search.substr(1).match(reg);
+        if (r != null) return (r[2]);
+        return null;
+    }
+    const origin = getParam('origin');
+    const search = getParam('search');
+    const hash = getParam('hash');
+    const code = getParam('code');
+    const state = getParam('state');
+    if (code && state) {
+        location.href = 'http://' + decodeURIComponent(origin) + '/'
+            + decodeURIComponent(search) + `&code=${code}&state=${state}`
+            + decodeURIComponent(hash);
+    }
+</script>
+</html>

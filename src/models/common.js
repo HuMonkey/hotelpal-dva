@@ -25,9 +25,13 @@ export default {
                     return false;
                 }
                 if (!code) {
+                    const origin = encodeURIComponent(location.origin);
+                    const search = encodeURIComponent(location.search);
+                    const hash = encodeURIComponent(location.hash);
+                    const redirect = `http://hotelpal.cn/test.html?origin=${origin}&search=${search}&hash=${hash}`
                     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
                         + config.appId + '&redirect_uri='
-                        + encodeURIComponent(location.href)
+                        + encodeURIComponent(redirect)
                         + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
                 } else {
                     dispatch({

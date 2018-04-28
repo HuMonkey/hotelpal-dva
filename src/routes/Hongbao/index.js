@@ -4,6 +4,7 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import hongbaoPng from '../../assets/hongbao.png';
+import { getParam } from '../../utils';
 
 class Hongbao extends Component {
   constructor (props) {
@@ -14,6 +15,13 @@ class Hongbao extends Component {
   open () {
     const { hongbao, dispatch } = this.props;
     const { detail } = hongbao;
+
+    if (!detail.redPacketRemained) {
+      return false;
+    }
+
+    const cid = getParam('courseId');
+    const lid = getParam('lessonId');
     dispatch({
       type: 'hongbao/openRedPacket',
       payload: {
@@ -22,7 +30,11 @@ class Hongbao extends Component {
         }
       },
       onResult (res) {
-        console.log(res);
+        if (res.data.code === 0) {
+          location.href = `/?courseId=${cid}&fromHongbao=1#/lesson/pay/${lid}`
+        } else {
+          alert('打开红包出错，请稍后再试~');
+        }
       }
     })
   }

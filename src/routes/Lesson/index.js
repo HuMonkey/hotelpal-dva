@@ -139,6 +139,10 @@ class Lesson extends Component {
     window.history.go(-1);
   }
 
+  onCommentFocus () {
+    this.refs.normal.scrollTop = 20000000;
+  }
+
   render () {
     const { lesson, dispatch } = this.props;
     if (!lesson) {
@@ -158,7 +162,7 @@ class Lesson extends Component {
 
     if (courseDetail && !courseDetail.purchased && !detail.freeListen) {
       return (
-        <div className={styles.normal}>
+        <div className={styles.normal} ref={`normal`}>
           <div className={styles.notPaid}>
             <div className={styles.box}>
               <div className={styles.top}>
@@ -286,7 +290,7 @@ class Lesson extends Component {
       </div>
     });
 
-    const canHongbao = isCourse && !detail.freeListen && !lesson.isGift && detail.redPacketRemained > 0;
+    const canHongbao = isCourse && !detail.freeListen && !detail.isGift && detail.redPacketRemained > 0;
     const hongbaoClass = canHongbao ? ' ' + styles.hongbao : '';
 
     const nextLesson = lessonList && lessonList.filter(d => d.id === detail.nextLessonId)[0];
@@ -303,7 +307,7 @@ class Lesson extends Component {
             <img className={styles.pointer} src={pointerPng} />
           </div> 
         }
-        <AudioPlayer fromHongbao={fromHongbao} dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
+        <AudioPlayer fromHongbao={fromHongbao || detail.isGift} dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
         { 
           !replying && <div className={styles.commentBox + hongbaoClass}>
             <div className={styles.pen}></div> 
@@ -323,12 +327,12 @@ class Lesson extends Component {
                 <div className={styles.cancel} onClick={() => this.setReply.call(this, false, null)}>取消</div> 
                 <div className={styles.confirm} onClick={this.submitComment.bind(this)}>发布</div>
               </div> 
-              <textarea ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
+              <textarea onFocus={this.onCommentFocus.bind(this)} ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
             </div>
           </div>
         }
-        <div className={styles.paid + fromHongbaoClass}>
-          <div className={styles.main}>
+        <div className={styles.paid + fromHongbaoClass} ref={`paid`}>
+          <div className={styles.main} ref={`main`}>
             <div className={styles.courseTitle}>{formatNum(detail.lessonOrder)}&nbsp;|&nbsp;{detail.title}</div>
             <div className={styles.infos}>
               <div className={styles.time}>{detail.publishTime} 发布</div> 

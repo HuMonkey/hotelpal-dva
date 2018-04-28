@@ -22,6 +22,7 @@ export default {
         }
         const lessonId = inLesson ? pathname.split('/')[3] : pathname.split('/')[2];
         const courseId = getParam('courseId');
+        const fromHongbao = +getParam('fromHongbao');
 
         let course;
         if (courseId) {
@@ -67,6 +68,7 @@ export default {
             desc
           }
         } else {
+          // 酒店邦说
           if (!courseId) {
             let desc = getHtmlContent(detail.content);
             if (desc.length > 30) {
@@ -78,10 +80,10 @@ export default {
               imgUrl: detail.coverImg,
               desc,
             }
-          } else if (!course.purcharsed && !detail.freeListen) {
+          } else if (!course.purcharsed && !detail.freeListen && !fromHongbao) {
             dict = {
               title: course.userName + '：' + course.title,
-              link: location.href,
+              link: `http://hotelpal.cn/?courseId=${courseId}#/lesson/pay/${lessonId}`,
               imgUrl: course.headImg,
               desc: course.subtitle,
             }
@@ -92,7 +94,7 @@ export default {
             }
             dict = {
               title: detail.userName + '：' + detail.title,
-              link: location.href,
+              link: `http://hotelpal.cn/?courseId=${courseId}#/lesson/pay/${lessonId}`,
               imgUrl: course.headImg,
               desc
             }

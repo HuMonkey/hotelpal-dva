@@ -35,6 +35,7 @@
   }
   .paid {
     padding-top: 3.226666rem;
+    overflow: auto;
     &.fromHongbao {
       padding-top: 6.226666rem;
     }
@@ -171,6 +172,8 @@
             .swiper {
               width: 1000px;
               float: left;
+              -webkit-overflow-scrolling: touch;
+              overflow-x: scroll;
               .item {
                 color: white;
                 a {
@@ -183,7 +186,7 @@
                 height: 100%;
                 border-radius: 4px;
                 font-size: 0.32rem;
-                display: inline-block;
+                float: left;
                 margin-right: 0.26666rem;
                 .inner {
                   height: 1.2rem;

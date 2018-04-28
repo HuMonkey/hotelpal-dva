@@ -4,7 +4,7 @@ const { name, version } = require('./package.json');
 
 export default {
   "entry": "src/index.js",
-  "publicPath": `//s.newscdn.cn/${name}/${version}/`,
+  "publicPath": `/`,
   "env": {
     "development": {
       "extraBabelPlugins": [

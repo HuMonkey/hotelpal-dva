@@ -83,7 +83,7 @@ export default {
           } else if (!course.purcharsed && !detail.freeListen && !fromHongbao) {
             dict = {
               title: course.userName + '：' + course.title,
-              link: `http://hotelpal.cn/?courseId=${courseId}#/lesson/pay/${lessonId}`,
+              link: `http://${location.origin}/?courseId=${courseId}#/lesson/pay/${lessonId}`,
               imgUrl: course.headImg,
               desc: course.subtitle,
             }
@@ -94,7 +94,7 @@ export default {
             }
             dict = {
               title: detail.userName + '：' + detail.title,
-              link: `http://hotelpal.cn/?courseId=${courseId}#/lesson/pay/${lessonId}`,
+              link: `http://${location.origin}/?courseId=${courseId}#/lesson/pay/${lessonId}`,
               imgUrl: course.headImg,
               desc
             }

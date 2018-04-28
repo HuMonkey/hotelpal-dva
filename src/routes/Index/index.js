@@ -61,7 +61,7 @@ class IndexPage extends Component {
     };
   
     const { courseList, innerCourseList, bannerList } = index;
-  
+
     return (
       <div className={styles.normal}>
         <BottomBar selected={0}></BottomBar>

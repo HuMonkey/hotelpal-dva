@@ -251,8 +251,31 @@ const updateWechartShare = function (wxShareDict) {
     document.querySelector('meta[name="description"]').setAttribute('content', wxShareDict.desc);
 }
 
+const callWxPay = function ({ pk, appId, nonceStr, paySign, timeStamp, tradeNo }, callback) {
+    wx.chooseWXPay({
+        timestamp: timeStamp,
+        appId,
+        nonceStr, // 支付签名随机串，不长于 32 位
+        package: pk, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+        paySign, // 支付签名
+        success: (res) => {
+            // 支付成功后的回调函数
+            callback && callback(res);
+        },
+        error: () => {
+            alert('支付失败')
+        }
+    });
+}
+
+function isIphoneX(){
+    return /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)
+}
+
 export {
-    ua, isLogin, config,
+    ua, isIphoneX,
+    isLogin, config,
     setCookie, getCookie, getParam,
     textLength, getHtmlContent,
     formatNum, formatTime,
@@ -260,5 +283,6 @@ export {
     getTimeStr,
     getAudioLength,
     throttle,
-    configWechat, updateWechartShare
+    configWechat, updateWechartShare,
+    callWxPay,
 }

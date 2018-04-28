@@ -5,7 +5,7 @@ import styles from './index.less';
 
 import jdb from '../../assets/jiudianbang-big.png';
 import cross from '../../assets/cross.png';
-import { formatNum, getAudioLength } from '../../utils';
+import { formatNum, getAudioLength, callWxPay } from '../../utils';
 import { CourseContent } from '../../components';
 
 class Course extends Component {
@@ -49,7 +49,14 @@ class Course extends Component {
       }
     });
     if (result.data.code === 0) {
-      // TODO
+      const data = result.data.data;
+      const pk = data.package;
+      const { appId, nonceStr, paySign, timeStamp, tradeNo } = data;
+      callWxPay({
+        pk, appId, nonceStr, paySign, timeStamp, tradeNo
+      }, (res) => {
+        console.log(res);
+      })
     } else {
       alert(result.data.msg);
     }
@@ -124,9 +131,9 @@ class Course extends Component {
     }
 
     const buyDom = !detail.purchased && <div className={styles.btns}>
-      { freeListen && <div className={styles.item + ' ' + styles.free} onClick={() => {
+      { freeListen ? <div className={styles.item + ' ' + styles.free} onClick={() => {
         this.gotoFree.call(this, freeListen);
-      }}>免费试听</div> }
+      }}>免费试听</div> : null }
       <div className={styles.item + ' ' + styles.buy} onClick={this.buyCourse.bind(this)}>
         {
           detail.charge / 100 < 500 

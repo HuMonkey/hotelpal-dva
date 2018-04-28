@@ -4,7 +4,7 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import banner from '../../assets/jdbs-banner.png';
-import { getAudioLength, throttle, configWechat, updateWechartShare } from '../../utils';
+import { getAudioLength, throttle, configWechat, updateWechartShare, isIphoneX } from '../../utils';
 
 class Jdbs extends Component {
   constructor (props) {
@@ -115,9 +115,11 @@ class Jdbs extends Component {
     const width = window.innerWidth;
     const elementHeight = width / 10 * 1.82;
     const containerHeight = elementHeight * 10;
+
+    const iphoneXClass = isIphoneX() ? ' ' + styles.iphonex : '';
   
     return (
-      <div className={styles.normal} ref={`jdbs`}>
+      <div className={styles.normal + iphoneXClass} ref={`jdbs`}>
         <div className={styles.header}>
           <img src={banner} />
         </div>

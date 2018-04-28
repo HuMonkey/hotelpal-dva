@@ -11,6 +11,11 @@ export default {
         "dva-hmr",
         "transform-runtime"
       ]
+    },
+    "production": {
+      "extraBabelPlugins": [
+        "transform-runtime"
+      ]
     }
   },
   "proxy": {

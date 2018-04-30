@@ -72,7 +72,7 @@ class IndexPage extends Component {
             })
           }
         </Slider>
-        { false && <div className={styles.open}>
+        { true && <div className={styles.open}>
           <div className={styles.header}>
             <div className={styles.inner}>
               <div className={styles.item}>公开课&nbsp;|&nbsp;直播</div>

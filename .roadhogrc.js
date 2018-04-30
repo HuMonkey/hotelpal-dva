@@ -4,17 +4,19 @@ const { name, version } = require('./package.json');
 
 export default {
   "entry": "src/index.js",
-  "publicPath": `/`,
+  "publicPath": `//s.newscdn.cn/${name}/${version}/`,
   "env": {
     "development": {
       "extraBabelPlugins": [
         "dva-hmr",
-        "transform-runtime"
+        "transform-runtime",
+        ["import", { "libraryName": "antd", "style": "css" }]
       ]
     },
     "production": {
       "extraBabelPlugins": [
-        "transform-runtime"
+        "transform-runtime",
+        ["import", { "libraryName": "antd", "style": "css" }]
       ]
     }
   },
@@ -26,3 +28,4 @@ export default {
     }
   }
 }
+

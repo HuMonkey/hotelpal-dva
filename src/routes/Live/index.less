@@ -5,6 +5,18 @@
   background: #f5f5f5;
   font-weight: normal;
   position: relative;
+  ::-webkit-input-placeholder { /* WebKit browsers */ 
+    color: #cccccc; 
+  } 
+  :-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+    color: #cccccc; 
+  } 
+  ::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+    color: #cccccc; 
+  } 
+  :-ms-input-placeholder { /* Internet Explorer 10+ */ 
+    color: #cccccc; 
+  } 
   .banner {
     width: 100%;
     height: 5.6rem;
@@ -53,7 +65,7 @@
   }
   .switches {
     width: 100%;
-    height: 1.253333rem;
+    height: 1.26rem;
     background: #f4f4f4;
     .item {
       width: 50%;
@@ -322,6 +334,548 @@
       background-repeat: no-repeat;
       background-image: url("../../assets/close-circle.svg");
       margin-top: 0.8rem;
+    }
+  }
+  .ta {
+    background: white;
+    padding: 0.4rem 0.4rem 0.6666rem 0.4rem;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    &.open {
+      position: absolute;
+      top: 6.86rem;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      overflow: auto;
+      z-index: 2;
+    }
+    .item {
+      display: flex;
+      width: 100%;
+      border-bottom: @border;
+      justify-content: space-between;
+      padding-bottom: 0.4rem;
+      margin-top: 0.4rem;
+      &:last-child {
+        border-bottom: none;
+      }
+      &:first-child {
+        margin-top: 0;
+      }
+      .left {
+        float: left;
+        width: 100%;
+        overflow: hidden;
+        .title {
+          width: 100%;
+          height: 0.46666rem;
+          overflow: hidden;
+          .name {
+            float: left;
+            height: 0.46666rem;
+            font-size: 0.4rem;
+            color: @black3;
+            .icon {
+              background: @red;
+              position: relative;
+              width: 8px;
+              height: 100%;
+              margin-right: 0.13333rem;
+              float: left;
+              .tri {
+                width: 0; 
+                height: 0; 
+                border-left: 4px solid transparent; 
+                border-right: 4px solid transparent; 
+                border-bottom: 8px solid white; 
+                position: absolute;
+                bottom: 0;
+                left: 0;
+              }
+            }
+            .text {
+              float: left;
+              line-height: 0.46666rem;
+            }
+          }
+          .time {
+            font-size: 0.293333rem;
+            color: #cccccc;
+            float: right;
+            line-height: 0.46666rem;
+          }
+        }
+        .comment {
+          font-size: 0.36rem;
+          color: @black2;
+          width: 100%;
+          line-height: 1.6;
+          margin-top: 0.2rem;
+        }
+      }
+      .right {
+        float: right;
+        width: 2.2rem;
+        height: 1.8rem;
+        margin-left: 0.4rem;
+        background: black;
+      }
+      &.hasPic {
+        .left {
+          width: 6.6rem;
+        }
+      }
+    }
+    .more {
+      width: 100%;
+      height: 0.6666rem;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      font-size: 0.32px;
+      color: #cccccc;
+    }
+  }
+  .comments {
+    padding: 0.4rem;
+    width: 100%;
+    padding-bottom: 2rem;
+    .item {
+      position: relative;
+      .avatar {
+        position: absolute;
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 50%;
+        overflow: hidden;
+        background: green;
+        left: 0;
+        top: 0;
+      }
+      .main {
+        width: 100%;
+        padding-left: 0.93333rem;
+        margin-bottom: 0.26666rem;
+        .name {
+          color: @black1;
+          font-size: 0.32rem;
+        }
+        .talk {
+          text-align: justify;
+          word-break: break-all;
+          color: @black2;
+          font-size: 0.32rem;
+          margin-top: 0.13333rem;
+          position: relative;
+          .inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            box-shadow: -3px 3px 7px rgba(0,0,0,.07);
+            background: white;
+            position: relative;
+            padding: 0.26666rem;
+          }
+          .arrow {
+            left: -6px;
+            top: 8px;
+            width: 0; 
+            height: 0; 
+            border-top: 16px solid white; 
+            border-left: 10px solid transparent;
+            position: absolute;
+          }
+        }
+      }
+      &.mine {
+        .avatar {
+          left: auto;
+          right: 0;
+        }
+        .main {
+          padding-left: 0;
+          padding-right: 0.93333rem;
+          .name {
+            text-align: right;
+          }
+          .talk {
+            .inner {
+              z-index: 1;
+            }
+            .arrow {
+              left: auto;
+              right: -6px;
+              border-right: 10px solid transparent;
+              border-left: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .commentBox {
+    width: 100%;
+    height: 1.26666rem;
+    border-top: @border;
+    background: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: 0 0.4rem;
+    display: flex;
+    padding-top: 0.2rem;
+    .hongbao {
+      width: 1.73333rem;
+      height: 100%;
+      margin-right: 0.4rem;
+      position: relative;
+      .inner {
+        width: 100%;
+        height: 2rem;
+        position: absolute;
+        left: 0;
+        bottom: 0.4rem;
+        .square {
+          width: 1.4rem;
+          position: absolute;
+          z-index: 1;
+          height: 1.6rem;
+          left: 0.2rem;
+          bottom: 0.22rem;
+          background: #f24853;
+          border-radius: 6px;
+          line-height: 1;
+          padding: 0.1rem 0;
+          .money {
+            color: white;
+            text-align: center;
+            span {
+              font-size: 0.373333rem;
+            }
+          }
+          .btn {
+            color: #f24853;
+            width: 1.06666rem;
+            height: 0.346666rem;
+            line-height: 0.346666rem;
+            background: #feeb5f;
+            text-align: center;
+            margin: auto;
+            border-radius: 0.173333rem;
+            font-size: 0.26666rem;
+            margin-top: 0.13333rem;
+            margin-bottom: 0.13333rem;
+          }
+          .time {
+            color: white;
+            text-align: center;
+          }
+        }
+        .bubble1 {
+          width: 0.8rem;
+          height: 0.8rem;
+          border-radius: 50%;
+          background: #fba57c;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+        .bubble2 {
+          width: 0.6666rem;
+          height: 0.6666rem;
+          border-radius: 50%;
+          background: #feeb5f;
+          position: absolute;
+          left: 0;
+          top: 0.4rem;
+        }
+        .bubble3 {
+          width: 0.8rem;
+          height: 0.8rem;
+          border-radius: 50%;
+          background: #f0566f;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+        .bubble4 {
+          width: 0.6666rem;
+          height: 0.6666rem;
+          border-radius: 50%;
+          background: #8c96fc;
+          position: absolute;
+          bottom: 0;
+          right: 0.4rem;
+        }
+      }
+    }
+    .input {
+      flex: 1;
+      color: @black1;
+      position: relative;
+      .pen {
+          position: absolute;
+          left: 0.2rem;
+          top: 0.2rem;
+          width: 0.53333rem;
+          height: 0.53333rem;
+          background-image: url('../../assets/pen.svg');
+          background-size: 0.53333rem 0.53333rem;
+          background-repeat: no-repeat;
+      }
+      input {
+          display: inline-block;
+          height: 0.93333rem;
+          border-radius: 4px;
+          border: @border;
+          width: 100%;
+          padding: 0 0.26666rem 0 0.93333rem;
+          font-size: 0.4rem;
+          -webkit-appearance: none;
+      }
+    }
+  }
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    .content {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      left: 0;
+      background: white;
+      padding: 0.4rem;
+      .close {
+        position: absolute;
+        top: 0.3rem;
+        right: 0.3rem;
+        color: @black1;
+      }
+      .back {
+        position: absolute;
+        top: 0.3rem;
+        left: 0.3rem;
+        color: @black1;
+      }
+      .courseDetail {
+        .top {
+          height: 2.4rem;
+          padding-bottom: 0.4rem;
+          border-bottom: @border;
+          margin-bottom: 0.4rem;
+          .avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 4px;
+            overflow: hidden;
+            float: left;
+            background: green;
+          }
+          .right {
+            float: left;
+            margin-left: 0.4rem;
+            height: 2rem;
+            position: relative;
+            width: 6rem;
+            .title {
+              color: @black3;
+              font-size: 0.453333rem;
+              text-align: left;
+            }
+            .infos {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              .tag {
+                float: left;
+                border-radius: 4px;
+                border: @border;
+                color: #cccccc;
+                font-size: 0.296666px;
+                padding: 0 0.16rem;
+                text-align: center;
+                line-height: 0.44rem;
+                height: 0.48rem;
+                margin-right: 0.4rem;
+              }
+              .price {
+                float: left;
+                font-size: 0.296666px;
+                color: @red;
+              }
+            }
+          }
+        }
+        .desc {
+          margin-bottom: 0.4rem;
+          .label {
+            font-size: 0.453333rem;
+            color: @black3;
+            margin-bottom: 0.4rem;
+          }
+          .speaker {
+            font-size: 0.426666rem;
+            border-left: 4px @red solid;
+            padding-left: 0.13333rem;
+            color: @black3;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+            span {
+              font-weight: normal;
+              font-size: 0.38rem;
+              margin-left: 0.4rem;
+              color: @black1;
+            }
+          }
+          .text {
+            font-size: 0.4;
+            color: @black2;
+            line-height: 1.8;
+          }
+        }
+        .buy {
+          width: 100%;
+          height: 1.26666rem;
+          background: @red;
+          line-height: 1.26666rem;
+          color: white;
+          text-align: center;
+          font-size: 0.453333rem;
+          border-radius: 4px;
+        }
+      }
+      .order {
+        .title {
+          width: 100%;
+          height: 0.42rem;
+          font-size: 0.42rem;
+          text-align: center;
+          color: @black2;
+          margin-bottom: 0.8rem;
+        }
+        .box {
+          width: 100%;
+          height: 2.13333rem;
+          border-radius: 4px;
+          border: @border;
+          padding: 0.3rem;
+          margin-bottom: 0.4rem;
+          .avatar {
+            float: left;
+            width: 1.53333rem;
+            height: 1.53333rem;
+            border-radius: 50%;
+            background: black;
+          }
+          .infos {
+            float: left;
+            margin-left: 0.26666rem;
+            min-width: 6rem;
+            margin-left: 0.26666rem;
+            padding: 0.13333rem 0;
+            .stitle {
+              font-size: 0.373333rem;
+              color: @black2;
+            }
+            .speaker {
+              font-size: 0.32rem;
+              color: @black1;
+              margin-top: 0.2rem;
+            }
+          }
+        }
+        .row {
+          height: 0.32rem;
+          width: 100%;
+          overflow: hidden;
+          font-size: 0.32rem;
+          line-height: 1;
+          margin-bottom: 0.4rem;
+          &.total {
+            height: 0.4rem;
+            font-size: 0.4rem;
+            color: @black2;
+            margin-top: 0.4rem;
+            margin-bottom: 0.8rem;
+            .left {
+              color: @black2;
+            }
+          }
+          .left {
+            float: left;
+            color: @black1;
+          }
+          .right {
+            float: right;
+          }
+          .coupon {
+            color: @red;
+            .chooseCoupons {
+              color: @black1;
+            }
+          }
+        }
+        .list {
+          padding-bottom: 0.4rem;
+          border-bottom: @border;
+          padding-top: 0.2rem;
+        }
+        .buy {
+          width: 100%;
+          height: 1.26666rem;
+          background: @red;
+          line-height: 1.26666rem;
+          color: white;
+          text-align: center;
+          font-size: 0.453333rem;
+          border-radius: 4px;
+        }
+      }
+      .login {
+        .title {
+          width: 100%;
+          height: 0.42rem;
+          font-size: 0.42rem;
+          text-align: center;
+          color: @black2;
+          margin-bottom: 0.8rem;
+        }
+        .wrap {
+          width: 90%;
+          margin: auto;
+          .phone {
+            width: 100%;
+            border: @border;
+            display: block;
+            margin: auto;
+            margin-bottom: 0.4rem;
+          }
+          .vCode {
+            border: @border;
+            margin-bottom: 0.8rem;
+          }
+        }
+        .buy {
+          width: 100%;
+          height: 1.26666rem;
+          background: @red;
+          line-height: 1.26666rem;
+          color: white;
+          text-align: center;
+          font-size: 0.453333rem;
+          border-radius: 4px;
+        }
+      }
     }
   }
 }

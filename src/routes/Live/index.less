@@ -528,6 +528,43 @@
     padding: 0 0.4rem;
     display: flex;
     padding-top: 0.2rem;
+    .ad {
+      width: 1.73333rem;
+      height: 100%;
+      margin-right: 0.4rem;
+      position: relative;
+      .inner {
+        width: 100%;
+        position: absolute;
+        bottom: 0.2rem;
+        left: 0;
+        .avatar {
+          width: 1.3333rem;
+          height: 1.3333rem;
+          background: green;
+          margin: auto;
+          border: @red solid thin;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .title {
+          overflow : hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          width: 100%;
+          height: 0.64rem;
+          text-align: justify;
+          color: @red;
+          font-size: 0.32rem;
+          margin-top: 0.1rem;
+          line-height: 1;
+        }
+      }
+    }
     .hongbao {
       width: 1.73333rem;
       height: 100%;
@@ -647,6 +684,10 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.2);
     z-index: 99;
+    input {
+      height: 1.146666rem;
+      transition: none;
+    }
     .content {
       position: absolute;
       bottom: 0;
@@ -865,7 +906,17 @@
             margin-bottom: 0.8rem;
           }
         }
-        .buy {
+        .tips {
+          width: 100%;
+          text-align: center;
+          font-size: 0.32rem;
+          color: #cccccc;
+          margin-bottom: 0.8rem;
+          span {
+            color: @black2;
+          }
+        }
+        .login {
           width: 100%;
           height: 1.26666rem;
           background: @red;
@@ -876,6 +927,54 @@
           border-radius: 4px;
         }
       }
+    }
+  }
+  .hb {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .main {
+      width: 7.426666rem;
+      height: 9.92rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: relative;
+      .price {
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        left: 0;
+        font-size: 0.8rem;
+        color: white;
+        bottom: 2.4rem;
+        span {
+          font-size: 1.2rem;
+        }
+      }
+      .btn {
+        width: 100%;
+        text-align: center;
+        color: @red;
+        font-size: 0.64rem;
+        position: absolute;
+        left: 0;
+        bottom: 1.26rem;
+      }
+    }
+    .close {
+      width: 0.8rem;
+      height: 0.8rem;
+      background-image: url('../../assets/close-circle.svg');
+      background-size: cover;
+      margin-top: 0.4rem;
     }
   }
 }

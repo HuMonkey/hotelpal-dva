@@ -6,28 +6,45 @@ import { Navs } from '../../components';
 
 import { Icon, Input } from 'antd';
 
+import hbBg from '../../assets/hb-bg.png';
+
 class Live extends Component {
   constructor(props) {
     super(props);
     this.state = {
       posterShow: false,
+      hongbaoShow: false,
       page: 'detail', // detail or chat
       signup: 'init', // inviting init paid vip free
       state: 'ing', // before ing after
       taOpen: false,
+      scroll: 'ad', // 'hb' or 'ad'
+      popup: null, // detail, order, login
     };
   }
 
   openPoster () {
     this.setState({
       posterShow: true,
-    })
+    });
   }
 
   closePoster () {
     this.setState({
       posterShow: false,
-    })
+    });
+  }
+
+  openHongbao () {
+    this.setState({
+      hongbaoShow: true,
+    });
+  }
+
+  closeHongbao () {
+    this.setState({
+      hongbaoShow: false,
+    });
   }
 
   changePage (page) {
@@ -42,8 +59,27 @@ class Live extends Component {
     })
   }
 
+  openHongbao () {
+    // TODO 打开红包
+    this.setState({
+      hongbaoShow: false,
+    });
+  }
+
+  openCourceDetail () {
+    this.setState({
+      popup: 'detail',
+    });
+  }
+
+  closePopup () {
+    this.setState({
+      popup: null,
+    });
+  }
+
   render () {
-    const { posterShow, page, signup, taOpen } = this.state;
+    const { posterShow, page, signup, taOpen, hongbaoShow, scroll, popup } = this.state;
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
@@ -158,17 +194,29 @@ class Live extends Component {
         <Input className={styles.phone} placeholder={`请输入11位手机号`} />
         <Input className={styles.vCode} placeholder={`请输入验证码`} />
       </div>
-      <div className={styles.buy}>登录</div>
+      <div className={styles.tips}>点击[登录]代表您已阅读并同意<span>《酒店邦成长营会员条款》</span></div>
+      <div className={styles.login}>登录</div>
     </div>
+
+    const hongbaoDom = <div className={styles.hb}>
+      <div className={styles.main} style={{ backgroundImage: `url(${hbBg})` }}>
+        <div className={styles.price}>￥<span>20</span></div>
+        <div className={styles.btn} onClick={this.openHongbao.bind(this)}>抢</div>
+      </div>
+      <div className={styles.close} onClick={this.closeHongbao.bind(this)}></div>
+    </div>;
 
     return (
       <div className={styles.normal}>
+        { hongbaoShow && hongbaoDom }
         {
-          true && <div className={styles.popup}>
+          popup && <div className={styles.popup}>
             <div className={styles.content}>
               <Icon type="left" size={`large`} className={styles.back} />
-              <Icon type="close" size={`large`} className={styles.close} />
-              {popupLoginDom}
+              <Icon type="close" size={`large`} className={styles.close} onClick={this.closePopup.bind(this)} />
+              { popup === 'detail' && popupDetailDom }
+              { popup === 'login' && popupLoginDom }
+              { popup === 'order' && popupOrderDom }
             </div>
           </div>
         }
@@ -267,19 +315,26 @@ class Live extends Component {
         }
         { 
           page === 'chat' && <div className={styles.commentBox}>
-            <div className={styles.hongbao}>
-              <div className={styles.inner}>
-                <div className={styles.square}>
-                  <div className={styles.money}>￥<span>20</span></div>
-                  <div className={styles.btn}>抢</div>
-                  <div className={styles.time}>11:12:15</div>
+            { 
+              scroll === 'hb' ? <div className={styles.hongbao} onClick={this.openHongbao.bind(this)}>
+                <div className={styles.inner}>
+                  <div className={styles.square}>
+                    <div className={styles.money}>￥<span>20</span></div>
+                    <div className={styles.btn}>抢</div>
+                    <div className={styles.time}>11:12:15</div>
+                  </div>
+                  <div className={styles.bubble1}></div>
+                  <div className={styles.bubble2}></div>
+                  <div className={styles.bubble3}></div>
+                  <div className={styles.bubble4}></div>
                 </div>
-                <div className={styles.bubble1}></div>
-                <div className={styles.bubble2}></div>
-                <div className={styles.bubble3}></div>
-                <div className={styles.bubble4}></div>
+              </div> : <div className={styles.ad} onClick={this.openCourceDetail.bind(this)}>
+                <div className={styles.inner}>
+                  <div className={styles.avatar}></div>
+                  <div className={styles.title}>课程标题课程标题课程标题课程标题</div>
+                </div>
               </div>
-            </div>
+            }
             <div className={styles.input}>
               <div className={styles.pen}></div> 
               <input type="text" name="comment" placeholder="一起来参与讨论吧！" />

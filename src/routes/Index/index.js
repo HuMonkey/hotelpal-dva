@@ -133,9 +133,18 @@ class IndexPage extends Component {
           <div className={styles.list}>
             {
               courseList.map((d, i) => {
+                console.log(d);
+                let stateDom = null;
+                if (c.status == 0) {
+                  stateDom = <div className={styles.state + ' ' + styles.isnew}>上新</div>;
+                } else if (c.status == 2) {
+                  stateDom = <div className={styles.state + ' ' + styles.coming}>预告</div>;
+                }
                 return <Link key={i} to={`/course/${d.id}`}>
                   <div className={styles.item}>
-                    <div className={styles.avatar} style={{ backgroundImage: `url(${d.headImg})` }}></div>
+                    <div className={styles.avatar} style={{ backgroundImage: `url(${d.headImg})` }}>
+                      {stateDom}
+                    </div>
                     <div className={styles.right}>
                       <div className={styles.title}>{d.title}</div>
                       <div className={styles.who}>

@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import styles from './index.less';
 
-import { Navs } from '../../components';
+import { Navs, PopupCourse, PopupLogin, PopupOrder } from '../../components';
 
 import { Icon, Input } from 'antd';
 
 import hbBg from '../../assets/hb-bg.png';
+import simleLogo from '../../assets/smile.svg';
+
+import { formatNum } from '../../utils';
+
+const liveStatus = {
+  ENROLLING: '报名中',
+  ONGOING: '直播中',
+  ENDED: '已结束',
+}
 
 class Live extends Component {
   constructor(props) {
@@ -20,6 +30,7 @@ class Live extends Component {
       taOpen: false,
       scroll: 'ad', // 'hb' or 'ad'
       popup: null, // detail, order, login
+      playerInit: false,
     };
   }
 
@@ -78,8 +89,117 @@ class Live extends Component {
     });
   }
 
+  async liveInviting () {
+    const { dispatch, live } = this.props;
+    const { liveDetail } = live;
+    const { userInfo } = liveDetail;
+
+    this.setState({
+      posterShow: true,
+    });
+
+    if (userInfo.status === 'INVITING') {
+      return false;
+    }
+
+    await dispatch({
+      type: 'live/liveInviting',
+      payload: {
+        data: {
+          id: liveDetail.id
+        }
+      },
+      onResult (res) {}
+    });
+
+    await dispatch({
+      type: 'live/fetchLiveDetail',
+      payload: {
+        data: {
+          id: liveDetail.id
+        }
+      },
+      onResult (res) {}
+    });
+  }
+
+  enroll () {
+    const { dispatch, live, userInfo } = this.props;
+    const { liveDetail } = live;
+
+    // VIP 直接调用报名接口了
+    if (userInfo.liveVip === 'Y') {
+      dispatch({
+        type: 'live/liveEnroll',
+        payload: {
+          data: {
+            id: liveDetail.id
+          }
+        },
+        onResult (res) {
+          console.log(res);
+        }
+      });
+      return false;
+    }
+
+    // TODO 调用支付接口
+    
+  }
+
+  componentDidUpdate () {
+    const { playerInit } = this.state;
+    if (playerInit || !this.refs.player) {
+      return false;
+    }
+
+    const player = new Aliplayer({
+      id: 'J_prismPlayer',
+      width: '100%',
+      autoplay: false,
+      source: '//lv.hotelpal.cn/app/stream.m3u8',
+    }, function(player) {
+      console.log('播放器创建好了。')
+    });
+    this.setState({
+      playerInit: true,
+    })
+  }
+
   render () {
-    const { posterShow, page, signup, taOpen, hongbaoShow, scroll, popup } = this.state;
+    const { live, common } = this.props;
+
+    const { liveDetail, now, countDownInter } = live;
+
+    if (!liveDetail) {
+      return <div></div>
+    }
+
+    const userInfo = Object.assign({}, common.userInfo, liveDetail.userInfo);
+    let signup;
+    if (userInfo.status === 'ENROLLED') {
+      if (userInfo.invitedUserList) {
+        // 免费获取的
+        signup = 'free';
+      } else {
+        // 付费报名
+        signup = 'paid';
+      }
+    } else if (userInfo.status === 'INVITING') {
+      // 正在邀请
+      signup = 'inviting';
+    } else if (userInfo.status === 'NONE') {
+      if (userInfo.liveVip !== 'N') {
+        // VIP
+        signup = 'vip';
+      } else {
+        signup = 'init';
+      }
+    }
+
+    const { relaCourse } = liveDetail;
+
+    const { posterShow, page, taOpen, hongbaoShow, scroll, popup } = this.state;
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
@@ -120,83 +240,29 @@ class Live extends Component {
       </div>
     })
 
-    const invitingDom = signup === 'init' ? (
-      <div className={styles.item}>
+    let invitingDom;
+    if (signup === 'init') {
+      invitingDom = <div className={styles.item}>
         <div className={styles.left}>
           <div className={styles.inner}>邀请5个好友可以免费</div>
         </div>
-        <div className={styles.right}>我要免费报名</div>
-      </div>
-    ) : (
-      <div className={styles.item + ' ' + styles.big}>
+        <div className={styles.right} onClick={this.liveInviting.bind(this)}>我要免费报名</div>
+      </div>;
+    } else if (signup === 'inviting') {
+      invitingDom = <div className={styles.item + ' ' + styles.big}>
         <div className={styles.left}>
-          <div className={styles.inner}>{ signup === 'inviting' ? `再邀请2个好友即可免费` : `你已经邀请了五个好友，报名成功！`}</div>
+          <div className={styles.inner}>再邀请2个好友即可免费</div>
           <div className={styles.users}>
-            <div className={styles.avatar}></div>
-            <div className={styles.avatar}></div>
-            <div className={styles.avatar}></div>
-            <div className={styles.avatar}></div>
-            <div className={styles.avatar}></div>
+            <div className={styles.avatar}><img src={simleLogo} /></div>
+            <div className={styles.avatar}><img src={simleLogo} /></div>
+            <div className={styles.avatar}><img src={simleLogo} /></div>
+            <div className={styles.avatar}><img src={simleLogo} /></div>
+            <div className={styles.avatar}><img src={simleLogo} /></div>
           </div>
         </div>
-        { signup === 'inviting' && <div className={styles.right + ' ' + styles.big}>我要免费报名</div> }
+        <div className={styles.right + ' ' + styles.big} onClick={this.liveInviting.bind(this)}>我要免费报名</div>
       </div>
-    ); // 邀请中的样式
-
-    const popupDetailDom = <div className={styles.courseDetail}>
-      <div className={styles.top}>
-        <div className={styles.avatar}></div>
-        <div className={styles.right}>
-          <div className={styles.title}>课程标题课程标题</div>
-          <div className={styles.infos}>
-            <div className={styles.tag}>订阅专栏</div>
-            <div className={styles.price}>￥199 / 10 课时</div>
-          </div>
-        </div>
-      </div>
-      <div className={styles.desc}>
-        <div className={styles.label}>主讲人</div>
-        <div className={styles.speaker}>李洋<span>feekre ceo</span></div>
-        <div className={styles.text}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>
-      </div>
-      <div className={styles.buy}>立即订阅：￥199 / 10 课时</div>
-    </div>
-
-    const popupOrderDom = <div className={styles.order}>
-      <div className={styles.title}>订单确认</div>
-      <div className={styles.box}>
-        <div className={styles.avatar}></div>
-        <div className={styles.infos}>
-          <div className={styles.stitle}>一学就会的酒店营销课</div>
-          <div className={styles.speaker}>李洋 feekr CEO</div>
-        </div>
-      </div>
-      <div className={styles.list}>
-        <div className={styles.row}>
-          <div className={styles.left}>课程价格</div>
-          <div className={styles.right}>￥199</div>
-        </div>
-        <div className={styles.row}>
-          <div className={styles.left}>优惠</div>
-          <div className={styles.right + ' ' + styles.coupon}>-￥20<Icon type="right" className={styles.chooseCoupons} /></div>
-        </div>
-      </div>
-      <div className={styles.row + ' ' + styles.total}>
-        <div className={styles.left}>合计</div>
-        <div className={styles.right}>￥179</div>
-      </div>
-      <div className={styles.buy}>确认支付</div>
-    </div>
-
-    const popupLoginDom = <div className={styles.login}>
-      <div className={styles.title}>快捷登录</div>
-      <div className={styles.wrap}>
-        <Input className={styles.phone} placeholder={`请输入11位手机号`} />
-        <Input className={styles.vCode} placeholder={`请输入验证码`} />
-      </div>
-      <div className={styles.tips}>点击[登录]代表您已阅读并同意<span>《酒店邦成长营会员条款》</span></div>
-      <div className={styles.login}>登录</div>
-    </div>
+    }
 
     const hongbaoDom = <div className={styles.hb}>
       <div className={styles.main} style={{ backgroundImage: `url(${hbBg})` }}>
@@ -206,34 +272,51 @@ class Live extends Component {
       <div className={styles.close} onClick={this.closeHongbao.bind(this)}></div>
     </div>;
 
+    moment.locale('zh-cn');
+    const openTime = moment(liveDetail.openTime);
+    const openTimeStr = openTime.format('MM-DD');
+    const openTimeWeekStr = openTime.format('dddd');
+    const openTimeHourStr = openTime.format('hh:mm');
+
+    const enrollCount = liveDetail.purchasedTimes || 0 + liveDetail.freeEnrolledTimes || 0;
+
+    const diffTime = openTime - now;
+    const duration = moment.duration(diffTime, 'milliseconds');
+    if (diffTime <= 0) {
+      clearInterval(countDownInter);
+    }
+
+    function createMarkupIntro() { return { __html: liveDetail.introduce || '暂无' }; };
+  
     return (
       <div className={styles.normal}>
         { hongbaoShow && hongbaoDom }
         {
-          popup && <div className={styles.popup}>
-            <div className={styles.content}>
-              <Icon type="left" size={`large`} className={styles.back} />
-              <Icon type="close" size={`large`} className={styles.close} onClick={this.closePopup.bind(this)} />
-              { popup === 'detail' && popupDetailDom }
-              { popup === 'login' && popupLoginDom }
-              { popup === 'order' && popupOrderDom }
-            </div>
+          popup && <div>
+            { popup === 'detail' && <PopupCourse course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'login' && <PopupLogin closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'order' && <PopupOrder closePopup={this.closePopup.bind(this)} /> }
           </div>
         }
         <Navs/>
         <div className={styles.banner}>
-          <div className={styles.count}>
-            <div className={styles.icon}></div>
-            <div className={styles.label}>倒计时</div>
-            <div className={styles.tick}>
-              <span className={styles.item}>00</span>
-              :
-              <span className={styles.item}>02</span>
-              :
-              <span className={styles.item}>26</span>
-              :
-              <span className={styles.item}>24</span>
-            </div>
+          { 
+            diffTime > 0 && <div className={styles.count}>
+              <div className={styles.icon}></div>
+              <div className={styles.label}>倒计时</div>
+              <div className={styles.tick}>
+                <span className={styles.item}>{formatNum(duration.days())}</span>
+                :
+                <span className={styles.item}>{formatNum(duration.hours())}</span>
+                :
+                <span className={styles.item}>{formatNum(duration.minutes())}</span>
+                :
+                <span className={styles.item}>{formatNum(duration.seconds())}</span>
+              </div>
+            </div> 
+          }
+          <div className="prism-player">
+            <div className={styles.player} id="J_prismPlayer" ref={`player`}></div>
           </div>
         </div>
         <div className={styles.switches}>
@@ -249,24 +332,22 @@ class Live extends Component {
             <div className={styles.course}>
               <div className={styles.left}>
                 <div className={styles.tag + ' ' + styles.before}>
-                  直播中
+                  {liveStatus[liveDetail.status]}
                   <div className={styles.tri}></div>
                 </div>
-                <div className={styles.time}>03-19&nbsp;周四&nbsp;20:00</div>
+                <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
               </div>
-              { signup === 'paid' || signup === 'free' ? <div className={styles.paid}></div> : <div className={styles.right}>已有200000人报名</div> }
+              { signup === 'paid' || signup === 'free' ? <div className={styles.paid}></div> : <div className={styles.right}>已有{enrollCount}人报名</div> }
             </div>
             { 
-              signup === 'paid' || signup === 'init' && <div className={styles.signups}>
+              (signup === 'inviting' || signup === 'init') && <div className={styles.signups}>
                 <div className={styles.item}>
                   <div className={styles.left}>
-                    <div className={styles.inner}>直播价&nbsp;￥49</div>
+                    <div className={styles.inner}>直播价&nbsp;￥{liveDetail.price / 100}</div>
                   </div>
-                  <div className={styles.right}>我要付费报名</div>
+                  <div className={styles.right} onClick={this.enroll.bind(this)}>我要付费报名</div>
                 </div>
-                {
-                  invitingDom
-                }
+                { invitingDom }
               </div>
             }
             {
@@ -274,26 +355,21 @@ class Live extends Component {
                 <div className={styles.item + ' ' + styles.vip}>
                   <div className={styles.left}>
                     <div className={styles.inner}>
-                      <span className={styles.price}>￥49</span>
+                      <span className={styles.price}>￥{liveDetail.price / 100}</span>
                       你是公开课会员，可以免费收看
                     </div>
                   </div>
-                  <div className={styles.right}>报名</div>
+                  <div className={styles.right} onClick={this.enroll.bind(this)}>报名</div>
                 </div>
-              </div>
-            }
-            {
-              signup === 'free' && <div className={styles.signups}>
-                { invitingDom }
               </div>
             }
             <div className={styles.intro}>
               <div className={styles.title}>公开课介绍</div>
-              <div className={styles.content}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>
+              <div className={styles.content} dangerouslySetInnerHTML={createMarkupIntro()}></div>
             </div>
             <div className={styles.know}>
               <div className={styles.title}>公开课须知</div>
-              <div className={styles.content}>介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍介绍</div>
+              <div className={styles.content}>这里要写死一段话</div>
             </div>
           </div>
         }
@@ -330,8 +406,8 @@ class Live extends Component {
                 </div>
               </div> : <div className={styles.ad} onClick={this.openCourceDetail.bind(this)}>
                 <div className={styles.inner}>
-                  <div className={styles.avatar}></div>
-                  <div className={styles.title}>课程标题课程标题课程标题课程标题</div>
+                  <div className={styles.avatar} style={{ backgroundImage: `url(${relaCourse.bannerImg})` }}></div>
+                  <div className={styles.title}>{relaCourse.title}</div>
                 </div>
               </div>
             }
@@ -355,7 +431,9 @@ class Live extends Component {
                 <div className={styles.row}>5个好友点击报名（免费/付费均可）</div>
                 <div className={styles.row}>可享受免费报名！</div>
               </div>
-              <div className={styles.image}></div>
+              <div className={styles.image}>
+                <img src={userInfo.invitePoster} />
+              </div>
               <div className={styles.btn}>长按保存图片</div>
             </div>
             <div className={styles.close} onClick={this.closePoster.bind(this)}></div>
@@ -369,4 +447,8 @@ class Live extends Component {
 Live.propTypes = {
 };
 
-export default connect()(Live);
+const mapStateToProps = (state) => {
+  return { live: state.live, common: state.common };
+}
+
+export default connect(mapStateToProps)(Live);

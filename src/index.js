@@ -16,6 +16,7 @@ app.model(require('./models/jdbs'));
 app.model(require('./models/course'));
 app.model(require('./models/lesson'));
 app.model(require('./models/hongbao'));
+app.model(require('./models/live'));
 
 // 4. Router
 app.router(require('./router'));

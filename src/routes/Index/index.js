@@ -9,6 +9,12 @@ import arrow from '../../assets/arrow-right.svg';
 import { BottomBar } from '../../components/';
 import { configWechat, updateWechartShare } from '../../utils/';
 
+const liveStatus = {
+  ENROLLING: '报名中',
+  ONGOING: '直播中',
+  ENDED: '已结束',
+}
+
 class IndexPage extends Component {
   constructor (props) {
     super(props);
@@ -44,7 +50,7 @@ class IndexPage extends Component {
   }
 
   render () {
-    const { common, index } = this.props;
+    const { common, index, live } = this.props;
     if (!index) {
       return <div></div>
     }
@@ -61,6 +67,8 @@ class IndexPage extends Component {
     };
   
     const { courseList, innerCourseList, bannerList } = index;
+
+    const liveList = live.list || [];
 
     return (
       <div className={styles.normal}>
@@ -79,23 +87,37 @@ class IndexPage extends Component {
             </div>
           </div>
           <div className={styles.list}>
-            <Link to={`/live/2`}><div className={styles.item}>
-              <div className={styles.top}>
-                <div className={styles.left}>
-                  <div className={styles.tag + ' ' + styles.before}>
-                    直播中
-                    <div className={styles.tri}></div>
+            {
+              liveList.map((d, i) => {
+                moment.locale('zh-cn');
+                const openTime = moment(d.openTime);
+                const openTimeStr = openTime.format('MM-DD');
+                const openTimeWeekStr = openTime.format('dddd');
+                const openTimeHourStr = openTime.format('hh:mm');
+
+                const count = d.purchasedTimes || 0 + d.freeEnrolledTimes || 0;
+
+                return <Link key={i} to={`/live/${d.id}`}>
+                  <div className={styles.item}>
+                    <div className={styles.top}>
+                      <div className={styles.left}>
+                        <div className={styles.tag + ' ' + styles.before}>
+                          {liveStatus[d.status]}
+                          <div className={styles.tri}></div>
+                        </div>
+                        <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
+                      </div>
+                      <div className={styles.right}>已有{count}人报名</div>
+                    </div>
+                    <div className={styles.detail}>
+                      <div className={styles.title}>{d.title}</div>
+                      <div className={styles.infos}>{d.speakerTitle}&nbsp;{d.speakerNick}&nbsp;{d.subTitle}</div>
+                      <div className={styles.arrowRight}></div>
+                    </div>
                   </div>
-                  <div className={styles.time}>03-19&nbsp;周四&nbsp;20:00</div>
-                </div>
-                <div className={styles.right}>已有200000人报名</div>
-              </div>
-              <div className={styles.detail}>
-                <div className={styles.title}>一学就会的酒店营销科</div>
-                <div className={styles.infos}>Feekr CEO&nbsp;李洋&nbsp;教你策划一场刷屏活动</div>
-                <div className={styles.arrowRight}></div>
-              </div>
-            </div></Link>
+                </Link>
+              })
+            }
           </div>
         </div> }
         <div className={styles.free}>
@@ -178,7 +200,7 @@ IndexPage.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { index: state.index };
+  return { index: state.index, live: state.live };
 }
 
 export default connect(mapStateToProps)(IndexPage);

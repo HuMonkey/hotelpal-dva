@@ -22,6 +22,20 @@
     height: 5.6rem;
     position: relative;
     background: white;
+    :global(.prism-player) {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('../../assets/live-banner.png');
+      background-size: cover;
+      .player {
+        width: 100%;
+        height: 100%;
+        // display: none;
+      }
+    }
     .count {
       position: absolute;
       bottom: 0;
@@ -185,6 +199,10 @@
       &.vip {
         .left {
           .inner {
+            width: 7.4rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             .price {
               text-decoration: line-through;
               margin-right: 0.4rem;
@@ -225,6 +243,13 @@
             height: .8rem;
             margin-right: .26666rem;
             float: left;
+            text-align: center;
+            img {
+              width: 80%;
+              height: 80%;
+              position: relative;
+              top: 0.08rem;
+            }
           }
         }
         .right {
@@ -312,6 +337,10 @@
         height: 7.46666rem;
         width: 5.573333rem;
         margin-top: 0.4rem;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
       .btn {
         margin-top: 0.4rem;
@@ -541,7 +570,8 @@
         .avatar {
           width: 1.3333rem;
           height: 1.3333rem;
-          background: green;
+          background-size: cover;
+          background-position: center;
           margin: auto;
           border: @red solid thin;
           img {
@@ -557,7 +587,7 @@
           -webkit-box-orient: vertical;
           width: 100%;
           height: 0.64rem;
-          text-align: justify;
+          text-align: left;
           color: @red;
           font-size: 0.32rem;
           margin-top: 0.1rem;
@@ -673,259 +703,6 @@
           padding: 0 0.26666rem 0 0.93333rem;
           font-size: 0.4rem;
           -webkit-appearance: none;
-      }
-    }
-  }
-  .popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    z-index: 99;
-    input {
-      height: 1.146666rem;
-      transition: none;
-    }
-    .content {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      left: 0;
-      background: white;
-      padding: 0.4rem;
-      .close {
-        position: absolute;
-        top: 0.3rem;
-        right: 0.3rem;
-        color: @black1;
-      }
-      .back {
-        position: absolute;
-        top: 0.3rem;
-        left: 0.3rem;
-        color: @black1;
-      }
-      .courseDetail {
-        .top {
-          height: 2.4rem;
-          padding-bottom: 0.4rem;
-          border-bottom: @border;
-          margin-bottom: 0.4rem;
-          .avatar {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 4px;
-            overflow: hidden;
-            float: left;
-            background: green;
-          }
-          .right {
-            float: left;
-            margin-left: 0.4rem;
-            height: 2rem;
-            position: relative;
-            width: 6rem;
-            .title {
-              color: @black3;
-              font-size: 0.453333rem;
-              text-align: left;
-            }
-            .infos {
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              width: 100%;
-              .tag {
-                float: left;
-                border-radius: 4px;
-                border: @border;
-                color: #cccccc;
-                font-size: 0.296666px;
-                padding: 0 0.16rem;
-                text-align: center;
-                line-height: 0.44rem;
-                height: 0.48rem;
-                margin-right: 0.4rem;
-              }
-              .price {
-                float: left;
-                font-size: 0.296666px;
-                color: @red;
-              }
-            }
-          }
-        }
-        .desc {
-          margin-bottom: 0.4rem;
-          .label {
-            font-size: 0.453333rem;
-            color: @black3;
-            margin-bottom: 0.4rem;
-          }
-          .speaker {
-            font-size: 0.426666rem;
-            border-left: 4px @red solid;
-            padding-left: 0.13333rem;
-            color: @black3;
-            font-weight: bold;
-            margin-bottom: 0.4rem;
-            span {
-              font-weight: normal;
-              font-size: 0.38rem;
-              margin-left: 0.4rem;
-              color: @black1;
-            }
-          }
-          .text {
-            font-size: 0.4;
-            color: @black2;
-            line-height: 1.8;
-          }
-        }
-        .buy {
-          width: 100%;
-          height: 1.26666rem;
-          background: @red;
-          line-height: 1.26666rem;
-          color: white;
-          text-align: center;
-          font-size: 0.453333rem;
-          border-radius: 4px;
-        }
-      }
-      .order {
-        .title {
-          width: 100%;
-          height: 0.42rem;
-          font-size: 0.42rem;
-          text-align: center;
-          color: @black2;
-          margin-bottom: 0.8rem;
-        }
-        .box {
-          width: 100%;
-          height: 2.13333rem;
-          border-radius: 4px;
-          border: @border;
-          padding: 0.3rem;
-          margin-bottom: 0.4rem;
-          .avatar {
-            float: left;
-            width: 1.53333rem;
-            height: 1.53333rem;
-            border-radius: 50%;
-            background: black;
-          }
-          .infos {
-            float: left;
-            margin-left: 0.26666rem;
-            min-width: 6rem;
-            margin-left: 0.26666rem;
-            padding: 0.13333rem 0;
-            .stitle {
-              font-size: 0.373333rem;
-              color: @black2;
-            }
-            .speaker {
-              font-size: 0.32rem;
-              color: @black1;
-              margin-top: 0.2rem;
-            }
-          }
-        }
-        .row {
-          height: 0.32rem;
-          width: 100%;
-          overflow: hidden;
-          font-size: 0.32rem;
-          line-height: 1;
-          margin-bottom: 0.4rem;
-          &.total {
-            height: 0.4rem;
-            font-size: 0.4rem;
-            color: @black2;
-            margin-top: 0.4rem;
-            margin-bottom: 0.8rem;
-            .left {
-              color: @black2;
-            }
-          }
-          .left {
-            float: left;
-            color: @black1;
-          }
-          .right {
-            float: right;
-          }
-          .coupon {
-            color: @red;
-            .chooseCoupons {
-              color: @black1;
-            }
-          }
-        }
-        .list {
-          padding-bottom: 0.4rem;
-          border-bottom: @border;
-          padding-top: 0.2rem;
-        }
-        .buy {
-          width: 100%;
-          height: 1.26666rem;
-          background: @red;
-          line-height: 1.26666rem;
-          color: white;
-          text-align: center;
-          font-size: 0.453333rem;
-          border-radius: 4px;
-        }
-      }
-      .login {
-        .title {
-          width: 100%;
-          height: 0.42rem;
-          font-size: 0.42rem;
-          text-align: center;
-          color: @black2;
-          margin-bottom: 0.8rem;
-        }
-        .wrap {
-          width: 90%;
-          margin: auto;
-          .phone {
-            width: 100%;
-            border: @border;
-            display: block;
-            margin: auto;
-            margin-bottom: 0.4rem;
-          }
-          .vCode {
-            border: @border;
-            margin-bottom: 0.8rem;
-          }
-        }
-        .tips {
-          width: 100%;
-          text-align: center;
-          font-size: 0.32rem;
-          color: #cccccc;
-          margin-bottom: 0.8rem;
-          span {
-            color: @black2;
-          }
-        }
-        .login {
-          width: 100%;
-          height: 1.26666rem;
-          background: @red;
-          line-height: 1.26666rem;
-          color: white;
-          text-align: center;
-          font-size: 0.453333rem;
-          border-radius: 4px;
-        }
       }
     }
   }

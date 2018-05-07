@@ -28,7 +28,8 @@ export default {
                     const origin = encodeURIComponent(location.origin);
                     const search = encodeURIComponent(location.search);
                     const hash = encodeURIComponent(location.hash);
-                    const redirect = `http://hotelpal.cn/test.html?origin=${origin}&search=${search}&hash=${hash}`
+                    // const redirect = `http://hotelpal.cn/test.html?origin=${origin}&search=${search}&hash=${hash}`
+                    const redirect = `http://hotelpal.cn`
                     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
                         + config.appId + '&redirect_uri='
                         + encodeURIComponent(redirect)

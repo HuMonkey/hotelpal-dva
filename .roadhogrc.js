@@ -25,6 +25,11 @@ export default {
       "target": "http://hotelpal.cn/",
       "changeOrigin": true,
       "pathRewrite": { "^/api": "" }
+    },
+    "/test": {
+      "target": "http://t.hotelpal.cn/",
+      "changeOrigin": true,
+      "pathRewrite": { "^/test": "" }
     }
   }
 }

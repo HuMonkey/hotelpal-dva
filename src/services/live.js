@@ -13,7 +13,12 @@ export function getLiveDetail(data) {
 
 export function fetchChatHistory(data) {
   const jdbtk = getToken();
-  return request(`${config.host}/test/hotelpal/live/chatList?courseId=${data.id}&token=${jdbtk}`);
+  return request(`${config.host}/test/hotelpal/live/chatList?courseId=${data.id}&currentPage=${data.currentPage}&pageSize=${data.pageSize}&order=desc&token=${jdbtk}`);
+}
+
+export function fetchAssistantMsgList(data) {
+  const jdbtk = getToken();
+  return request(`${config.host}/test/hotelpal/live/assistantMsgList?courseId=${data.id}&token=${jdbtk}`);
 }
 
 export function liveInviting(data) {

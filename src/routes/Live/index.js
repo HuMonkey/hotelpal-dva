@@ -7,10 +7,14 @@ import { Navs, PopupCourse, PopupLogin, PopupOrder } from '../../components';
 
 import { Icon, Input } from 'antd';
 
+import 'video.js/dist/video-js.css';
+import videojs from 'video.js';
+import 'videojs-contrib-hls';
+
 import hbBg from '../../assets/hb-bg.png';
 import simleLogo from '../../assets/smile.svg';
 
-import { formatNum } from '../../utils';
+import { formatNum, getHtmlContent } from '../../utils';
 
 const liveStatus = {
   ENROLLING: '报名中',
@@ -31,6 +35,7 @@ class Live extends Component {
       scroll: 'ad', // 'hb' or 'ad'
       popup: null, // detail, order, login
       playerInit: false,
+      replying: false,
     };
   }
 
@@ -124,11 +129,12 @@ class Live extends Component {
   }
 
   enroll () {
-    const { dispatch, live, userInfo } = this.props;
+    const { dispatch, live } = this.props;
     const { liveDetail } = live;
+    console.log(111);
 
     // VIP 直接调用报名接口了
-    if (userInfo.liveVip === 'Y') {
+    if (liveDetail.userInfo.liveVip === 'Y') {
       dispatch({
         type: 'live/liveEnroll',
         payload: {
@@ -144,32 +150,44 @@ class Live extends Component {
     }
 
     // TODO 调用支付接口
+    alert('支付还没写好！');
     
   }
 
   componentDidUpdate () {
     const { playerInit } = this.state;
+    
     if (playerInit || !this.refs.player) {
       return false;
     }
 
-    const player = new Aliplayer({
-      id: 'J_prismPlayer',
-      width: '100%',
-      autoplay: false,
-      source: '//lv.hotelpal.cn/app/stream.m3u8',
-    }, function(player) {
-      console.log('播放器创建好了。')
-    });
+    videojs('my-video');
+
     this.setState({
       playerInit: true,
     })
   }
 
+  setReply (replying) {
+    this.setState({
+      replying,
+    }, () => {
+      replying && this.refs.reply.focus();
+    });
+  }
+
+  submitComment () {
+
+  }
+
+  onCommentFocus () {
+    this.refs.normal.scrollTop = 20000000;
+  }
+
   render () {
     const { live, common } = this.props;
 
-    const { liveDetail, now, countDownInter } = live;
+    const { liveDetail, now, countDownInter, assistantMsg, chats } = live;
 
     if (!liveDetail) {
       return <div></div>
@@ -199,16 +217,37 @@ class Live extends Component {
 
     const { relaCourse } = liveDetail;
 
-    const { posterShow, page, taOpen, hongbaoShow, scroll, popup } = this.state;
+    const { posterShow, page, taOpen, hongbaoShow, scroll, popup, replying } = this.state;
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
     const taClass = taOpen ? ' ' + styles.open : '';
 
-    const taComments = taOpen ? [1, 1, 1] : [1, 1, 1].slice(0, 1);
+    const taComments = taOpen ? assistantMsg : assistantMsg.slice(0, 1);
     const taDom = taComments.map((d, i) => {
-      const hasPic = false;
-      const hasPicClass = hasPic ? ' ' + styles.hasPic : '';
+      let hasPic = false;
+      const pubTime = moment(d.updateTime).format('YYYY-MM-DD hh:mm:ss');
+
+      let hasPicClass = '', pic;
+
+      const msg = d.msg || '';
+      const reg = new RegExp(/<img[^>]*>/g, "g");
+      const img = msg.match(reg);
+      if (img && !taOpen) {
+        const objE = document.createElement('div');
+    　　 objE.innerHTML = img;
+    　　 const imgDom = objE.childNodes[0];
+
+        hasPicClass = ' ' + styles.hasPic;
+        hasPic = true;
+        pic = imgDom.src;
+      }
+
+      function createMarkup() { 
+        const msg = taOpen ? d.msg || '' : getHtmlContent(d.msg || '');
+        return { __html: msg }; 
+      };
+
       return <div key={i} className={styles.item + hasPicClass}>
         <div className={styles.left}>
           <div className={styles.title}>
@@ -216,24 +255,28 @@ class Live extends Component {
               <div className={styles.icon}><div className={styles.tri}></div></div>
               <div className={styles.text}>助教小燕子</div>
             </div>  
-            <div className={styles.time}>20:32:43</div>
+            <div className={styles.time}>{pubTime}</div>
           </div>  
-          <div className={styles.comment}>评论评论评论评论评论评论评论评论评论评论评论评论</div>
+          <div className={styles.comment} dangerouslySetInnerHTML={createMarkup()}></div>
         </div>
-        { hasPic && <div className={styles.right}></div> }
+        { hasPic && <div className={styles.right} style={{ backgroundImage: `url(${pic})` }}></div> }
       </div>
     });
 
-    const comments = [1, 1, 1, 1];
+    const comments = chats;
     const commentsDom = comments.map((d, i) => {
-      const isMine = i === 2;
+      const isMine = (d.self === 'Y');
       const isMineClass = isMine ? ' ' + styles.mine : '';
+      const name = `${d.user.nick} ${d.user.company} ${d.user.title}`;
+
+      function createMarkup() { return { __html: d.msg || '' }; };
+
       return <div className={styles.item + isMineClass} key={i}>
-        <div className={styles.avatar}></div>
+        <div className={styles.avatar} style={{ backgroundImage: `url(${d.user.headImg})` }}></div>
         <div className={styles.main}>
-          <div className={styles.name}>陈熙慧 酒店邦</div>
+          <div className={styles.name}>{name}</div>
           <div className={styles.talk}>
-            <div className={styles.inner}>121212121212123123123123123121212121212123123123123123121212121212123123123123123121212121212123123123123123121212121212123123123123123</div>
+            <div className={styles.inner} dangerouslySetInnerHTML={createMarkup()}></div>
             <div className={styles.arrow}></div>
           </div>
         </div>
@@ -288,8 +331,30 @@ class Live extends Component {
 
     function createMarkupIntro() { return { __html: liveDetail.introduce || '暂无' }; };
   
+    const status = liveDetail.status;
+    let statusClass;
+    if (status === 'ENROLLING') {
+      statusClass = ' ' + styles.before;
+    } else if (status === 'ONGOING') {
+      statusClass = ' ' + styles.ing;
+    } else if (status === 'ENDED') {
+      statusClass = ' ' + styles.end;
+    }
+
     return (
-      <div className={styles.normal}>
+      <div className={styles.normal} ref={`normal`}>
+        {
+          replying && <div className={styles.replyBox}>
+            <div className={styles.cover} onClick={() => this.setReply.call(this, false)}></div> 
+            <div className={styles.box}>
+              <div className={styles.btns}>
+                <div className={styles.cancel} onClick={() => this.setReply.call(this, false)}>取消</div> 
+                <div className={styles.confirm} onClick={this.submitComment.bind(this)}>发布</div>
+              </div> 
+              <textarea onFocus={this.onCommentFocus.bind(this)} ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
+            </div>
+          </div>
+        }
         { hongbaoShow && hongbaoDom }
         {
           popup && <div>
@@ -315,23 +380,27 @@ class Live extends Component {
               </div>
             </div> 
           }
-          <div className="prism-player">
-            <div className={styles.player} id="J_prismPlayer" ref={`player`}></div>
+          { 
+            status === 'ONGOING' ? <div className={styles.player}>
+              <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
+                <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
+              </video>
+            </div> : <div className={styles.player}></div>
+          }
+          <div className={styles.switches}>
+            <div 
+              className={styles.item + detailClass} 
+              onClick={() => this.changePage.call(this, 'detail')}>
+              课程
+            </div>
+            <div className={styles.item + chatClass} onClick={() => this.changePage.call(this, 'chat')}>互动</div>
           </div>
-        </div>
-        <div className={styles.switches}>
-          <div 
-            className={styles.item + detailClass} 
-            onClick={() => this.changePage.call(this, 'detail')}>
-            课程
-          </div>
-          <div className={styles.item + chatClass} onClick={() => this.changePage.call(this, 'chat')}>互动</div>
         </div>
         {
           page === 'detail' && <div>
             <div className={styles.course}>
               <div className={styles.left}>
-                <div className={styles.tag + ' ' + styles.before}>
+                <div className={styles.tag + statusClass}>
                   {liveStatus[liveDetail.status]}
                   <div className={styles.tri}></div>
                 </div>
@@ -411,7 +480,7 @@ class Live extends Component {
                 </div>
               </div>
             }
-            <div className={styles.input}>
+            <div className={styles.input} onClick={() => this.setReply.call(this, true)}>
               <div className={styles.pen}></div> 
               <input type="text" name="comment" placeholder="一起来参与讨论吧！" />
             </div>

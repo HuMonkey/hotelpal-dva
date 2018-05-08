@@ -10,6 +10,8 @@ export default {
   state: {
     list: [],
     liveDetail: null,
+    assistantMsg: [],
+    chats: [],
     now: moment(),
     countDownInter: null,
   },
@@ -33,15 +35,29 @@ export default {
             },
             onResult (res) {}
           });
+
           dispatch({
             type: 'fetchChatHistory',
             payload: {
               data: {
-                id: liveId
+                id: liveId,
+                currentPage: 1,
+                pageSize: 60,
+                order: 'desc',
               }
             },
             onResult (res) {}
           });
+          dispatch({
+            type: 'fetchAssistantMsgList',
+            payload: {
+              data: {
+                id: liveId,
+              }
+            },
+            onResult (res) {}
+          });
+
           const inter = setInterval(() => {
             dispatch({
               type: 'save',
@@ -105,6 +121,21 @@ export default {
           },
         });
         onResult(chats);
+      } else {
+        onResult(null);
+      }
+    },
+    *fetchAssistantMsgList({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(liveService.fetchAssistantMsgList, payload.data || {});
+      if (res.data.code === 0) {
+        const assistantMsg = res.data.data;
+        yield put({
+          type: 'save',
+          payload: {
+            assistantMsg: assistantMsg.reverse()
+          },
+        });
+        onResult(assistantMsg);
       } else {
         onResult(null);
       }

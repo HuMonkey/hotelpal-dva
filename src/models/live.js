@@ -3,6 +3,8 @@ import * as liveService from '../services/live';
 
 import { getToken } from '../utils';
 
+let websocket;
+
 export default {
 
   namespace: 'live',
@@ -76,7 +78,7 @@ export default {
 
           // 讨论 ws
           const wsUri = `ws://t.hotelpal.cn:8080/hotelpal/live/chat/${getToken()}`;
-          const websocket = new WebSocket(wsUri); 
+          websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
             console.log(evt) 
           }; 
@@ -84,7 +86,12 @@ export default {
             console.log(evt) 
           }; 
           websocket.onmessage = function(evt) { 
-            console.log(evt) 
+            dispatch({
+              type: 'saveComment',
+              payload: {
+                data: evt.data,
+              }
+            })
           }; 
           websocket.onerror = function(evt) { 
             console.log(evt) 
@@ -105,9 +112,9 @@ export default {
             list: liveList
           },
         });
-        onResult(liveList);
+        onResult && onResult(liveList);
       } else {
-        onResult(null);
+        onResult && onResult(null);
       }
     },
     *fetchChatHistory({ payload, onResult }, { call, put }) {  // eslint-disable-line
@@ -120,9 +127,9 @@ export default {
             chats
           },
         });
-        onResult(chats);
+        onResult && onResult(chats);
       } else {
-        onResult(null);
+        onResult && onResult(null);
       }
     },
     *fetchAssistantMsgList({ payload, onResult }, { call, put }) {  // eslint-disable-line
@@ -135,9 +142,9 @@ export default {
             assistantMsg: assistantMsg.reverse()
           },
         });
-        onResult(assistantMsg);
+        onResult && onResult(assistantMsg);
       } else {
-        onResult(null);
+        onResult && onResult(null);
       }
     },
     *fetchLiveDetail({ payload, onResult }, { call, put }) {  // eslint-disable-line
@@ -150,32 +157,58 @@ export default {
             liveDetail
           },
         });
-        onResult(liveDetail);
+        onResult && onResult(liveDetail);
       } else {
-        onResult(null);
+        onResult && onResult(null);
       }
     },
     *liveInviting({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(liveService.liveInviting, payload.data || {});
       if (res.data.code === 0) {
-        onResult(res);
+        onResult && onResult(res);
       } else {
-        onResult(null);
+        onResult && onResult(null);
       }
     },
     *liveEnroll({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(liveService.liveEnroll, payload.data || {});
       if (res.data.code === 0) {
-        onResult(res);
+        onResult && onResult(res);
       } else {
-        onResult(null);
+        onResult && onResult(null);
       }
+    },
+    *addComment({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      websocket.send(payload.data.msg || '');
+      onResult && onResult();
     },
   },
 
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
+    },
+    saveComment(state, action) {
+      const data = JSON.parse(action.payload.data && action.payload.data.trim());
+      const chats = state.chats;
+
+      const newComment = {
+        blocked: data.blocked,
+        createTime: data.createTime,
+        updateTime: data.createTime,
+        id: data.id,
+        msg: data.msg,
+        self: data.self,
+        user: {
+          company: data.company,
+          headImg: data.headImg,
+          nick: data.nick,
+          title: data.title,
+        }
+      }
+
+      console.log(chats);
+      return {...state, chats: [newComment, ...chats]};
     },
   },
 

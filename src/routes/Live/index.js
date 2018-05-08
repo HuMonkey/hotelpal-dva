@@ -176,8 +176,25 @@ class Live extends Component {
     });
   }
 
-  submitComment () {
+  async submitComment () {
+    const { dispatch } = this.props;
 
+    const reply = this.refs.reply.value;
+    await dispatch({
+      type: 'live/addComment',
+      payload: {
+        data: {
+          msg: reply,
+        }
+      },
+      onResult () {
+        console.log('hwq');
+      }
+    });
+
+    this.setState({
+      replying: false,
+    })
   }
 
   onCommentFocus () {
@@ -267,7 +284,7 @@ class Live extends Component {
     const commentsDom = comments.map((d, i) => {
       const isMine = (d.self === 'Y');
       const isMineClass = isMine ? ' ' + styles.mine : '';
-      const name = `${d.user.nick} ${d.user.company} ${d.user.title}`;
+      const name = `${d.user.nick} ${d.user.company || ''} ${d.user.title || ''}`;
 
       function createMarkup() { return { __html: d.msg || '' }; };
 
@@ -292,9 +309,13 @@ class Live extends Component {
         <div className={styles.right} onClick={this.liveInviting.bind(this)}>我要免费报名</div>
       </div>;
     } else if (signup === 'inviting') {
+      let left = 5;
+      if (userInfo.invitedUserList) {
+        left -= userInfo.invitedUserList.length;
+      }
       invitingDom = <div className={styles.item + ' ' + styles.big}>
         <div className={styles.left}>
-          <div className={styles.inner}>再邀请2个好友即可免费</div>
+          <div className={styles.inner}>再邀请{left}个好友即可免费</div>
           <div className={styles.users}>
             <div className={styles.avatar}><img src={simleLogo} /></div>
             <div className={styles.avatar}><img src={simleLogo} /></div>
@@ -459,7 +480,7 @@ class Live extends Component {
           </div>
         }
         { 
-          page === 'chat' && <div className={styles.commentBox}>
+          page === 'chat' && status === 'ONGOING' && <div className={styles.commentBox}>
             { 
               scroll === 'hb' ? <div className={styles.hongbao} onClick={this.openHongbao.bind(this)}>
                 <div className={styles.inner}>

@@ -88,22 +88,34 @@ class Profile extends Component {
             </div>
           </div>
         </div>
-        <Link to={`/br`}><div className={styles.row + ' ' + styles.bought}>
-          <div className={styles.icon + ' ' + styles.shoppingcar}></div>
-            购买记录
-          <div className={styles.arrowRight}></div>
-        </div></Link>
-        <Link to={`/about`}><div className={styles.row + ' ' + styles.about}>
-          <div className={styles.icon + ' ' + styles.jiudianbang}></div>
-            关于成长营
-          <div className={styles.arrowRight}></div>
-        </div></Link>
-        <div className={styles.hr}><div className={styles.inner}></div></div>
-        <Link to={`/wechat`}><div className={styles.row + ' ' + styles.wechat}>
-          <div className={styles.icon + ' ' + styles.gongzhonghao}></div>
-            关注公众号
-          <div className={styles.arrowRight}></div>
-        </div></Link>
+        <div className={styles.rows}>
+          <Link to={`/br`}><div className={styles.row + ' ' + styles.bought}>
+            <div className={styles.icon + ' ' + styles.shoppingcar}></div>
+              购买记录
+            <div className={styles.arrowRight}></div>
+          </div></Link>
+          <Link to={`/br`}><div className={styles.row + ' ' + styles.coupon}>
+            <div className={styles.icon + ' ' + styles.couponIcon}></div>
+              特权与优惠券
+            <div className={styles.arrowRight}><span>2张可用</span></div>
+          </div></Link>
+          <Link to={`/br`}><div className={styles.row + ' ' + styles.invite}>
+            <div className={styles.icon + ' ' + styles.inviteIcon}></div>
+              邀请好友得￥20
+            <div className={styles.arrowRight}></div>
+          </div></Link>
+          <Link to={`/about`}><div className={styles.row + ' ' + styles.about}>
+            <div className={styles.icon + ' ' + styles.jiudianbang}></div>
+              关于成长营
+            <div className={styles.arrowRight}></div>
+          </div></Link>
+          <div className={styles.hr}><div className={styles.inner}></div></div>
+          <Link to={`/wechat`}><div className={styles.row + ' ' + styles.wechat}>
+            <div className={styles.icon + ' ' + styles.gongzhonghao}></div>
+              关注公众号
+            <div className={styles.arrowRight}></div>
+          </div></Link>
+        </div>
       </div>
     );
   }

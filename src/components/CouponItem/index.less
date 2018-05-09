@@ -1,0 +1,100 @@
+@import '../../common.less';
+
+.CouponItem {
+    width: 9.2rem;
+    height: 2.6666rem;
+    margin: auto;
+    // background: linear-gradient(to right, #759ff0 , #617cee);
+    border-radius: 2px;
+    position: relative;
+    margin-bottom: 0.26666rem;
+    border-radius: 2px;
+    overflow: hidden;
+    &.border {
+        border: @border;
+        border-left: none;
+        .bg {
+            height: 2.76666rem;
+            position: relative;
+            top: -1px;
+        }
+    }
+    .bg {
+        width: 36%;
+        background-image: url('../../assets/coupon-bg.svg');
+        background-size: cover;
+        height: 100%;
+        float: left;
+        padding-top: 0.53333rem;
+        text-align: center;
+        color: white;
+        line-height: 1;
+        .money {
+            font-size: 0.48rem;
+            span {
+                font-size: 1.2rem;
+                font-weight: bolder;
+            }
+        }
+        .desc {
+            margin-top: 0.2rem;
+            font-size: 0.36rem;
+        }
+    }
+    .right {
+        width: 64%;
+        height: 100%;
+        float: right;
+        background: white;
+        padding: 0.26666rem;
+        line-height: 1;
+        position: relative;
+        .top {
+            height: 1.3333rem;
+            width: 100%;
+            .tag {
+                background: #f06468;
+                color: white;
+                text-align: center;
+                padding: 0 0.2rem;
+                display: inline-block;
+                height: 0.48rem;
+                line-height: 0.48rem;
+                border-radius: 2px;
+                margin-right: 0.13333rem;
+            }
+        }
+        .expire {
+            color: @black1;
+            font-size: 0.32px;
+            margin-bottom: 0.2rem;
+        }
+        .tips {
+            color: #bbbbbb;
+            font-size: 0.32px;
+        }
+        .btn {
+            position: absolute;
+            width: 1.8rem;
+            height: 0.53333rem;
+            border-radius: 0.27rem;
+            border: solid #f06468 thin;
+            color: #f06468;
+            line-height: 0.51rem;
+            text-align: center;
+            right: 0.2rem;
+            bottom: 0.26666rem;
+        }
+        .check {
+            width: 0.453333rem;
+            height: 0.453333rem;
+            position: absolute;
+            right: 0.4rem;
+            bottom: 0.26666rem;
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}

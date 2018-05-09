@@ -5,6 +5,9 @@ import CourseContent from './CourseContent/';
 import PopupCourse from './PopupCourse/';
 import PopupLogin from './PopupLogin/';
 import PopupOrder from './PopupOrder/';
+import PopupCoupon from './PopupCoupon/';
+import MemberCard from './MemberCard/';
+import CouponItem from './CouponItem/';
 
 export {
   AudioPlayer,
@@ -14,4 +17,7 @@ export {
   PopupCourse,
   PopupLogin,
   PopupOrder,
+  PopupCoupon,
+  MemberCard,
+  CouponItem,
 }

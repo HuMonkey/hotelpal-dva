@@ -94,7 +94,7 @@ class Profile extends Component {
               购买记录
             <div className={styles.arrowRight}></div>
           </div></Link>
-          <Link to={`/br`}><div className={styles.row + ' ' + styles.coupon}>
+          <Link to={`/coupon`}><div className={styles.row + ' ' + styles.coupon}>
             <div className={styles.icon + ' ' + styles.couponIcon}></div>
               特权与优惠券
             <div className={styles.arrowRight}><span>2张可用</span></div>

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import * as liveService from '../services/live';
 
-import { getToken } from '../utils';
+import { getToken, getParam } from '../utils';
 
 let websocket;
 
@@ -28,6 +28,7 @@ export default {
         });
         if (pathname.indexOf('/live') > -1) {
           const liveId = pathname.split('/')[2];
+          const invitor = pathname.split('/')[4];
           dispatch({
             type: 'fetchLiveDetail',
             payload: {
@@ -37,7 +38,6 @@ export default {
             },
             onResult (res) {}
           });
-
           dispatch({
             type: 'fetchChatHistory',
             payload: {
@@ -73,6 +73,7 @@ export default {
             type: 'save',
             payload: {
               countDownInter: inter,
+              invitor,
             }
           });
 
@@ -172,6 +173,14 @@ export default {
     },
     *liveEnroll({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(liveService.liveEnroll, payload.data || {});
+      if (res.data.code === 0) {
+        onResult && onResult(res);
+      } else {
+        onResult && onResult(null);
+      }
+    },
+    *enrollFor({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(liveService.enrollFor, payload.data || {});
       if (res.data.code === 0) {
         onResult && onResult(res);
       } else {

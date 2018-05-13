@@ -5,7 +5,7 @@ import styles from './index.less';
 
 import { Navs, PopupCourse, PopupLogin, PopupOrder } from '../../components';
 
-import { Icon, Input } from 'antd';
+import { Icon, Input, message, Popover } from 'antd';
 
 import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
@@ -131,7 +131,6 @@ class Live extends Component {
   enroll () {
     const { dispatch, live } = this.props;
     const { liveDetail } = live;
-    console.log(111);
 
     // VIP 直接调用报名接口了
     if (liveDetail.userInfo.liveVip === 'Y') {
@@ -146,11 +145,28 @@ class Live extends Component {
           console.log(res);
         }
       });
+      if (live.invitor && live.invitor !== getToken()) {
+        dispatch({
+          type: 'live/enrollFor',
+          payload: {
+            id: liveDetail.id,
+            invitor: live.invitor,
+          },
+          onResult (res) {}
+        });
+        dispatch({
+          type: 'live/save',
+          payload: {
+            invitor: null
+          },
+          onResult (res) {}
+        });
+      } 
       return false;
     }
 
     // TODO 调用支付接口
-    alert('支付还没写好！');
+    message.error('支付还没写好！');
     
   }
 
@@ -309,19 +325,25 @@ class Live extends Component {
         <div className={styles.right} onClick={this.liveInviting.bind(this)}>我要免费报名</div>
       </div>;
     } else if (signup === 'inviting') {
+      const invitedUserList = userInfo.invitedUserList;
       let left = 5;
       if (userInfo.invitedUserList) {
         left -= userInfo.invitedUserList.length;
+      }
+      const emptyItems = [];
+      for (let i = 0; i < left; i++) {
+        emptyItems.push(<div className={styles.avatar} key={i + '-2'}><img src={simleLogo} /></div>)
       }
       invitingDom = <div className={styles.item + ' ' + styles.big}>
         <div className={styles.left}>
           <div className={styles.inner}>再邀请{left}个好友即可免费</div>
           <div className={styles.users}>
-            <div className={styles.avatar}><img src={simleLogo} /></div>
-            <div className={styles.avatar}><img src={simleLogo} /></div>
-            <div className={styles.avatar}><img src={simleLogo} /></div>
-            <div className={styles.avatar}><img src={simleLogo} /></div>
-            <div className={styles.avatar}><img src={simleLogo} /></div>
+            {
+              invitedUserList && invitedUserList.map((d, i) => {
+                return <div className={styles.avatar} key={i + '-1'}><img src={d.headImg} /></div>
+              })
+            }
+            { emptyItems }
           </div>
         </div>
         <div className={styles.right + ' ' + styles.big} onClick={this.liveInviting.bind(this)}>我要免费报名</div>
@@ -406,7 +428,11 @@ class Live extends Component {
               <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
                 <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
               </video>
-            </div> : <div className={styles.player}></div>
+            </div> : <div className={styles.player}>
+              <div className={styles.split}></div>
+              <div className={styles.tips}>需要报名才能观看公开课</div>
+              <div className={styles.people}><span>212222人正在收看</span></div>
+            </div>
           }
           <div className={styles.switches}>
             <div 
@@ -419,16 +445,18 @@ class Live extends Component {
         </div>
         {
           page === 'detail' && <div>
-            <div className={styles.course}>
-              <div className={styles.left}>
-                <div className={styles.tag + statusClass}>
-                  {liveStatus[liveDetail.status]}
-                  <div className={styles.tri}></div>
+            <Popover placement="top" content={`报名即可帮助XXX获取免费报名资格`} visible={live.invitor}>
+              <div className={styles.course}>
+                <div className={styles.left}>
+                  <div className={styles.tag + statusClass}>
+                    {liveStatus[liveDetail.status]}
+                    <div className={styles.tri}></div>
+                  </div>
+                  <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
                 </div>
-                <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
+                { signup === 'paid' || signup === 'free' ? <div className={styles.paid}></div> : <div className={styles.right}>已有{enrollCount}人报名</div> }
               </div>
-              { signup === 'paid' || signup === 'free' ? <div className={styles.paid}></div> : <div className={styles.right}>已有{enrollCount}人报名</div> }
-            </div>
+            </Popover>
             { 
               (signup === 'inviting' || signup === 'init') && <div className={styles.signups}>
                 <div className={styles.item}>
@@ -465,7 +493,7 @@ class Live extends Component {
         }
         {
           page === 'chat' && <div>
-            <div className={styles.ta + taClass}>
+            { taComments.length > 0 && <div className={styles.ta + taClass}>
               <div>
                 {taDom}
               </div>
@@ -473,7 +501,7 @@ class Live extends Component {
                 { taOpen && <Icon onClick={() => this.switchTa.call(this, false)} type="up" /> }
                 { !taOpen && <Icon onClick={() => this.switchTa.call(this, true)} type="down" /> }
               </div>
-            </div>
+            </div> }
             <div className={styles.comments}>
               {!taOpen && commentsDom}
             </div>

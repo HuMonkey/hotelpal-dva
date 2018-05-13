@@ -30,3 +30,8 @@ export function liveEnroll(data) {
   const jdbtk = getToken();
   return request(`${config.host}/test/hotelpal/live/enroll?courseId=${data.id}&token=${jdbtk}`);
 }
+
+export function enrollFor(data) {
+  const jdbtk = getToken();
+  return request(`${config.host}/test/hotelpal/live/enrollFor?courseId=${data.id}&inviter=${data.invitor}&token=${jdbtk}`);
+}

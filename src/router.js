@@ -32,6 +32,7 @@ function RouterConfig({ history }) {
       <Switch>
         <Route path="/" exact render={() => requireWechat(Index)} />
         <Route path="/live/:id" exact render={() => requireWechat(Live)} />
+        <Route path="/live/:id/invitor/:token" exact render={() => requireWechat(Live)} />
         <Route path="/course/:id" exact render={() => requireWechat(Course)} />
         <Route path="/hongbao/:id" exact render={() => requireWechat(Lesson)} />
         <Route path="/lesson/pay/:id" exact render={() => requireWechat(Lesson)} />

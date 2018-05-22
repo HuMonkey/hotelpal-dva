@@ -11,6 +11,8 @@ import CourseDetail from './routes/CourseDetail/';
 import BoughtRecord from './routes/BoughtRecord/';
 import About from './routes/About/';
 import Coupon from './routes/Coupon/';
+import Invite from './routes/Invite/';
+import InvitePage from './routes/InvitePage/';
 import WeChat from './routes/WeChat/';
 import Modify from './routes/Modify/';
 import Login from './routes/Login/';
@@ -46,6 +48,8 @@ function RouterConfig({ history }) {
         <Route path="/coursedetail" exact render={() => requireWechat(CourseDetail)} />
         <Route path="/about" exact render={() => requireWechat(About)} />
         <Route path="/coupon" exact render={() => requireWechat(Coupon)} />
+        <Route path="/invite" exact render={() => requireWechat(Invite)} />
+        <Route path="/InvitePage" exact render={() => requireWechat(InvitePage)} />
         <Route path="/modify" exact render={() => requireWechat(Modify)} />
         <Route path="/wechat" exact render={() => requireWechat(WeChat)} />
         <Route path="/login" exact component={Login} />

@@ -1,0 +1,133 @@
+@import '../../common.less';
+.normal {
+  width: 100%;
+  height: 100%;
+  background: #f66266;
+  text-align: center;
+  padding: 0 0.4rem;
+  padding-top: 0.8rem;
+  .bg {
+    height: 4rem;
+  }
+  .title {
+    margin-top: 0.6666rem;
+    color: white;
+    font-size: 0.64rem;
+    // font-weight: bold;
+    span {
+      font-weight: bolder;
+      font-size: 0.8rem;
+    }
+  }
+  .stitle {
+    color: white;
+    font-size: 0.4rem;
+  }
+  .goto {
+    color: #ec9452;
+    font-size: 0.4rem;
+    font-weight: bolder;
+    margin-top: 0.4rem;
+    line-height: 1;
+    margin-bottom: 0.8rem;
+    .icon {
+      font-size: 0.2rem;
+    }
+  }
+  .btn {
+    width: 6.6666rem;
+    height: 1rem;
+    position: relative;
+    margin: auto;
+    .inner1 {
+      width: 6.6666rem;
+      height: 1rem;
+      position: absolute;
+      top: 0.1rem;
+      background: #f0944a;
+      border-radius: 0.5rem;
+    }
+    .inner2 {
+      width: 6.6666rem;
+      height: 1rem;
+      position: absolute;
+      top: 0;
+      background: #f0ac4a;
+      border-radius: 0.5rem;
+      font-size: 0.4rem;
+      line-height: 1rem;
+      color: white;
+      font-weight: bold;
+      z-index: 1;
+    }
+  }
+  .process {
+    background: #feffff;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.8rem;
+    .header {
+      background: #f4f5f6;
+      height: 0.8rem;
+      width: 100%;
+      position: relative;
+      font-size: 0.32rem;
+      font-weight: bolder;
+      line-height: 0.8rem;
+      text-align: left;
+      padding: 0 0.3333rem;
+      .tips {
+        position: absolute;
+        right: 0.3333rem;
+        top: 0;
+        height: 100%;
+        line-height: 0.8rem;
+        font-weight: normal;
+        color: @black1;
+      }
+    }
+    .main {
+      padding: 0.32rem 0.53333rem;
+      .row {
+        width: 100%;
+        height: 1.146666rem;
+        margin-bottom: 0.26666rem;
+        .left {
+          float: left;
+          .avatar {
+            width: 1.146666rem;
+            height: 1.146666rem;
+            border-radius: 50%;
+            background: #f4f5f6;
+            margin-right: 0.5rem;
+            display: inline-block;
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+        .right {
+           float: right;
+           line-height: 1.146666rem;
+           font-size: 0.4rem;
+           &.finish {
+             color: #cccccc;
+           }
+           &.ing {
+             color: @black2;
+           }
+           .sbtn {
+             width: 2.9rem;
+             height: 0.9rem;
+             color: white;
+             line-height: 0.9rem;
+             text-align: center;
+             background: @red;
+             border-radius: 4px;
+             margin-top: 0.1rem;
+           }
+        }
+      }
+    }
+  }
+}

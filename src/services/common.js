@@ -33,8 +33,8 @@ export function uploadAvatar(data) {
 }
 
 export function getWechatSign(data) {
-  const jdbtk = getToken();
-  return request(config.host + '/hotelpal/user/getSign?token=' + jdbtk + '&url=' + encodeURIComponent(data.url))
+  // const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/getSign?url=' + encodeURIComponent(data.url))
 }
 
 export function sendCaptcha(data) {

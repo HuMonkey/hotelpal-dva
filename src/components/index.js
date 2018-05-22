@@ -8,6 +8,7 @@ import PopupOrder from './PopupOrder/';
 import PopupCoupon from './PopupCoupon/';
 import MemberCard from './MemberCard/';
 import CouponItem from './CouponItem/';
+import BackBtn from './BackBtn/';
 
 export {
   AudioPlayer,
@@ -20,4 +21,5 @@ export {
   PopupCoupon,
   MemberCard,
   CouponItem,
+  BackBtn,
 }

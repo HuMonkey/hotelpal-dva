@@ -1,6 +1,8 @@
 import dva from 'dva';
 import './index.less';
 
+import {getToken} from './utils';
+
 // 1. Initialize
 const app = dva();
 
@@ -9,14 +11,16 @@ const app = dva();
 
 // 3. Model
 app.model(require('./models/common'));
-app.model(require('./models/index'));
-app.model(require('./models/bought'));
-app.model(require('./models/profile'));
-app.model(require('./models/jdbs'));
-app.model(require('./models/course'));
-app.model(require('./models/lesson'));
-app.model(require('./models/hongbao'));
-app.model(require('./models/live'));
+if (getToken ()) {
+    app.model(require('./models/index'));
+    app.model(require('./models/bought'));
+    app.model(require('./models/profile'));
+    app.model(require('./models/jdbs'));
+    app.model(require('./models/course'));
+    app.model(require('./models/lesson'));
+    app.model(require('./models/hongbao'));
+    app.model(require('./models/live'));
+}
 
 // 4. Router
 app.router(require('./router'));

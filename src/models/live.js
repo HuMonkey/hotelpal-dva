@@ -21,14 +21,14 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(async ({ pathname, search }) => {
-        dispatch({
-            type: 'fetchLiveList',
-            payload: {},
-            onResult (res) {}
-        });
         if (pathname.indexOf('/live') > -1) {
           const liveId = pathname.split('/')[2];
           const invitor = pathname.split('/')[4];
+          dispatch({
+            type: 'fetchLiveList',
+            payload: {},
+            onResult (res) {}
+          });
           dispatch({
             type: 'fetchLiveDetail',
             payload: {

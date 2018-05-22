@@ -3,10 +3,9 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
-import jdb from '../../assets/jiudianbang-big.png';
 import cross from '../../assets/cross.png';
 import { formatNum, getAudioLength, callWxPay } from '../../utils';
-import { CourseContent } from '../../components';
+import { CourseContent, BackBtn } from '../../components';
 
 class Course extends Component {
   constructor (props) {
@@ -210,16 +209,7 @@ class Course extends Component {
           </div>
           <div className={styles.hr}></div>
         </div>
-        <div className={styles.back}>
-          <Link to={'/'}>
-            <div className={styles.box}>
-              <img src={jdb} /> 
-              <div className={styles.title}>酒店邦成长营</div> 
-              <div className={styles.desc}>为你提供高效、省时的知识服务</div> 
-              <div className={styles.arrow}></div>
-            </div>
-          </Link>
-        </div>
+        <BackBtn />
         {buyDom}
       </div>
     ); 

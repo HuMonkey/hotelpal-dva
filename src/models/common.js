@@ -17,7 +17,7 @@ export default {
                     payload: {},
                 })
             }
-            return history.listen(({ pathname, query }) => {
+            return history.listen(async ({ pathname, query }) => {
                 const code = getParam('code'); // url上的code
                 const token = getCookie('jdbtk'); // cookie 里的jdbtk
                 if (token) {
@@ -28,14 +28,14 @@ export default {
                     const origin = encodeURIComponent(location.origin);
                     const search = encodeURIComponent(location.search);
                     const hash = encodeURIComponent(location.hash);
-                    // const redirect = `http://hotelpal.cn/test.html?origin=${origin}&search=${search}&hash=${hash}`
-                    const redirect = `http://hotelpal.cn`
+                    const redirect = `http://hotelpal.cn/test.html?origin=${origin}&search=${search}&hash=${hash}`
+                    // const redirect = `http://hotelpal.cn`
                     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
                         + config.appId + '&redirect_uri='
                         + encodeURIComponent(redirect)
                         + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
                 } else {
-                    dispatch({
+                    await dispatch({
                         type: 'receiveRedirect',
                         payload: {
                             code

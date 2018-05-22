@@ -99,7 +99,7 @@ class Profile extends Component {
               特权与优惠券
             <div className={styles.arrowRight}><span>2张可用</span></div>
           </div></Link>
-          <Link to={`/br`}><div className={styles.row + ' ' + styles.invite}>
+          <Link to={`/invite`}><div className={styles.row + ' ' + styles.invite}>
             <div className={styles.icon + ' ' + styles.inviteIcon}></div>
               邀请好友得￥20
             <div className={styles.arrowRight}></div>

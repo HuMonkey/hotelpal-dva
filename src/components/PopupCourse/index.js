@@ -11,9 +11,15 @@ class PopupCourse extends Component {
   }
 
   render() {
-    const { course, closePopup } = this.props;
+    const { course, closePopup, onSubmit } = this.props;
+
+    const { courseContent } = course;
 
     function createMarkupSpeaker() { return { __html: course.speaker.desc || '暂无' }; };
+    function createMarkupIntroduce() { return { __html: courseContent.introduce || '暂无' }; };
+    function createMarkupCrowd() { return { __html: courseContent.crowd || '暂无' }; };
+    function createMarkupGain() { return { __html: courseContent.gain || '暂无' }; };
+    function createMarkupSubscribe() { return { __html: courseContent.subscribe || '暂无' }; };
 
     return (
       <div className={styles.popupCourse}>
@@ -40,8 +46,24 @@ class PopupCourse extends Component {
                 <div className={styles.speaker}>{course.speaker.nick}<span>{course.speaker.company} {course.speaker.title}</span></div>
                 <div className={styles.text} dangerouslySetInnerHTML={createMarkupSpeaker()}></div>
               </div>
+              <div className={styles.desc}>
+                <div className={styles.label}>课程介绍</div>
+                <div className={styles.text} dangerouslySetInnerHTML={createMarkupIntroduce()}></div>
+              </div>
+              <div className={styles.desc}>
+                <div className={styles.label}>适宜人群</div>
+                <div className={styles.text} dangerouslySetInnerHTML={createMarkupCrowd()}></div>
+              </div>
+              <div className={styles.desc}>
+                <div className={styles.label}>您将收获</div>
+                <div className={styles.text} dangerouslySetInnerHTML={createMarkupGain()}></div>
+              </div>
+              <div className={styles.desc}>
+                <div className={styles.label}>订阅须知</div>
+                <div className={styles.text} dangerouslySetInnerHTML={createMarkupSubscribe()}></div>
+              </div>
             </div>
-            <div className={styles.buy}>立即订阅：{course.price / 100} / {course.lessonNum} 课时</div>
+            <div className={styles.buy} onClick={onSubmit}>立即订阅：{course.price / 100} / {course.lessonNum} 课时</div>
           </div>
         </div>
       </div>

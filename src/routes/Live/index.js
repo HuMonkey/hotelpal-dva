@@ -217,6 +217,20 @@ class Live extends Component {
     this.refs.normal.scrollTop = 20000000;
   }
 
+  onCourseSubmit () {
+    const { common } = this.props;
+    // 没有手机号
+    if (!common.userInfo.phone) {
+      this.setState({
+        popup: 'login',
+      });
+      return false;
+    }
+    this.setState({
+      popup: 'order',
+    })
+  }
+
   render () {
     const { live, common } = this.props;
 
@@ -401,9 +415,9 @@ class Live extends Component {
         { hongbaoShow && hongbaoDom }
         {
           popup && <div>
-            { popup === 'detail' && <PopupCourse course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'detail' && <PopupCourse course={relaCourse} onSubmit={this.onCourseSubmit.bind(this)} closePopup={this.closePopup.bind(this)} /> }
             { popup === 'login' && <PopupLogin closePopup={this.closePopup.bind(this)} /> }
-            { popup === 'order' && <PopupOrder closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'order' && <PopupOrder course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
           </div>
         }
         <Navs/>
@@ -508,7 +522,8 @@ class Live extends Component {
           </div>
         }
         { 
-          page === 'chat' && status === 'ONGOING' && <div className={styles.commentBox}>
+          // page === 'chat' && status === 'ONGOING' && <div className={styles.commentBox}>
+          page === 'chat' && <div className={styles.commentBox}>
             { 
               scroll === 'hb' ? <div className={styles.hongbao} onClick={this.openHongbao.bind(this)}>
                 <div className={styles.inner}>

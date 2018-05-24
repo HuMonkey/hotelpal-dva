@@ -98,6 +98,13 @@ export default {
             console.log(evt) 
           };
         }
+        if (pathname == '/') {
+          dispatch({
+            type: 'fetchLiveList',
+            payload: {},
+            onResult (res) {}
+          });
+        }
       });
     },
   },

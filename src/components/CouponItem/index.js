@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
@@ -12,7 +13,11 @@ class CouponItem extends Component {
   }
 
   render() {
-    const { mode, selected, border } = this.props;
+    const { mode, selected, border, data } = this.props;
+
+    const { type, domainId, used, validity, value } = data;
+
+    const expired = moment(validity).format('YYYY-MM-DD');
 
     if (mode === 'select') {
       // TODO
@@ -24,15 +29,16 @@ class CouponItem extends Component {
       <div className={styles.CouponItem + borderClassName}>
         <div className={styles.bg}>
           <div className={styles.money}>￥<span>20</span></div>
-          <div className={styles.desc}>公开课红包</div>
+          <div className={styles.desc}>{type == 'COURSE' ? '公开课红包' : ''}</div>
         </div>
         <div className={styles.right}>
           <div className={styles.top}>
             <div className={styles.tag}>订阅专栏</div>
             所有订阅课程满100可用
           </div>
-          <div className={styles.expire}>有效期至2018-09-20</div>
-          <div className={styles.tips}>满足使用条件</div>
+          { mode !== 'select' && <div className={styles.blank}></div> }
+          <div className={styles.expire}>有效期至{expired}</div>
+          {/* <div className={styles.tips}>满足使用条件</div> */}
           { mode !== 'select' && <div className={styles.btn}>去使用</div> }
           { 
             mode === 'select' && <div className={styles.check}>

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
@@ -12,10 +13,11 @@ class MemberCard extends Component {
   }
 
   render() {
-    const { type, mode, selected } = this.props;
+    const { type, mode, selected, data } = this.props;
     let name = '学习卡';
-    let left = `还有${3}次`;
-    let expire = '2018-08-20';
+    let left = `还有${data.leftTimes || 0}次`;
+    // let expire = '2018-08-20';
+    let expire = moment(data.validity).format('YYYY-MM-DD');
     let vipClassName = '';
     if (type === 'live') {
       name = '公开课会员卡';

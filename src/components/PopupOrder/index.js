@@ -11,7 +11,8 @@ class PopupOrder extends Component {
   }
 
   render() {
-    const { closePopup } = this.props;
+    const { closePopup, course } = this.props;
+    console.log(222, course);
     return (
       <div className={styles.PopupOrder}>
         <div className={styles.content}>
@@ -20,25 +21,26 @@ class PopupOrder extends Component {
           <div>
             <div className={styles.title}>订单确认</div>
             <div className={styles.box}>
-              <div className={styles.avatar}></div>
+              <div className={styles.avatar} style={{ backgroundImage: `url(${course.bannerImg})` }}></div>
               <div className={styles.infos}>
-                <div className={styles.stitle}>一学就会的酒店营销课</div>
-                <div className={styles.speaker}>李洋 feekr CEO</div>
+                <div className={styles.stitle}>{course.title}</div>
+                <div className={styles.speaker}>{course.speaker.nick} {course.speaker.company} {course.speaker.title}</div>
               </div>
             </div>
             <div className={styles.list}>
               <div className={styles.row}>
                 <div className={styles.left}>课程价格</div>
-                <div className={styles.right}>￥199</div>
+                <div className={styles.right}>￥{course.price / 100}</div>
               </div>
               <div className={styles.row}>
                 <div className={styles.left}>优惠</div>
-                <div className={styles.right + ' ' + styles.coupon}>-￥20<Icon type="right" className={styles.chooseCoupons} /></div>
+                {/* <div className={styles.right + ' ' + styles.coupon}>-￥20<Icon type="right" className={styles.chooseCoupons} /></div> */}
+                <div className={styles.right + ' ' + styles.coupon}>无可用优惠</div>
               </div>
             </div>
             <div className={styles.row + ' ' + styles.total}>
               <div className={styles.left}>合计</div>
-              <div className={styles.right}>￥179</div>
+              <div className={styles.right}>￥{course.price / 100}</div>
             </div>
             <div className={styles.buy}>确认支付</div>
           </div>

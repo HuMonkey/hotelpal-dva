@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import { Icon } from 'antd';
 import styles from './index.less';
 
@@ -18,24 +19,38 @@ class Coupon extends Component {
 
     const { card, couponList, liveVip } = coupon;
 
+    if (!card || !liveVip) {
+      return <div></div>
+    }
+
+    // const noCoupon = card.exists === 'N' && liveVip.exists === 'N' && couponList.length == 0;
+    const noCoupon = true;
+
     return (
       <div className={styles.normal}>
         <Navs/>
         {
-          false && <div className={styles.empty}>
+          noCoupon && <div className={styles.empty}>
             <img className={styles.emptyPng} src={emptyPng} />
             <div className={styles.tips1}>没有优惠券</div>
             <div className={styles.tips2}>邀请好友获得优惠券哦！</div>
-            <div className={styles.btn}><Icon className={styles.icon} type="gift" />邀请</div>
+            <Link to={'/invite'}><div className={styles.btn}><Icon className={styles.icon} type="gift" />邀请</div></Link>
           </div>
         }
-        <div className={styles.list}>
-          { card.exists === 'Y' && <MemberCard type={'course'} /> }
-          { liveVip.exists === 'Y' && <MemberCard type={'live'} /> }
-          <CouponItem mode={`select`} selected={true}/>
-          { false && <PopupCoupon/> }
-        </div>
-        <div className={styles.tips3}>查看无效特权与优惠券<Icon type="right" /></div>
+        { 
+          !noCoupon && <div className={styles.list}>
+            { card.exists === 'Y' && <MemberCard type={'course'} data={card} /> }
+            { liveVip.exists === 'Y' && <MemberCard type={'live'} data={liveVip} /> }
+            {
+              couponList.map((d, i) => {
+                return <CouponItem key={i} data={d} />
+              })
+            }
+            {/* <CouponItem /> */}
+            { false && <PopupCoupon/> }
+          </div>
+        }
+        <Link to={'/coupon/useless'}><div className={styles.tips3}>查看无效特权与优惠券<Icon type="right" /></div></Link>
       </div>
     );
   }

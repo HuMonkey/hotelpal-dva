@@ -14,6 +14,10 @@ class Coupon extends Component {
   }
 
   render() {
+    const { coupon } = this.props;
+
+    const { card, couponList, liveVip } = coupon;
+
     return (
       <div className={styles.normal}>
         <Navs/>
@@ -26,10 +30,10 @@ class Coupon extends Component {
           </div>
         }
         <div className={styles.list}>
-          <MemberCard type={'course'} />
-          <MemberCard type={'live'} />
+          { card.exists === 'Y' && <MemberCard type={'course'} /> }
+          { liveVip.exists === 'Y' && <MemberCard type={'live'} /> }
           <CouponItem mode={`select`} selected={true}/>
-          <PopupCoupon/>
+          { false && <PopupCoupon/> }
         </div>
         <div className={styles.tips3}>查看无效特权与优惠券<Icon type="right" /></div>
       </div>
@@ -40,4 +44,8 @@ class Coupon extends Component {
 Coupon.propTypes = {
 };
 
-export default connect()(Coupon);
+const mapStateToProps = (state) => {
+  return { coupon: state.coupon, common: state.common };
+}
+
+export default connect(mapStateToProps)(Coupon);

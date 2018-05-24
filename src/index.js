@@ -20,6 +20,7 @@ if (getToken ()) {
     app.model(require('./models/lesson'));
     app.model(require('./models/hongbao'));
     app.model(require('./models/live'));
+    app.model(require('./models/coupon'));
 }
 
 // 4. Router

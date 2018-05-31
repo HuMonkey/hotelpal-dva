@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import { Icon, Input } from 'antd';
 import styles from './index.less';
 
@@ -11,12 +12,16 @@ class InvitePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true,
+      result: 'late', // got late old
     };
   }
 
+  register () {
+
+  }
+
   render() {
-    const {open} = this.state;
+    const { result } = this.state;
 
     const rp = <div className={styles.rp}>
       <div className={styles.stitle}>优惠券</div>
@@ -41,26 +46,43 @@ class InvitePage extends Component {
       <img className={styles.latePng} src={couponEmpty} />
     </div>;
 
-    const oldDom = <div className={styles.old}>
+    const oldDom = <div>
       <div className={styles.white}></div>
       <div className={styles.text}>您已经注册过了</div>
     </div>;
 
-    if (open) {
-      return <div className={styles.open}>
-        {oldDom}
+    const newDom = <div>
+      <div className={styles.title}>
+        <span>邀请函</span>
+      </div>
+      <div className={styles.text}>我是<span>胡浇浇</span></div>
+      <div className={styles.text}>正在<span>“酒店邦成长营”</span>学习</div>
+      <div className={styles.text}>邀请你成为我的同学</div>
+      <div className={styles.text + ' ' + styles.last}>让我们一起成长</div>
+      <div className={styles.tips}>注册成新用户，即可得</div>
+      { rp }
+      <div className={styles.wrap1}><Input className={styles.input} placeholder="请输入11位手机号" size="large" /></div>
+      <div className={styles.wrap2}><Input className={styles.input} placeholder="请输入验证码" size="large" /></div>
+      <div className={styles.btn}>快捷注册</div>
+      <div className={styles.tips2}>点击登录代表您已阅读并同意<span>《酒店邦成长营》会员条款</span></div>
+      </div>;
+
+    if (result) {
+      // 注册过
+      return <div className={styles.resultPage}>
+        {result === 'old' && oldDom}
+        {result === 'got' && gotDom}
+        {result === 'late' && lateDom}
         <div className={styles.label}>您可以</div>
-        <div className={styles.btn}>
+        <Link to='/invite'><div className={styles.sbtn}>
           推荐好友得20元
           <img src={moneyIcon} className={styles.money} />
           <Icon className={styles.icon} type="right" />
-        </div>
+        </div></Link>
         <BackBtn />
       </div>
-    }
-
-    return (
-      <div className={styles.normal}>
+    } else {
+      return <div className={styles.normal}>
         <div className={styles.main}>
           <div>
             <Icon className={styles.plus} type="plus" />
@@ -72,22 +94,11 @@ class InvitePage extends Component {
           <div className={styles.inner2}>
             <div className={styles.border} />
           </div>
-          <div className={styles.title}>
-            <span>邀请函</span>
-          </div>
-          <div className={styles.text}>我是<span>胡浇浇</span></div>
-          <div className={styles.text}>正在<span>“酒店邦成长营”</span>学习</div>
-          <div className={styles.text}>邀请你成为我的同学</div>
-          <div className={styles.text + ' ' + styles.last}>让我们一起成长</div>
-          <div className={styles.tips}>注册成新用户，即可得</div>
-          { rp }
-          <div className={styles.wrap1}><Input className={styles.input} placeholder="请输入11位手机号" size="large" /></div>
-          <div className={styles.wrap2}><Input className={styles.input} placeholder="请输入验证码" size="large" /></div>
-          <div className={styles.btn}>快捷注册</div>
-          <div className={styles.tips2}>点击登录代表您已阅读并同意<span>《酒店邦成长营》会员条款</span></div>
+          { newDom }
         </div>
       </div>
-    );
+    }
+
   }
 }
 

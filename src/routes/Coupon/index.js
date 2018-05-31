@@ -23,8 +23,8 @@ class Coupon extends Component {
       return <div></div>
     }
 
-    // const noCoupon = card.exists === 'N' && liveVip.exists === 'N' && couponList.length == 0;
-    const noCoupon = true;
+    const noCoupon = card.exists === 'N' && liveVip.exists === 'N' && couponList.length == 0;
+    // const noCoupon = true;
 
     return (
       <div className={styles.normal}>

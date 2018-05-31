@@ -15,7 +15,7 @@ class CouponItem extends Component {
   render() {
     const { mode, selected, border, data } = this.props;
 
-    const { type, domainId, used, validity, value } = data;
+    const { type, domainId, used, validity, value, detail, name } = data;
 
     const expired = moment(validity).format('YYYY-MM-DD');
 
@@ -25,16 +25,29 @@ class CouponItem extends Component {
 
     const borderClassName = border ? ' ' + styles.border : '';
 
+    let tips1 = '', tips2 = '';
+    const { apply, applyToCourseTitle, applyToPrice } = detail;
+    const detailType = detail.type;
+    if (apply === 'All') {
+      tips1 = '所有订阅课程';
+    } else if (apply === 'PARTICULAR') {
+      tips2 = applyToCourseTitle;
+    }
+
+    if (applyToPrice > 0) {
+      tips2 = `满${applyToPrice}`
+    }
+
     return (
       <div className={styles.CouponItem + borderClassName}>
         <div className={styles.bg}>
-          <div className={styles.money}>￥<span>20</span></div>
-          <div className={styles.desc}>{type == 'COURSE' ? '公开课红包' : ''}</div>
+          <div className={styles.money}>￥<span>{value}</span></div>
+          <div className={styles.desc}>{name || '没名字的红包'}</div>
         </div>
         <div className={styles.right}>
           <div className={styles.top}>
-            <div className={styles.tag}>订阅专栏</div>
-            所有订阅课程满100可用
+            {detailType === 'COURSE' && <div className={styles.tag}>订阅专栏</div>}
+            {tips1}{tips2}可用
           </div>
           { mode !== 'select' && <div className={styles.blank}></div> }
           <div className={styles.expire}>有效期至{expired}</div>

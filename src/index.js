@@ -21,6 +21,7 @@ if (getToken ()) {
     app.model(require('./models/hongbao'));
     app.model(require('./models/live'));
     app.model(require('./models/coupon'));
+    app.model(require('./models/invite'));
 }
 
 // 4. Router

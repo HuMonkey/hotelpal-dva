@@ -143,7 +143,7 @@ class Course extends Component {
             <div className={styles.inner}>点击可免费兑换课程</div>
           </div>
         }
-        订阅：¥ { detail.charge / 100 } / { detail.lessonCount }课时
+        订阅：¥ { detail.charge / 100 } { detail.lessonCount && <span>/ { detail.lessonCount }课时</span> }
       </div>
     </div>;
 

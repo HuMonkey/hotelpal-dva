@@ -191,7 +191,7 @@ export default {
       if (res.data.code === 0) {
         onResult && onResult(res);
       } else {
-        onResult && onResult(null);
+        onResult && onResult(res);
       }
     },
     *addComment({ payload, onResult }, { call, put }) {  // eslint-disable-line

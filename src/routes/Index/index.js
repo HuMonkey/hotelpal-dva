@@ -9,6 +9,8 @@ import arrow from '../../assets/arrow-right.svg';
 import { BottomBar } from '../../components/';
 import { configWechat, updateWechartShare } from '../../utils/';
 
+let mark, touchPos;
+
 const liveStatus = {
   ENROLLING: '报名中',
   ONGOING: '直播中',
@@ -49,6 +51,25 @@ class IndexPage extends Component {
     });
   }
 
+  onTouchStart (event) {
+    mark = new Date();
+    touchPos = event.nativeEvent.changedTouches[0];
+  }
+
+  onTouchEnd (event, data) {
+    const now = new Date();
+    const currentTouchPos = event.nativeEvent.changedTouches[0];
+    if (now - mark > 100) {
+      if (touchPos.clientX > currentTouchPos.clientX) {
+        this.refs.slider.slickNext();
+      } else {
+        this.refs.slider.slickPrev();
+      }
+    } else {
+      window.location = data.link;
+    }
+  }
+
   render () {
     const { common, index, live } = this.props;
     if (!index) {
@@ -57,7 +78,7 @@ class IndexPage extends Component {
   
     const settings = {
       dots: true,
-      infinite: false,
+      infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
       autoplay: true,
@@ -73,10 +94,14 @@ class IndexPage extends Component {
     return (
       <div className={styles.normal}>
         <BottomBar selected={0}></BottomBar>
-        <Slider className={styles.slider} {...settings}>
+        <Slider className={styles.slider} {...settings} ref={'slider'}>
           {
             bannerList.map((d, i) => {
-              return <a href={d.link} key={i}><img src={d.bannerImg}/></a>
+              return <img 
+                src={d.bannerImg} 
+                key={i} 
+                onTouchEnd={(event) => this.onTouchEnd.call(this, event, d)} 
+                onTouchStart={this.onTouchStart.bind(this)}/>
             })
           }
         </Slider>

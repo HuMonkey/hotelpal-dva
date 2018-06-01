@@ -60,9 +60,7 @@ class Profile extends Component {
         </div>
         <div className={styles.header}>
           <div className={styles.avater}>
-            <div className={styles.img + ' ' + styles.short}>
-              <img src={userInfo.headImg} />
-            </div>
+            <div className={styles.img} style={{ backgroundImage: `url(${userInfo.headImg})` }}></div>
           </div> 
           <Link to={'/modify'}><div className={styles.name}>
             {userInfo.nickname}

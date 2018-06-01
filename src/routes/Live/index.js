@@ -16,6 +16,8 @@ import simleLogo from '../../assets/smile.svg';
 
 import { formatNum, getHtmlContent } from '../../utils';
 
+let helpedTipsShow = false;
+
 const liveStatus = {
   ENROLLING: '报名中',
   ONGOING: '直播中',
@@ -36,6 +38,8 @@ class Live extends Component {
       popup: null, // detail, order, login
       playerInit: false,
       replying: false,
+
+      enrollForShow: true,
     };
   }
 
@@ -94,14 +98,37 @@ class Live extends Component {
     });
   }
 
+  componentDidMount () {
+    setTimeout(() => {
+      this.setState({
+        enrollForShow: false,
+      })
+    }, 2000)
+  }
+
   async liveInviting () {
     const { dispatch, live } = this.props;
-    const { liveDetail } = live;
+    const { liveDetail, invitor } = live;
     const { userInfo } = liveDetail;
 
     this.setState({
       posterShow: true,
     });
+
+    if (!userInfo.enrolledFor && invitor) {
+      dispatch({
+        type: 'live/enrollFor',
+        payload: {
+          data: {
+            invitor,
+            id: liveDetail.id,
+          }
+        },
+        onResult (res) {
+          message.error(res.data.messages[0]);
+        }
+      });
+    }
 
     if (userInfo.status === 'INVITING') {
       return false;
@@ -232,12 +259,18 @@ class Live extends Component {
   }
 
   render () {
+    const { enrollForShow } = this.state;
     const { live, common } = this.props;
 
     const { liveDetail, now, countDownInter, assistantMsg, chats } = live;
 
     if (!liveDetail) {
       return <div></div>
+    }
+
+    if (!helpedTipsShow && liveDetail.userInfo.enrolledFor) {
+      message.error('你已经帮助过别人了！');
+      helpedTipsShow = true;
     }
 
     const userInfo = Object.assign({}, common.userInfo, liveDetail.userInfo);
@@ -334,13 +367,13 @@ class Live extends Component {
     if (signup === 'init') {
       invitingDom = <div className={styles.item}>
         <div className={styles.left}>
-          <div className={styles.inner}>邀请5个好友可以免费</div>
+          <div className={styles.inner}>邀请{liveDetail.inviteRequire}个好友可以免费</div>
         </div>
         <div className={styles.right} onClick={this.liveInviting.bind(this)}>我要免费报名</div>
       </div>;
     } else if (signup === 'inviting') {
       const invitedUserList = userInfo.invitedUserList;
-      let left = 5;
+      let left = liveDetail.inviteRequire;
       if (userInfo.invitedUserList) {
         left -= userInfo.invitedUserList.length;
       }
@@ -459,7 +492,7 @@ class Live extends Component {
         </div>
         {
           page === 'detail' && <div>
-            <Popover placement="top" content={`报名即可帮助XXX获取免费报名资格`} visible={live.invitor}>
+            <Popover placement="top" content={`报名即可帮助XXX获取免费报名资格`} visible={!userInfo.enrolledFor && enrollForShow && (live.invitor ? true: false)}>
               <div className={styles.course}>
                 <div className={styles.left}>
                   <div className={styles.tag + statusClass}>

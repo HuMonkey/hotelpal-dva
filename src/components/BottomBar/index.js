@@ -12,7 +12,8 @@ class BottomBar extends Component {
 
   render() {
     const {selected} = this.props;
-    const iphoneXClass = isIphoneX() ? ' ' + styles.iphonex : '';
+    // const iphoneXClass = isIphoneX() ? ' ' + styles.iphonex : '';
+    const iphoneXClass = '';
     return (
       <div className={styles.bottomBar + iphoneXClass}>
         <div className={styles.footer}>

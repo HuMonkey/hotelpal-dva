@@ -17,6 +17,7 @@ import simleLogo from '../../assets/smile.svg';
 import { formatNum, getHtmlContent } from '../../utils';
 
 let helpedTipsShow = false;
+let commentScroll = false;
 
 const liveStatus = {
   ENROLLING: '报名中',
@@ -34,13 +35,16 @@ class Live extends Component {
       signup: 'init', // inviting init paid vip free
       state: 'ing', // before ing after
       taOpen: false,
-      scroll: 'ad', // 'hb' or 'ad'
       popup: null, // detail, order, login
       playerInit: false,
       replying: false,
 
       enrollForShow: true,
     };
+  }
+
+  scrollToBottom () {
+    document.getElementById('root').scrollTop = 20000000;
   }
 
   openPoster () {
@@ -70,6 +74,8 @@ class Live extends Component {
   changePage (page) {
     this.setState({
       page
+    }, () => {
+      this.scrollToBottom();
     })
   }
 
@@ -197,8 +203,16 @@ class Live extends Component {
     
   }
 
-  componentDidUpdate () {
+  componentDidUpdate (prevProps, prevState) {
     const { playerInit } = this.state;
+
+    const chats = this.props.live && this.props.live.chats;
+    const prevChats = prevProps.live && prevProps.live.chats;
+
+    console.log(1);
+    if (((prevChats && prevChats.length)) !== (chats && chats.length)) {
+      this.scrollToBottom();
+    }
     
     if (playerInit || !this.refs.player) {
       return false;
@@ -241,7 +255,7 @@ class Live extends Component {
   }
 
   onCommentFocus () {
-    this.refs.normal.scrollTop = 20000000;
+    this.scrollToBottom();
   }
 
   onCourseSubmit () {
@@ -258,17 +272,24 @@ class Live extends Component {
     })
   }
 
+  componentWillUnmount () {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'live/reset',
+    })
+  }
+
   render () {
     const { enrollForShow } = this.state;
     const { live, common } = this.props;
 
-    const { liveDetail, now, countDownInter, assistantMsg, chats } = live;
+    const { liveDetail, now, countDownInter, assistantMsg, chats, hbShow, PPTImg } = live;
 
     if (!liveDetail) {
       return <div></div>
     }
 
-    if (!helpedTipsShow && liveDetail.userInfo.enrolledFor) {
+    if (!helpedTipsShow && liveDetail.userInfo.enrolledFor && live.invitor) {
       message.error('你已经帮助过别人了！');
       helpedTipsShow = true;
     }
@@ -297,13 +318,15 @@ class Live extends Component {
 
     const { relaCourse } = liveDetail;
 
-    const { posterShow, page, taOpen, hongbaoShow, scroll, popup, replying } = this.state;
+    const { posterShow, page, taOpen, hongbaoShow, popup, replying } = this.state;
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
     const taClass = taOpen ? ' ' + styles.open : '';
 
-    const taComments = taOpen ? assistantMsg : assistantMsg.slice(0, 1);
+    const taComments = taOpen ? assistantMsg.slice(0).sort((a, b) => {
+      return a.updateTime - b.updateTime
+    }) : assistantMsg.slice(0, 1);
     const taDom = taComments.map((d, i) => {
       let hasPic = false;
       const pubTime = moment(d.updateTime).format('YYYY-MM-DD hh:mm:ss');
@@ -343,7 +366,9 @@ class Live extends Component {
       </div>
     });
 
-    const comments = chats;
+    const comments = chats.sort((a, b) => {
+      return a.updateTime - b.updateTime;
+    });
     const commentsDom = comments.map((d, i) => {
       const isMine = (d.self === 'Y');
       const isMineClass = isMine ? ' ' + styles.mine : '';
@@ -471,14 +496,17 @@ class Live extends Component {
             </div> 
           }
           { 
-            status === 'ONGOING' ? <div className={styles.player}>
+            userInfo.enrolled === 'Y' && status === 'ONGOING' ? <div className={styles.player}>
+              <div className={styles.ppt}>
+                <img src={PPTImg} />
+              </div>
               <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
                 <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
               </video>
             </div> : <div className={styles.player}>
               <div className={styles.split}></div>
               <div className={styles.tips}>需要报名才能观看公开课</div>
-              <div className={styles.people}><span>212222人正在收看</span></div>
+              {status === 'ONGOING' && <div className={styles.people}><span>{liveDetail.totalPeople}人正在收看</span></div>}
             </div>
           }
           <div className={styles.switches}>
@@ -534,12 +562,12 @@ class Live extends Component {
             </div>
             <div className={styles.know}>
               <div className={styles.title}>公开课须知</div>
-              <div className={styles.content}>这里要写死一段话</div>
+              <div className={styles.content}>公开课没有回放，付费用户请按时收看，错过不予退款。</div>
             </div>
           </div>
         }
         {
-          page === 'chat' && <div>
+          page === 'chat' && <div className={styles.chatPage} ref={`chatPage`}>
             { taComments.length > 0 && <div className={styles.ta + taClass}>
               <div>
                 {taDom}
@@ -549,16 +577,15 @@ class Live extends Component {
                 { !taOpen && <Icon onClick={() => this.switchTa.call(this, true)} type="down" /> }
               </div>
             </div> }
-            <div className={styles.comments}>
+            <div className={styles.comments} ref={`comments`}>
               {!taOpen && commentsDom}
             </div>
           </div>
         }
         { 
-          // page === 'chat' && status === 'ONGOING' && <div className={styles.commentBox}>
           page === 'chat' && <div className={styles.commentBox}>
             { 
-              scroll === 'hb' ? <div className={styles.hongbao} onClick={this.openHongbao.bind(this)}>
+              hbShow ? <div className={styles.hongbao} onClick={this.openHongbao.bind(this)}>
                 <div className={styles.inner}>
                   <div className={styles.square}>
                     <div className={styles.money}>￥<span>20</span></div>

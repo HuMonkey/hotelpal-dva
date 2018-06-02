@@ -3,6 +3,8 @@ import * as liveService from '../services/live';
 
 import { getToken, getParam } from '../utils';
 
+import { message } from 'antd';
+
 let websocket;
 
 export default {
@@ -16,6 +18,9 @@ export default {
     chats: [],
     now: moment(),
     countDownInter: null,
+
+    hbShow: false,
+    PPTImg: null,
   },
 
   subscriptions: {
@@ -84,15 +89,48 @@ export default {
             console.log(evt) 
           }; 
           websocket.onclose = function(evt) { 
-            console.log(evt) 
+            console.log(evt);
+            message.error('socket 断开了');
           }; 
-          websocket.onmessage = function(evt) { 
-            dispatch({
-              type: 'saveComment',
-              payload: {
-                data: evt.data,
-              }
-            })
+          websocket.onmessage = function(evt) {
+            console.log(evt);
+            const data = JSON.parse(evt.data);
+            if (data.msgType === 'TYPE_USER_MESSAGE') {
+              dispatch({
+                type: 'saveComment',
+                payload: {
+                  data: evt.data,
+                }
+              })
+            } else if (data.msgType === 'TYPE_HIDE_COUPON') {
+              dispatch({
+                type: 'switchHb',
+                payload: {
+                  show: false,
+                }
+              })
+            } else if (data.msgType === 'TYPE_SHOW_COUPON') {
+              dispatch({
+                type: 'switchHb',
+                payload: {
+                  show: true
+                }
+              })
+            } else if (data.msgType === 'TYPE_IMAGE_CHANGE') {
+              dispatch({
+                type: 'save',
+                payload: {
+                  PPTImg: data.msg
+                }
+              })
+            } else if (data.msgType === 'TYPE_ASSISTANT_MESSAGE') {
+              dispatch({
+                type: 'saveAMsg',
+                payload: {
+                  data: evt.data,
+                }
+              })
+            }
           }; 
           websocket.onerror = function(evt) { 
             console.log(evt) 
@@ -159,10 +197,12 @@ export default {
       const res = yield call(liveService.getLiveDetail, payload.data || {});
       if (res.data.code === 0) {
         const liveDetail = res.data.data;
+        const currentImg = liveDetail.currentImg;
         yield put({
           type: 'save',
           payload: {
-            liveDetail
+            liveDetail,
+            PPTImg: currentImg
           },
         });
         onResult && onResult(liveDetail);
@@ -204,6 +244,25 @@ export default {
     save(state, action) {
       return { ...state, ...action.payload };
     },
+    switchHb(state, action) {
+      console.log(111, action.payload);
+      return { ...state, hbShow: action.payload.show };
+    },
+    reset(state, action) {
+      state.countDownInter && clearInterval(state.countDownInter);
+      return {
+        ...state,
+        liveDetail: null,
+        chats: [],
+        countDownInter: null,
+      };
+    },
+    saveAMsg(state, action) {
+      const data = JSON.parse(action.payload.data && action.payload.data.trim());
+      console.log(111, data);
+      const assistantMsg = state.assistantMsg;
+      return {...state, assistantMsg: [data, ...assistantMsg]};
+    },
     saveComment(state, action) {
       const data = JSON.parse(action.payload.data && action.payload.data.trim());
       const chats = state.chats;
@@ -223,7 +282,10 @@ export default {
         }
       }
 
-      console.log(chats);
+      if (chats.some(d => d.id === newComment.id)) {
+        return state;
+      }
+
       return {...state, chats: [newComment, ...chats]};
     },
   },

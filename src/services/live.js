@@ -1,8 +1,8 @@
 import request from '../utils/request';
 import { config, getToken } from '../utils';
 
-const host = '';
-// const host = '/test';
+// const host = '';
+const host = '/test';
 
 export function getLiveList() {
   const jdbtk = getToken();

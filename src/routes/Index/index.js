@@ -9,6 +9,8 @@ import arrow from '../../assets/arrow-right.svg';
 import { BottomBar } from '../../components/';
 import { configWechat, updateWechartShare } from '../../utils/';
 
+import { Icon } from 'antd';
+
 let mark, touchPos;
 
 const liveStatus = {
@@ -126,7 +128,7 @@ class IndexPage extends Component {
                   <div className={styles.item}>
                     <div className={styles.top}>
                       <div className={styles.left}>
-                        <div className={styles.tag + ' ' + styles.before}>
+                        <div className={styles.tag + ' ' + styles[d.status]}>
                           {liveStatus[d.status]}
                           <div className={styles.tri}></div>
                         </div>
@@ -137,7 +139,8 @@ class IndexPage extends Component {
                     <div className={styles.detail}>
                       <div className={styles.title}>{d.title}</div>
                       <div className={styles.infos}>{d.speakerTitle}&nbsp;{d.speakerNick}&nbsp;{d.subTitle}</div>
-                      <div className={styles.arrowRight}></div>
+                      { d.status !== 'ONGOING' && <div className={styles.arrowRight}></div> }
+                      { d.status === 'ONGOING' && <Icon className={styles.right} type="play-circle" /> }
                     </div>
                   </div>
                 </Link>

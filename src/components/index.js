@@ -9,6 +9,9 @@ import PopupCoupon from './PopupCoupon/';
 import MemberCard from './MemberCard/';
 import CouponItem from './CouponItem/';
 import BackBtn from './BackBtn/';
+import IntroPanel from './IntroPanel/';
+import EnrollPanel from './EnrollPanel/';
+import TaComments from './TaComments/';
 
 export {
   AudioPlayer,
@@ -22,4 +25,7 @@ export {
   MemberCard,
   CouponItem,
   BackBtn,
+  IntroPanel,
+  EnrollPanel,
+  TaComments,
 }

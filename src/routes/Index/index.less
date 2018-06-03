@@ -104,16 +104,22 @@
                 border-top: 0.12rem solid transparent;
                 border-bottom: 0.12rem solid transparent; 
               }
-              &.before {
+              &.ONGOING {
+                background: @red;
+                .tri {
+                  border-left: 0.16rem solid @red;
+                }
+              }
+              &.ENROLLING {
                 background: @orange;
                 .tri {
                   border-left: 0.16rem solid @orange;
                 }
               }
-              &.ing {
-                background: @red;
+              &.ENDED {
+                background: #cccccc;
                 .tri {
-                  border-left: 0.16rem solid @red;
+                  border-left: 0.16rem solid #cccccc;
                 }
               }
             }
@@ -137,6 +143,14 @@
           position: relative;
           margin-top: 0.4rem;
           line-height: 1;
+          .right {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 0.8rem;
+            color: @red;
+            font-size: 0.8rem;
+          }
           .arrowRight {
             position: absolute;
             right: 0;

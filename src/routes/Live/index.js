@@ -27,7 +27,6 @@ class Live extends Component {
       page: 'detail', // detail or chat
       // signup: 'init', // inviting init paid vip free
       // state: 'ing', // before ing after
-      taOpen: false,
       popup: null, // detail, order, login
       playerInit: false,
       replying: false,
@@ -178,49 +177,6 @@ class Live extends Component {
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
-    const taClass = taOpen ? ' ' + styles.open : '';
-
-    const taComments = taOpen ? assistantMsg.slice(0).sort((a, b) => {
-      return a.updateTime - b.updateTime
-    }) : assistantMsg.slice(0, 1);
-    const taDom = taComments.map((d, i) => {
-      let hasPic = false;
-      const pubTime = moment(d.updateTime).format('YYYY-MM-DD hh:mm:ss');
-
-      let hasPicClass = '', pic;
-
-      const msg = d.msg || '';
-      const reg = new RegExp(/<img[^>]*>/g, "g");
-      const img = msg.match(reg);
-      if (img && !taOpen) {
-        const objE = document.createElement('div');
-    　　 objE.innerHTML = img;
-    　　 const imgDom = objE.childNodes[0];
-
-        hasPicClass = ' ' + styles.hasPic;
-        hasPic = true;
-        pic = imgDom.src;
-      }
-
-      function createMarkup() { 
-        const msg = taOpen ? d.msg || '' : getHtmlContent(d.msg || '');
-        return { __html: msg }; 
-      };
-
-      return <div key={i} className={styles.item + hasPicClass}>
-        <div className={styles.left}>
-          <div className={styles.title}>
-            <div className={styles.name}>
-              <div className={styles.icon}><div className={styles.tri}></div></div>
-              <div className={styles.text}>助教小燕子</div>
-            </div>  
-            <div className={styles.time}>{pubTime}</div>
-          </div>  
-          <div className={styles.comment} dangerouslySetInnerHTML={createMarkup()}></div>
-        </div>
-        { hasPic && <div className={styles.right} style={{ backgroundImage: `url(${pic})` }}></div> }
-      </div>
-    });
 
     const comments = chats.sort((a, b) => {
       return a.updateTime - b.updateTime;
@@ -333,7 +289,7 @@ class Live extends Component {
             </div>
           </div>
         }
-        { 
+        {/* { 
           page === 'chat' && taComments.length > 0 && <div className={styles.ta + taClass}>
             <div>
               {taDom}
@@ -343,10 +299,12 @@ class Live extends Component {
               { !taOpen && <Icon onClick={() => this.switchTa.call(this, true)} type="down" /> }
             </div>
           </div> 
+        } */}
+        {
+          page === 'chat' && assistantMsg.length > 0 && <TaComments comments={assistantMsg}/>
         }
         {
           page === 'chat' && <div className={styles.chatPage} ref={`chatPage`}>
-            <TaComments />
             <div className={styles.comments} ref={`comments`}>
               {!taOpen && commentsDom}
             </div>

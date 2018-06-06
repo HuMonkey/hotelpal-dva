@@ -3,7 +3,8 @@ import moment from 'moment';
 import { connect } from 'dva';
 import styles from './index.less';
 
-import { Navs, PopupCourse, PopupLogin, PopupOrder, IntroPanel, EnrollPanel, TaComments } from '../../components';
+import { Navs, PopupCourse, PopupLogin, PopupOrder, 
+  IntroPanel, EnrollPanel, TaComments, Comments, LivePlayer } from '../../components';
 
 import { Icon, Input, message, Popover } from 'antd';
 
@@ -59,12 +60,6 @@ class Live extends Component {
     })
   }
 
-  switchTa (taOpen) {
-    this.setState({
-      taOpen
-    })
-  }
-
   openHongbao () {
     // TODO 打开红包
     this.setState({
@@ -117,6 +112,12 @@ class Live extends Component {
     const { dispatch } = this.props;
 
     const reply = this.refs.reply.value;
+
+    if (reply.length > 100) {
+      message.error('聊天内容不能超过100个字~');
+      return false;
+    }
+
     await dispatch({
       type: 'live/addComment',
       payload: {
@@ -178,28 +179,6 @@ class Live extends Component {
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
 
-    const comments = chats.sort((a, b) => {
-      return a.updateTime - b.updateTime;
-    });
-    const commentsDom = comments.map((d, i) => {
-      const isMine = (d.self === 'Y');
-      const isMineClass = isMine ? ' ' + styles.mine : '';
-      const name = `${d.user.nick} ${d.user.company || ''} ${d.user.title || ''}`;
-
-      function createMarkup() { return { __html: d.msg || '' }; };
-
-      return <div className={styles.item + isMineClass} key={i}>
-        <div className={styles.avatar} style={{ backgroundImage: `url(${d.user.headImg})` }}></div>
-        <div className={styles.main}>
-          <div className={styles.name}>{name}</div>
-          <div className={styles.talk}>
-            <div className={styles.inner} dangerouslySetInnerHTML={createMarkup()}></div>
-            <div className={styles.arrow}></div>
-          </div>
-        </div>
-      </div>
-    })
-
     const hongbaoDom = <div className={styles.hb}>
       <div className={styles.main} style={{ backgroundImage: `url(${hbBg})` }}>
         <div className={styles.price}>￥<span>20</span></div>
@@ -226,7 +205,7 @@ class Live extends Component {
                 <div className={styles.cancel} onClick={() => this.setReply.call(this, false)}>取消</div> 
                 <div className={styles.confirm} onClick={this.submitComment.bind(this)}>发布</div>
               </div> 
-              <textarea onFocus={this.onCommentFocus.bind(this)} ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
+              <textarea maxlength="100" onFocus={this.onCommentFocus.bind(this)} ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
             </div>
           </div>
         }
@@ -240,35 +219,13 @@ class Live extends Component {
         }
         <Navs/>
         <div className={styles.banner}>
-          { 
-            diffTime > 0 && <div className={styles.count}>
-              <div className={styles.icon}></div>
-              <div className={styles.label}>倒计时</div>
-              <div className={styles.tick}>
-                <span className={styles.item}>{formatNum(duration.days())}</span>
-                :
-                <span className={styles.item}>{formatNum(duration.hours())}</span>
-                :
-                <span className={styles.item}>{formatNum(duration.minutes())}</span>
-                :
-                <span className={styles.item}>{formatNum(duration.seconds())}</span>
-              </div>
-            </div> 
-          }
-          { 
-            userInfo.enrolled === 'Y' && status === 'ONGOING' ? <div className={styles.player}>
-              <div className={styles.ppt}>
-                <img src={PPTImg} />
-              </div>
-              <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
-                <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
-              </video>
-            </div> : <div className={styles.player}>
-              <div className={styles.split}></div>
-              <div className={styles.tips}>需要报名才能观看公开课</div>
-              {status === 'ONGOING' && <div className={styles.people}><span>{liveDetail.totalPeople}人正在收看</span></div>}
-            </div>
-          }
+          <LivePlayer 
+            live={liveDetail} 
+            now={now} 
+            countDownInter={countDownInter} 
+            PPTImg={PPTImg} 
+            userInfo={userInfo}
+          />
           <div className={styles.switches}>
             <div 
               className={styles.item + detailClass} 
@@ -289,25 +246,19 @@ class Live extends Component {
             </div>
           </div>
         }
-        {/* { 
-          page === 'chat' && taComments.length > 0 && <div className={styles.ta + taClass}>
-            <div>
-              {taDom}
-            </div>
-            <div className={styles.more}>
-              { taOpen && <Icon onClick={() => this.switchTa.call(this, false)} type="up" /> }
-              { !taOpen && <Icon onClick={() => this.switchTa.call(this, true)} type="down" /> }
-            </div>
-          </div> 
-        } */}
         {
           page === 'chat' && assistantMsg.length > 0 && <TaComments comments={assistantMsg}/>
         }
-        {
+        {/* {
           page === 'chat' && <div className={styles.chatPage} ref={`chatPage`}>
             <div className={styles.comments} ref={`comments`}>
               {!taOpen && commentsDom}
             </div>
+          </div>
+        } */}
+        {
+          page === 'chat' && <div className={styles.chatPage} ref={`chatPage`}>
+            <Comments chats={chats} />
           </div>
         }
         { 

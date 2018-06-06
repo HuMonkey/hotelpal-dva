@@ -54,7 +54,7 @@ class Course extends Component {
       callWxPay({
         pk, appId, nonceStr, paySign, timeStamp, tradeNo
       }, (res) => {
-        console.log(res);
+        console.log('支付成功！', res);
       })
     } else {
       alert(result.data.msg);

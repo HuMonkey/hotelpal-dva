@@ -6,6 +6,8 @@ import { message, Popover } from 'antd';
 import moment from 'moment';
 import { getToken } from '../../utils';
 
+import simleLogo from '../../assets/smile.svg';
+
 const liveStatus = {
   ENROLLING: '报名中',
   ONGOING: '直播中',
@@ -148,28 +150,35 @@ class EnrollPanel extends Component {
     const openTimeWeekStr = openTime.format('dddd');
     const openTimeHourStr = openTime.format('hh:mm');
 
-    const enrollCount = live.purchasedTimes || 0 + live.freeEnrolledTimes || 0; // 报名人数等于买的人数加上免费报名的人数
+    const enrollCount = (live.vipEnrolledTimes || 0) + (live.purchasedTimes || 0) + (live.freeEnrolledTimes || 0); // 报名人数等于买的人数加上免费报名的人数
 
     let signup;
     if (userInfo.status === 'ENROLLED') {
       if (userInfo.invitedUserList) {
-        // 免费获取的
+        // 免费获取而来的
         signup = 'free';
       } else {
-        // 付费报名
+        // 付费报名的
         signup = 'paid';
       }
     } else if (userInfo.status === 'INVITING') {
-      // 正在邀请
+      // 正在邀请的
       signup = 'inviting';
     } else if (userInfo.status === 'NONE') {
       if (userInfo.liveVip !== 'N') {
-        // VIP
+        // VIP的
         signup = 'vip';
       } else {
         signup = 'init';
       }
     }
+
+    // 如果这个课这个课免费
+    if (live.price == 0) {
+      signup = 'freeToGet';
+    }
+
+    // signup = 'vip';
 
     // 邀请样式
     let invitingDom;
@@ -206,7 +215,8 @@ class EnrollPanel extends Component {
       </div>
     }
 
-    const status = live.status;
+    let status = live.status;
+    // status = 'ONGOING';
     let statusClass;
     if (status === 'ENROLLING') {
       statusClass = ' ' + styles.before;
@@ -222,12 +232,12 @@ class EnrollPanel extends Component {
           <div className={styles.course}>
             <div className={styles.left}>
               <div className={styles.tag + statusClass}>
-                {liveStatus[live.status]}
+                {liveStatus[status]}
                 <div className={styles.tri}></div>
               </div>
               <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
             </div>
-            { signup === 'paid' || signup === 'free' ? <div className={styles.paid}></div> : <div className={styles.right}>已有{enrollCount}人报名</div> }
+            { signup === 'paid' || signup === 'free' || (signup === 'vip' && status === 'ONGOING') ? <div className={styles.paid}></div> : <div className={styles.right}>已有{enrollCount}人报名</div> }
           </div>
         </Popover>
         { 
@@ -242,12 +252,25 @@ class EnrollPanel extends Component {
           </div>
         }
         {
-          signup === 'vip' && <div className={styles.signups}>
+          signup === 'vip' && status === 'ENROLLING' && <div className={styles.signups}>
             <div className={styles.item + ' ' + styles.vip}>
               <div className={styles.left}>
                 <div className={styles.inner}>
                   <span className={styles.price}>￥{live.price / 100}</span>
                   你是公开课会员，可以免费收看
+                </div>
+              </div>
+              <div className={styles.right} onClick={this.enroll.bind(this)}>报名</div>
+            </div>
+          </div>
+        }
+        {
+          signup === 'freeToGet' && <div className={styles.signups}>
+            <div className={styles.item + ' ' + styles.vip}>
+              <div className={styles.left}>
+                <div className={styles.inner}>
+                  {/* <span className={styles.price}>￥{live.price / 100}</span> */}
+                  本次公开课可以免费报名
                 </div>
               </div>
               <div className={styles.right} onClick={this.enroll.bind(this)}>报名</div>
@@ -265,7 +288,7 @@ class EnrollPanel extends Component {
                   <div className={styles.item}>3</div>
                 </div>
                 <div className={styles.row}>将专属邀请卡分享给好友</div>
-                <div className={styles.row}>5个好友点击报名（免费/付费均可）</div>
+                <div className={styles.row}>{live.inviteRequire}个好友点击报名（免费/付费均可）</div>
                 <div className={styles.row}>可享受免费报名！</div>
               </div>
               <div className={styles.image}>

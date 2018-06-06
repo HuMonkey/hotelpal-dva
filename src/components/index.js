@@ -12,6 +12,8 @@ import BackBtn from './BackBtn/';
 import IntroPanel from './IntroPanel/';
 import EnrollPanel from './EnrollPanel/';
 import TaComments from './TaComments/';
+import Comments from './Comments/';
+import LivePlayer from './LivePlayer/';
 
 export {
   AudioPlayer,
@@ -28,4 +30,6 @@ export {
   IntroPanel,
   EnrollPanel,
   TaComments,
+  Comments,
+  LivePlayer,
 }

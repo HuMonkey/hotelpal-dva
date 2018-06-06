@@ -139,4 +139,67 @@
       }
     }
   }
+  .rules {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.4);
+    .main {
+      width: 8.6rem;
+      padding: 0.6666rem 0.53333rem 0.8rem 0.53333rem;
+      background: white;
+      border-radius: 0.13333rem;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.8rem;
+      color: white;
+      .close {
+        position: absolute;
+        left: 50%;
+        bottom: -1.6rem;
+        transform: translate(-50%, 0);
+      }
+      .stitle {
+        width: 100%;
+        text-align: center;
+        font-size: 0.4rem;
+        color: @black3;
+        line-height: 1;
+      }
+      .row {
+        padding-left: 0.53333rem;
+        width: 100%;
+        color: @black2;
+        margin-bottom: 0.4rem;
+        font-size: 0.32rem;
+        text-align: left;
+        position: relative;
+        &:first-child {
+          margin-top: 0.53333rem;
+        } 
+        &:last-child {
+          margin-bottom: 0;
+        } 
+        .index {
+          width: 0.4rem;
+          height: 0.4rem;
+          border: solid thin @red;
+          border-radius: 50%;
+          color: red;
+          line-height: 0.39rem;
+          text-align: center;
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-size: 0.293333rem;
+          font-weight: 300;
+        }
+      }
+    }
+  }
 }

@@ -69,7 +69,7 @@ class Profile extends Component {
           <div className={styles.record}>
             <div className={styles.icon}></div> 
             <span>累计学习</span>
-            {listenedHour}小时{listenedMinute}分钟
+            {listenedHour || 0}小时{listenedMinute || 0}分钟
           </div> 
           <div className={styles.infos}>
             <div className={styles.item}>

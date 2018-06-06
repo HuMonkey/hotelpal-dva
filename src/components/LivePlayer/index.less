@@ -1,0 +1,115 @@
+@import '../../common.less';
+
+.livePlayer {
+  width: 100%;
+  height: 100%;
+  .player {
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+    text-align: center;
+    position: relative;
+    background-color: black;
+    &.bg {
+      background: url('../../assets/live-banner.png');
+    }
+    .cover {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+    }
+    .ppt {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      background: black;
+      text-align: center;
+      img {
+        height: 100%;
+      }
+    }
+    :global(.video-js) {
+      width: 100%;
+      height: 100%;
+      :global(.vjs-big-play-button) {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+    video {
+      width: 100%;
+      height: 100%;
+    }
+    .split {
+      background: -webkit-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,0.8), rgba(255,255,255,0));
+      height: 1px;
+      width: 80%;
+      display: inline-block;
+      margin-top: 3.3rem;
+    }
+    .tips {
+      width: 100%;
+      text-align: center;
+      font-size: 0.32rem;
+      color: white;
+      opacity: 0.6;
+      margin-top: 0.1rem;
+    }
+    .people {
+      padding: 0 0.26666rem 0 0.66666rem;
+      height: 0.48rem;
+      line-height: 0.48rem;
+      border-radius: 0.24rem;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 0.283333rem;
+      position: absolute;
+      right: 0.53333rem;
+      bottom: 0.26666rem;
+    }
+  }
+  .count {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.06666rem;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 0.26666rem .4rem;
+    font-size: 0.293333rem;
+    color: white;
+    .icon {
+      width: 0.4rem;
+      height: 0.4rem;
+      background-image: url('../../assets/countdown.svg');
+      background-size: 100% 100%;
+      float: left;
+      position: relative;
+      top: 0.08rem;
+    }
+    .label {
+      margin-left: 0.08rem;
+      margin-right: 0.2rem;
+      float: left;
+      line-height: 0.56rem;
+    }
+    .tick {
+      float: left;
+      span {
+        display: inline-block;
+        width: .53333rem;
+        height: .53333rem;
+        border-radius: 2px;
+        border: solid thin rgba(255, 255, 255, .6);
+        line-height: 0.5rem;
+        text-align: center;
+        margin: 0 .08rem;
+      }
+    }
+  }
+}

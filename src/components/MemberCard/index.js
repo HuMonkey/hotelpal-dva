@@ -5,6 +5,7 @@ import styles from './index.less';
 
 import tickPng from '../../assets/coupon-tick.svg';
 import tickedPng from '../../assets/coupon-ticked.svg';
+import uselessTag from '../../assets/coupon-useless-tag.svg';
 
 class MemberCard extends Component {
   constructor(props) {
@@ -29,6 +30,23 @@ class MemberCard extends Component {
       <div className={styles.icon}><span>{name}</span></div>
       <div className={styles.use}>去使用<span>{left}</span></div>
     </div>
+
+    const today = moment();
+    const expired = today > moment(data.validity);
+    if (expired) {
+      topDom = <div>
+        <div className={styles.icon}><span>{name}</span></div>
+        <img src={uselessTag} className={styles.expire}/>
+      </div>
+    }
+    const empty = !data.leftTimes;
+    if (type === 'course' && empty) {
+      topDom = <div>
+        <div className={styles.icon}><span>{name}</span></div>
+        <div className={styles.empty}>次数已用完</div>
+      </div>
+    }
+
     if (mode === 'select') {
       topDom = <div>
         <div className={styles.tips}>
@@ -43,8 +61,10 @@ class MemberCard extends Component {
       </div>
     }
 
+    const uselessClass = (expired || empty) ? ' ' + styles.useless : '';
+
     return (
-      <div className={styles.memberCard + vipClassName}>
+      <div className={styles.memberCard + vipClassName + uselessClass}>
         { topDom }
         <div className={styles.bottom}>
           <span className={styles.item}><div className={styles.logo}></div>所有订阅专栏可用</span>

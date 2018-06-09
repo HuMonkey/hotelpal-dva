@@ -5,13 +5,14 @@ import styles from './index.less';
 
 import cross from '../../assets/cross.png';
 import { formatNum, getAudioLength, callWxPay } from '../../utils';
-import { CourseContent, BackBtn } from '../../components';
+import { CourseContent, BackBtn, PopupOrder } from '../../components';
 
 class Course extends Component {
   constructor (props) {
     super(props);
     this.state = {
       freeTipsShow: true,
+      orderPopupShow: false,
     };
   }
 
@@ -67,7 +68,7 @@ class Course extends Component {
     const { userInfo } = common;
 
     // 免费兑换
-    if (detail.charge / 100 < 500 && common.userInfo && common.userInfo.freeCourseRemained > 0) {
+    if (detail.charge / 100 < 500 && userInfo && userInfo.freeCourseRemained > 0) {
       const useFree = confirm('将使用一次免费获取课程的机会，确认兑换？');
       if (useFree) {
         let result;
@@ -96,11 +97,25 @@ class Course extends Component {
           });
         }
       } else {
-        this.createOrder();
+        // this.createOrder();
+        this.showOrderPopup();
       }
       return false;
     }
-    this.createOrder();
+    this.showOrderPopup();
+    // this.createOrder();
+  }
+
+  showOrderPopup () {
+    this.setState({
+      orderPopupShow: true,
+    })
+  }
+
+  closePopup () {
+    this.setState({
+      orderPopupShow: false,
+    })
   }
 
   gotoDetail () {
@@ -109,8 +124,8 @@ class Course extends Component {
   }
 
   render () {
-    const { freeTipsShow } = this.state;
-    const { course, common } = this.props;
+    const { freeTipsShow, orderPopupShow } = this.state;
+    const { course, common, coupon } = this.props;
 
     if (!course) {
       return <div></div>
@@ -159,6 +174,7 @@ class Course extends Component {
     return (
       <div className={styles.normal}>
         {freeChanceDom}
+        { orderPopupShow && <PopupOrder coupon={coupon} course={detail} closePopup={this.closePopup.bind(this)} /> }
         <div className={styles.header}>
           <img src={`${detail.bannerImg[0]}`} />
           <div className={styles.desc}>
@@ -220,7 +236,7 @@ Course.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { course: state.course, common: state.common };
+  return { course: state.course, common: state.common, coupon: state.coupon };
 }
 
 export default connect(mapStateToProps)(Course);

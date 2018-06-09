@@ -12,11 +12,15 @@ class Navs extends Component {
     };
   }
 
+  goback () {
+    window.history.go(-1);
+  }
+
   render() {
     const { erweima } = this.state;
     return (
       <div className={styles.navs}>
-        <div className={styles.back}></div>
+        <div className={styles.back} onClick={this.goback.bind(this)}></div>
         <div className={styles.home}><Link to={''}>首页</Link></div>
         <div className={styles.gzh} onClick={() => {
           this.setState({

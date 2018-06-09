@@ -4,6 +4,8 @@ import { Link } from 'dva/router';
 import { Icon } from 'antd';
 import styles from './index.less';
 
+import moment from 'moment';
+
 import { Navs, MemberCard, CouponItem, PopupCoupon } from '../../components';
 
 import emptyPng from '../../assets/coupon-empty.png';
@@ -17,11 +19,16 @@ class Coupon extends Component {
   render() {
     const { coupon } = this.props;
 
-    const { card, couponList, liveVip } = coupon;
+    const { card, liveVip } = coupon;
 
     if (!card || !liveVip) {
       return <div></div>
     }
+
+    const couponList = coupon.couponList && coupon.couponList.filter(d => {
+      const today = moment();
+      return today < moment(d.validity);
+    })
 
     const noCoupon = card.exists === 'N' && liveVip.exists === 'N' && couponList.length == 0;
     // const noCoupon = true;

@@ -42,8 +42,8 @@ class Profile extends Component {
   }
   
   render () {
-    const { common, profile } = this.props;
-    if (!common.userInfo || !profile) {
+    const { common, profile, coupon } = this.props;
+    if (!common.userInfo || !profile || !coupon) {
       return <div></div>
     }
   
@@ -52,6 +52,19 @@ class Profile extends Component {
     const listenedHour = parseInt(statics.listenedTimeInSecond / 60 / 60);
     const listenedMinute = parseInt((statics.listenedTimeInSecond - 60 * 60 * listenedHour) / 60);
   
+    let couponNum = 0;
+    if (coupon.card) {
+      const { card, couponList, liveVip } = coupon;
+      couponNum = couponList.length;
+      if (card.exists === 'Y') {
+        couponNum += 1;
+      }
+      if (liveVip.exists === 'Y') {
+        couponNum += 1;
+      }
+    }
+    const couponEmptyClass = couponNum === 0 ? ' ' + styles.empty : '';
+
     return (
       <div className={styles.normal}>
         <BottomBar selected={2}></BottomBar>
@@ -95,7 +108,7 @@ class Profile extends Component {
           <Link to={`/coupon`}><div className={styles.row + ' ' + styles.coupon}>
             <div className={styles.icon + ' ' + styles.couponIcon}></div>
               特权与优惠券
-            <div className={styles.arrowRight}><span>2张可用</span></div>
+            <div className={styles.arrowRight + couponEmptyClass}><span>{couponNum}张可用</span></div>
           </div></Link>
           <Link to={`/invite`}><div className={styles.row + ' ' + styles.invite}>
             <div className={styles.icon + ' ' + styles.inviteIcon}></div>
@@ -123,7 +136,7 @@ Profile.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { common: state.common, profile: state.profile };
+  return { common: state.common, profile: state.profile, coupon: state.coupon };
 }
 
 export default connect(mapStateToProps)(Profile);

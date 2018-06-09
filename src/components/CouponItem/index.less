@@ -19,6 +19,18 @@
             top: -1px;
         }
     }
+    &.useless {
+        .bg {
+            background-image: url('../../assets/coupon-bg-useless.svg');
+        }
+        .right {
+            .top {
+                .tag {
+                    background: #bbbbbb;
+                }
+            }
+        }
+    }
     .bg {
         width: 36%;
         background-image: url('../../assets/coupon-bg.svg');
@@ -86,6 +98,12 @@
             color: #f06468;
             line-height: 0.51rem;
             text-align: center;
+            right: 0.2rem;
+            bottom: 0.26666rem;
+        }
+        .expiredTag {
+            position: absolute;
+            width: 1.6rem;
             right: 0.2rem;
             bottom: 0.26666rem;
         }

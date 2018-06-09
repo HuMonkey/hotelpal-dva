@@ -6,11 +6,7 @@ export default {
 
   state: {
     totalCoupon: 0, 
-    inviteList: [
-      { batch: 1, CouponCollected: 'N', userList: [{ headImg: 'https://worldcup-resource.oss-cn-hangzhou.aliyuncs.com/team/%E5%BE%B7%E5%9B%BD.png' }] },
-      { batch: 2, CouponCollected: 'N', userList: [{ headImg: 'https://worldcup-resource.oss-cn-hangzhou.aliyuncs.com/team/%E5%BE%B7%E5%9B%BD.png' }] },
-      { batch: 3, CouponCollected: 'N', userList: [{ headImg: 'https://worldcup-resource.oss-cn-hangzhou.aliyuncs.com/team/%E5%BE%B7%E5%9B%BD.png' }] },
-    ]
+    inviteList: [],
   },
 
   subscriptions: {
@@ -35,8 +31,8 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            totalCoupon, 
-            // inviteList,
+            totalCoupon: totalCoupon || 0, 
+            inviteList: inviteList.length > 0 ? inviteList : [{ batch: -1, CouponCollected: 'N', userList: [] }],
           },
         });
       }

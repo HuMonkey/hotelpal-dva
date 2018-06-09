@@ -6,7 +6,8 @@ export default {
     namespace: 'common',
 
     state: {
-        userInfo: null
+        userInfo: null,
+        invitor: null,
     },
 
     subscriptions: {
@@ -64,6 +65,15 @@ export default {
         * fetchUserInfo({ payload: data }, { call, put }) {
             const result = yield call(commonService.fetchUserInfo, data || {});
             const userInfo = result.data.code === 0 ? result.data.data : {};
+            if (data.token) {
+                yield put({
+                    type: 'save',
+                    payload: {
+                        invitor: userInfo
+                    },
+                });
+                return false;
+            }
             yield put({
                 type: 'save',
                 payload: {

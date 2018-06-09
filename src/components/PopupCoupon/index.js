@@ -29,10 +29,10 @@ class PopupCoupon extends Component {
               <div className={styles.check}><img src={tickPng} /></div>
             </div>
             <div className={styles.list}>
-              <MemberCard mode={'select'} selected={false}/>
-              <CouponItem border={true} mode={'select'} selected={false}/>
-              <CouponItem border={true} mode={'select'} selected={false}/>
-              <CouponItem border={true} mode={'select'} selected={false}/>
+              <MemberCard mode={'select'} selected={false} data={{}}/>
+              <CouponItem border={true} mode={'select'} selected={false} data={{}}/>
+              <CouponItem border={true} mode={'select'} selected={false} data={{}}/>
+              <CouponItem border={true} mode={'select'} selected={false} data={{}}/>
             </div>
           </div>
         </div>

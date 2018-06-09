@@ -3,12 +3,9 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
-import { AudioPlayer } from '../../components';
+import { AudioPlayer, ShareTips } from '../../components';
 import { formatNum, getAudioLength, formatTime, getParam } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
-import hongbaoTipsPng from '../../assets/hongbaotips.png';
-import pointerPng from '../../assets/pointer.png';
-import { replace } from 'react-router-redux';
 
 const likedTemp = [];
 
@@ -124,7 +121,7 @@ class Lesson extends Component {
   }
 
   showHongbaoTips () {
-    const { lesson, dispatch } = this.props;
+    const { lesson } = this.props;
 
     const { detail, courseDetail } = lesson;
 
@@ -301,11 +298,7 @@ class Lesson extends Component {
     return (
       <div className={styles.normal} ref={`main`}>
         { 
-          isHongbao && <div className={styles.hongbaoTips} onClick={this.hideHongbaoTips.bind(this)}>
-            <div className={styles.cover}></div>
-            <img className={styles.text} src={hongbaoTipsPng} />
-            <img className={styles.pointer} src={pointerPng} />
-          </div> 
+          isHongbao && <ShareTips type="hongbao" clickCallBack={this.hideHongbaoTips.bind(this)} />
         }
         <AudioPlayer fromHongbao={fromHongbao || detail.isGift} dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
         { 

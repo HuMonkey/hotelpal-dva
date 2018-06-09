@@ -12,7 +12,7 @@
         width: 1.146666rem;
         height: 1.146666rem;
         border-radius: 50%;
-        background: #698af0;
+        background-color: #698af0;
         background-image: url('../../assets/coupon-book.svg');
         background-position: center center;
         background-repeat: no-repeat;
@@ -48,6 +48,20 @@
         right: 0.53333rem;
         width: 0.453333rem;
         height: 0.453333rem;
+    }
+    .empty {
+        color: white;
+        position: absolute;
+        top: 0.75rem;
+        right: 0.53333rem;
+        font-size: 0.32rem;
+    }
+    .expire {
+        position: absolute;
+        top: 0.25rem;
+        right: 0.53333rem;
+        font-size: 0.32rem;
+        width: 1.6rem;
     }
     .use {
         font-size: 0.32rem;
@@ -110,6 +124,11 @@
     }
     &.vip {
         background: linear-gradient(to right, #313131 , #303030);
+        &.useless {
+            .icon {
+                background-image: url('../../assets/coupon-vip-useless.svg');
+            }
+        }
         .icon {
             background: #202020;
             background-image: url('../../assets/coupon-vip.svg');
@@ -117,28 +136,51 @@
             background-repeat: no-repeat;
             background-position: center center;
             span {
-            color: #aa8a5f;
+                color: #aa8a5f;
             }
         }
         .use {
             color: #202020;
             background: rgba(170, 138, 95, 0.8);
             span {
-            color: #aa8a5f;
+                color: #aa8a5f;
             }
         }
         .bottom {
             color: rgba(170, 138, 95, 0.6);
             border-top: solid thin rgba(170, 138, 95, 0.4);
             .item {
-            .logo {
-                background-image: url('../../assets/coupon-logo1-yellow.svg');
-            }
-            &:last-child {
                 .logo {
-                background-image: url('../../assets/coupon-logo2-yellow.svg');
+                    background-image: url('../../assets/coupon-logo1-yellow.svg');
+                }
+                &:last-child {
+                    .logo {
+                        background-image: url('../../assets/coupon-logo2-yellow.svg');
+                    }
                 }
             }
+        }
+    }
+    &.useless {
+        background: linear-gradient(to right, #bbbbbb , #aaaaaa);
+        .icon {
+            background-color: #aaaaaa;
+            span {
+                color: white;
+            }
+        }
+        .bottom {
+            color: white;
+            border-top: solid thin rgba(255, 255, 255, 0.4);
+            .item {
+                .logo {
+                    background-image: url('../../assets/coupon-logo1.svg');
+                }
+                &:last-child {
+                    .logo {
+                        background-image: url('../../assets/coupon-logo2.svg');
+                    }
+                }
             }
         }
     }

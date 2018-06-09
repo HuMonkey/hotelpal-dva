@@ -5,6 +5,7 @@ import styles from './index.less';
 
 import tickPng from '../../assets/coupon-tick.svg';
 import tickedPng from '../../assets/coupon-ticked.svg';
+import uselessTag from '../../assets/coupon-useless-tag.svg';
 
 class CouponItem extends Component {
   constructor(props) {
@@ -19,19 +20,23 @@ class CouponItem extends Component {
 
     const expired = moment(validity).format('YYYY-MM-DD');
 
+    const today = moment();
+    const useless = today > moment(validity);
+
     if (mode === 'select') {
       // TODO
     }
 
+    const uselessClassName = useless ? ' ' + styles.useless : '';
     const borderClassName = border ? ' ' + styles.border : '';
 
     let tips1 = '', tips2 = '';
     const { apply, applyToCourseTitle, applyToPrice } = detail;
     const detailType = detail.type;
-    if (apply === 'All') {
+    if (apply === 'ALL') {
       tips1 = '所有订阅课程';
     } else if (apply === 'PARTICULAR') {
-      tips2 = applyToCourseTitle;
+      tips1 = applyToCourseTitle;
     }
 
     if (applyToPrice > 0) {
@@ -39,20 +44,22 @@ class CouponItem extends Component {
     }
 
     return (
-      <div className={styles.CouponItem + borderClassName}>
+      <div className={styles.CouponItem + borderClassName + uselessClassName}>
         <div className={styles.bg}>
           <div className={styles.money}>￥<span>{value}</span></div>
           <div className={styles.desc}>{name || '没名字的红包'}</div>
         </div>
         <div className={styles.right}>
           <div className={styles.top}>
-            {detailType === 'COURSE' && <div className={styles.tag}>订阅专栏</div>}
-            {tips1}{tips2}可用
+            <div className={styles.tag}>订阅专栏</div>
+            {/* {detailType === 'COURSE' && <div className={styles.tag}>订阅专栏</div>} */}
+            {tips1}{tips2}{(tips1 || tips2) && '可用'}
           </div>
           { mode !== 'select' && <div className={styles.blank}></div> }
           <div className={styles.expire}>有效期至{expired}</div>
           {/* <div className={styles.tips}>满足使用条件</div> */}
-          { mode !== 'select' && <div className={styles.btn}>去使用</div> }
+          { mode !== 'select' && !useless && <div className={styles.btn}>去使用</div> }
+          { mode !== 'select' && useless && <img className={styles.expiredTag} src={uselessTag} /> }
           { 
             mode === 'select' && <div className={styles.check}>
               { selected && <img src={tickedPng} /> }

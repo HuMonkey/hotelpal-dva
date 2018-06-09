@@ -3,6 +3,8 @@ import { connect } from 'dva';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import styles from './index.less';
 
+import { message } from 'antd';
+
 import logo from '../../assets/jiudianbang-big.png';
 import { getParam } from '../../utils';
 
@@ -117,7 +119,7 @@ class Login extends Component {
         this.jump();
       }
     } else {
-      alert(result.data.msg);
+      message.error(result.data.msg);
     }
   }
 
@@ -146,7 +148,7 @@ class Login extends Component {
             }
           })
         } else {
-          alert(res.data.msg);
+          message.error(res.data.msg);
         }
       }
     })
@@ -159,7 +161,7 @@ class Login extends Component {
     const company = this.refs.company.value;
     const avatar = this.refs.avatar.src;
     if (!nickname) {
-      alert('昵称不能为空');
+      message.error('昵称不能为空');
       return false;
     }
     const that = this;
@@ -174,7 +176,7 @@ class Login extends Component {
         if (res.data.code === 0) {
           that.jump();
         } else {
-          alert(res.data.msg);
+          message.error(res.data.msg);
         }
       }
     })

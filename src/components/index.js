@@ -14,6 +14,7 @@ import EnrollPanel from './EnrollPanel/';
 import TaComments from './TaComments/';
 import Comments from './Comments/';
 import LivePlayer from './LivePlayer/';
+import ShareTips from './ShareTips/';
 
 export {
   AudioPlayer,
@@ -32,4 +33,5 @@ export {
   TaComments,
   Comments,
   LivePlayer,
+  ShareTips,
 }

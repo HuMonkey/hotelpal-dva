@@ -5,8 +5,9 @@ export function receiveRedirect(data) {
   return request(config.host + '/hotelpal/WeChat/receiveRedirect?code=' + data.code)
 }
 
-export function fetchUserInfo() {
-  const jdbtk = getToken();
+export function fetchUserInfo(data) {
+  console.log(data);
+  const jdbtk = data.token || getToken();
   return request(config.host + '/hotelpal/user/getUserInfo?token=' + jdbtk)
 }
 
@@ -44,7 +45,11 @@ export function sendCaptcha(data) {
 
 export function verifyPhone(data) {
   const jdbtk = getToken();
-  return request(config.host + '/hotelpal/user/verifyPhone?token=' + jdbtk + '&phone=' + data.phone + '&code=' + data.code)
+  let url = config.host + '/hotelpal/user/verifyPhone?token=' + jdbtk + '&phone=' + data.phone + '&code=' + data.code;
+  if (data.inviterToken) {
+    url += '&inviterToken=' + data.inviterToken;
+  }
+  return request(url)
 }
 
 export function newInvitedUser(data) {

@@ -7,6 +7,7 @@ import styles from './index.less';
 import moment from 'moment';
 
 import { Navs, MemberCard, CouponItem, PopupCoupon } from '../../components';
+import { courseMemberCardUseful, liveMemberCardUseful } from '../../utils';
 
 import emptyPng from '../../assets/coupon-empty.png';
 
@@ -30,8 +31,8 @@ class Coupon extends Component {
       return today < moment(d.validity);
     })
 
-    const noCoupon = card.exists === 'N' && liveVip.exists === 'N' && couponList.length == 0;
-    // const noCoupon = true;
+    const noCoupon = !courseMemberCardUseful(card) && !liveMemberCardUseful(liveVip) 
+      && couponList.length == 0;
 
     return (
       <div className={styles.normal}>
@@ -53,8 +54,6 @@ class Coupon extends Component {
                 return <CouponItem key={i} data={d} />
               })
             }
-            {/* <CouponItem /> */}
-            { false && <PopupCoupon/> }
           </div>
         }
         <Link to={'/coupon/useless'}><div className={styles.tips3}>查看无效特权与优惠券<Icon type="right" /></div></Link>

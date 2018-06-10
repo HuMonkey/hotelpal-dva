@@ -3,6 +3,8 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
+import moment from 'moment';
+
 import bg from '../../assets/profile_bg.png';
 import { BottomBar } from '../../components/';
 import { configWechat, updateWechartShare } from '../../utils';
@@ -54,7 +56,11 @@ class Profile extends Component {
   
     let couponNum = 0;
     if (coupon.card) {
-      const { card, couponList, liveVip } = coupon;
+      const today = moment();
+      const couponList = coupon.couponList && coupon.couponList.filter(d => {
+        return today < moment(d.validity);
+      });
+      const { card, liveVip } = coupon;
       couponNum = couponList.length;
       if (card.exists === 'Y') {
         couponNum += 1;

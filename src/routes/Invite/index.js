@@ -80,19 +80,19 @@ class Invite extends Component {
 
     const { totalCoupon, inviteList } = invite;
 
-    const inviteDom = inviteList && inviteList.map(d => {
+    const inviteDom = inviteList && inviteList.map((d, ii) => {
       const { batch, CouponCollected, userList } = d;
       const left = 3;
       const userListLength = userList ? userList.length : 0;
       const avatars = [];
       for (let i = 0; i < userListLength; i++) {
-        avatars.push(<div className={styles.avatar}><img src={userList[i].headImg} /></div>);
+        avatars.push(<div className={styles.avatar} key={i}><img src={userList[i].headImg} /></div>);
       }
       const emptys = [];
       for (let i = 0; i < 3 - userListLength; i++) {
-        avatars.push(<div className={styles.avatar}><img src={simleLogo} /></div>);
+        avatars.push(<div className={styles.avatar} key={3 - i}><img src={simleLogo} /></div>);
       }
-      return <div className={styles.row} key={batch}>
+      return <div className={styles.row} key={ii}>
         <div className={styles.left}>
           {avatars}
           {emptys}

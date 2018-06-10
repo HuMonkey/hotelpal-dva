@@ -26,11 +26,15 @@ class MemberCard extends Component {
       vipClassName = ' ' + styles.vip;
     }
 
+    // 跳转链接
+    const link = '/';
+
     let topDom = <div>
       <div className={styles.icon}><span>{name}</span></div>
-      <div className={styles.use}>去使用<span>{left}</span></div>
+      <div className={styles.use}><Link to={link}>去使用</Link><span>{left}</span></div>
     </div>
 
+    // 判断是否过期
     const today = moment();
     const expired = today > moment(data.validity);
     if (expired) {
@@ -39,6 +43,8 @@ class MemberCard extends Component {
         <img src={uselessTag} className={styles.expire}/>
       </div>
     }
+
+    // 如果是公开课会员，判断是否用完
     const empty = !data.leftTimes;
     if (type === 'course' && empty) {
       topDom = <div>
@@ -47,6 +53,7 @@ class MemberCard extends Component {
       </div>
     }
 
+    // selece 模式
     if (mode === 'select') {
       topDom = <div>
         <div className={styles.tips}>

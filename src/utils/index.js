@@ -20,7 +20,8 @@ const isLogin = function () {
 }
 
 const config = {
-    host: `${location.origin}`, // 线上
+    // host: `${location.origin}`, // 线上
+    host: `${location.origin}/test`, // 测试
     appId: 'wxfe666ebbf0e42897'
 }
 
@@ -273,6 +274,36 @@ function isIphoneX(){
     return /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)
 }
 
+const courseMemberCardUseful = function (card) {
+    if (card.exists === 'N') {
+        return false;
+    } else {
+        // 过期
+        const today = moment();
+        if (today > moment(card.validity)) {
+            return false;
+        }
+        // 次数用完
+        if (!card.leftTimes) {
+            return false;
+        }
+    }
+    return true;
+}
+
+const liveMemberCardUseful = function (liveVip) {
+    if (liveVip.exists === 'N') {
+        return false;
+    } else {
+        // 过期
+        const today = moment();
+        if (today > moment(liveVip.validity)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 export {
     ua, isIphoneX,
     isLogin, config,
@@ -285,4 +316,5 @@ export {
     throttle,
     configWechat, updateWechartShare,
     callWxPay,
+    courseMemberCardUseful, liveMemberCardUseful
 }

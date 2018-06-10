@@ -21,11 +21,6 @@ export default {
     }
   },
   "proxy": {
-    "/api": {
-      "target": "http://t.hotelpal.cn/",
-      "changeOrigin": true,
-      "pathRewrite": { "^/api": "" }
-    },
     "/test": {
       "target": "http://t.hotelpal.cn/",
       "changeOrigin": true,

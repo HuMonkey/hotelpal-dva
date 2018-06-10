@@ -6,7 +6,6 @@ export function receiveRedirect(data) {
 }
 
 export function fetchUserInfo(data) {
-  console.log(data);
   const jdbtk = data.token || getToken();
   return request(config.host + '/hotelpal/user/getUserInfo?token=' + jdbtk)
 }

@@ -300,7 +300,7 @@ class Lesson extends Component {
         { 
           isHongbao && <ShareTips type="hongbao" clickCallBack={this.hideHongbaoTips.bind(this)} />
         }
-        <AudioPlayer fromHongbao={fromHongbao || detail.isGift} dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
+        <AudioPlayer free={detail.freeListen} fromHongbao={fromHongbao || detail.isGift} dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
         { 
           !replying && <div className={styles.commentBox + hongbaoClass}>
             <div className={styles.pen}></div> 

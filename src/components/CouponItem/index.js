@@ -16,7 +16,7 @@ class CouponItem extends Component {
   render() {
     const { mode, selected, border, data } = this.props;
 
-    const { type, domainId, used, validity, value, detail, name } = data;
+    const { validity, value, detail, name } = data;
 
     const expired = moment(validity).format('YYYY-MM-DD');
 
@@ -43,6 +43,9 @@ class CouponItem extends Component {
       tips2 = `满${applyToPrice}`
     }
 
+    // 跳转链接
+    const link = '/';
+
     return (
       <div className={styles.CouponItem + borderClassName + uselessClassName}>
         <div className={styles.bg}>
@@ -58,7 +61,7 @@ class CouponItem extends Component {
           { mode !== 'select' && <div className={styles.blank}></div> }
           <div className={styles.expire}>有效期至{expired}</div>
           {/* <div className={styles.tips}>满足使用条件</div> */}
-          { mode !== 'select' && !useless && <div className={styles.btn}>去使用</div> }
+          { mode !== 'select' && !useless && <Link to={link}><div className={styles.btn}>去使用</div></Link> }
           { mode !== 'select' && useless && <img className={styles.expiredTag} src={uselessTag} /> }
           { 
             mode === 'select' && <div className={styles.check}>

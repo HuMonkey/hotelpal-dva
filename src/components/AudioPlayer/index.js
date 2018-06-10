@@ -104,7 +104,7 @@ class AudioPlayer extends Component {
   render() {
     const { played, loaded, duration, playedSeconds, goOn, playing } = this.state;
 
-    const { audioUrl, previous, next, nextLesson, fromHongbao } = this.props;
+    const { audioUrl, previous, next, nextLesson, fromHongbao, free } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -141,7 +141,7 @@ class AudioPlayer extends Component {
     return (
       <div className={styles.audioPlayer}>
         <div className={styles.wrapper}>
-          { fromHongbao ? <img src={hongbaoGot} className={styles.hongbaoGot} /> : null }
+          { fromHongbao && !free ? <img src={hongbaoGot} className={styles.hongbaoGot} /> : null }
           <div className={styles.top}>
             <div className={styles.progress}>
               <div className={styles.current}>{playMinute}:{playSecond}</div> 

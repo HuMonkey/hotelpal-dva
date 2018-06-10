@@ -5,7 +5,7 @@ import styles from './index.less';
 import moment from 'moment';
 import { formatNum } from '../../utils';
 
-import defaultPPT from '../../assets/jiudianbang.png';
+import defaultPPT from '../../assets/live-banner-default.png';
 
 class LivePlayer extends Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class LivePlayer extends Component {
       if (userInfo.enrolled === 'Y') {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
-            <img src={PPTImg || defaultPPT} />
+            <img src={PPTImg || live.currentImg || defaultPPT} />
           </div>
           <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
             <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
@@ -62,7 +62,7 @@ class LivePlayer extends Component {
           <div className={styles.people}><span>{live.totalPeople}人正在收看</span></div>
         </div>
       } else {
-        <div className={styles.player + ' ' + styles.bg}>
+        dom = <div className={styles.player + ' ' + styles.bg}>
           <div className={styles.split}></div>
           <div className={styles.tips}>需要报名才能观看公开课</div>
           <div className={styles.people}><span>{live.totalPeople}人正在收看</span></div>

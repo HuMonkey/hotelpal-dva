@@ -81,12 +81,12 @@ class Invite extends Component {
     const { totalCoupon, inviteList } = invite;
 
     const inviteDom = inviteList && inviteList.map((d, ii) => {
-      const { batch, CouponCollected, userList } = d;
+      const { batch, couponCollected, userList } = d;
       const left = 3;
       const userListLength = userList ? userList.length : 0;
       const avatars = [];
       for (let i = 0; i < userListLength; i++) {
-        avatars.push(<div className={styles.avatar} key={i}><img src={userList[i].headImg} /></div>);
+        avatars.push(<div className={styles.avatar} key={i} style={{ backgroundImage: `url(${userList[i].headImg})` }}></div>);
       }
       const emptys = [];
       for (let i = 0; i < 3 - userListLength; i++) {
@@ -98,16 +98,16 @@ class Invite extends Component {
           {emptys}
         </div>
         {
-          CouponCollected === 'N' && userList.length < 3 && <div className={styles.right + ' ' + styles.ing}>还差{3 - userList.length}人</div>
+          couponCollected === 'N' && userList.length < 3 && <div className={styles.right + ' ' + styles.ing}>还差{3 - userList.length}人</div>
         }
         {
-          CouponCollected === 'N' && userList.length === 3 && <div className={styles.right}>
+          couponCollected === 'N' && userList.length === 3 && <div className={styles.right}>
             <div className={styles.sbtn} onClick={() => {
               this.getCoupon.call(this, batch);
             }}>领取优惠券</div>
           </div>
         }
-        {CouponCollected === 'Y' && <div className={styles.right + ' ' + styles.finish}>已领取</div>}
+        {couponCollected === 'Y' && <div className={styles.right + ' ' + styles.finish}>已领取</div>}
       </div>
     })
 
@@ -135,32 +135,6 @@ class Invite extends Component {
             <div className={styles.tips}>您已累计获得￥{totalCoupon}元优惠券</div>
           </div>
           <div className={styles.main}>
-            {/* <div className={styles.row}>
-              <div className={styles.left}>
-                <div className={styles.avatar}></div>
-                <div className={styles.avatar}></div>
-                <div className={styles.avatar}></div>
-              </div>
-              <div className={styles.right + ' ' + styles.ing}>还差2人</div>
-            </div>
-            <div className={styles.row}>
-              <div className={styles.left}>
-                <div className={styles.avatar}></div>
-                <div className={styles.avatar}></div>
-                <div className={styles.avatar}></div>
-              </div>
-              <div className={styles.right}>
-                <div className={styles.sbtn}>领取优惠券</div>
-              </div>
-            </div>
-            <div className={styles.row}>
-              <div className={styles.left}>
-                <div className={styles.avatar}></div>
-                <div className={styles.avatar}></div>
-                <div className={styles.avatar}></div>
-              </div>
-              <div className={styles.right + ' ' + styles.finish}>已领取</div>
-            </div> */}
             {inviteDom}
           </div>
         </div>

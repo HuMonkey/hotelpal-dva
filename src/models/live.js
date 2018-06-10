@@ -83,7 +83,8 @@ export default {
           });
 
           // 讨论 ws
-          const wsUri = `ws://t.hotelpal.cn:8080/hotelpal/live/chat/${getToken()}`;
+          const wsUri = `ws://t.hotelpal.cn:8080/hotelpal/live/chat/${liveId}/${getToken()}`;
+          console.log(wsUri)
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
             console.log(evt) 
@@ -282,9 +283,9 @@ export default {
         }
       }
 
-      if (chats.some(d => d.id === newComment.id)) {
-        return state;
-      }
+      // if (chats.some(d => d.id === newComment.id)) {
+      //   return state;
+      // }
 
       return {...state, chats: [newComment, ...chats]};
     },

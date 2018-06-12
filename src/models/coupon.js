@@ -13,7 +13,11 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
       return history.listen(({ pathname, query }) => {
-        if (pathname.indexOf('/course/') === -1 && pathname.indexOf('/coupon') === -1 && pathname != '/profile') {
+        if (pathname.indexOf('/course/') === -1 
+          && pathname.indexOf('/coupon') === -1 
+          && pathname != '/profile'
+          && pathname.indexOf('/lesson/pay') === -1
+        ) {
             return false;
         }
         dispatch({

@@ -275,6 +275,9 @@ function isIphoneX(){
 }
 
 const courseMemberCardUseful = function (card) {
+    if (!card) {
+        return false;
+    }
     if (card.exists === 'N') {
         return false;
     } else {

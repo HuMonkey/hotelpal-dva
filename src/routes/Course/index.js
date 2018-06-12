@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
 import styles from './index.less';
 
 import cross from '../../assets/cross.png';
-import { formatNum, getAudioLength, callWxPay } from '../../utils';
+import { formatNum, getAudioLength, callWxPay, courseMemberCardUseful } from '../../utils';
 import { CourseContent, BackBtn, PopupOrder } from '../../components';
 
 class Course extends Component {
@@ -63,47 +62,7 @@ class Course extends Component {
   }
 
   async buyCourse () {
-    const { dispatch, course, common } = this.props;
-    const { detail } = course;
-    const { userInfo } = common;
-
-    // 免费兑换
-    if (detail.charge / 100 < 500 && userInfo && userInfo.freeCourseRemained > 0) {
-      const useFree = confirm('将使用一次免费获取课程的机会，确认兑换？');
-      if (useFree) {
-        let result;
-        await dispatch({
-          type: 'course/getFreeCourse',
-          payload: {
-            data: {
-              id: detail.id,
-            }
-          },
-          onResult (res) {
-            result = res;
-          }
-        });
-        if (result.data.code === 0) {
-          dispatch({
-            type: 'course/fetchCourseDetail',
-            payload: {
-              data: {
-                id: detail.id,
-              }
-            },
-            onResult (res) {
-              console.log(res)
-            }
-          });
-        }
-      } else {
-        // this.createOrder();
-        this.showOrderPopup();
-      }
-      return false;
-    }
     this.showOrderPopup();
-    // this.createOrder();
   }
 
   showOrderPopup () {
@@ -144,6 +103,8 @@ class Course extends Component {
       }
     }
 
+    const card = courseMemberCardUseful(coupon.card) ? card : null;
+
     const buyDom = !detail.purchased && <div className={styles.btns}>
       { freeListen ? <div className={styles.item + ' ' + styles.free} onClick={() => {
         this.gotoFree.call(this, freeListen);
@@ -151,8 +112,7 @@ class Course extends Component {
       <div className={styles.item + ' ' + styles.buy} onClick={this.buyCourse.bind(this)}>
         {
           detail.charge / 100 < 500 
-            && common.userInfo 
-            && common.userInfo.freeCourseRemained > 0 
+            && card 
             && <div className={styles.freeBubble}>
             <div className={styles.arrow}></div>
             <div className={styles.inner}>点击可免费兑换课程</div>
@@ -163,11 +123,10 @@ class Course extends Component {
     </div>;
 
     const freeChanceDom = !detail.purchased && detail.charge / 100 < 500 
-      && common.userInfo 
-      && common.userInfo.freeCourseRemained > 0 
+      && card
       && freeTipsShow
       && <div className={styles.freeTips}>
-        亲爱的内邀用户，你有{ common.userInfo.freeCourseRemained }个老师课程可以免费学习
+        亲爱的内邀用户，你有{ leftTimes.leftTimes }个老师课程可以免费学习
         <img src={cross} onClick={this.closeFreeTips.bind(this)}/>
       </div>
 

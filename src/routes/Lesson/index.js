@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
-import { AudioPlayer, ShareTips } from '../../components';
+import { AudioPlayer, ShareTips, PopupOrder } from '../../components';
 import { formatNum, getAudioLength, formatTime, getParam } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
@@ -17,6 +17,8 @@ class Lesson extends Component {
       paid: true,
       showAll: false,
       replyComment: null,
+
+      orderShow: false,
     };
   }
 
@@ -140,8 +142,22 @@ class Lesson extends Component {
     this.refs.normal.scrollTop = 20000000;
   }
 
+  showPopup () {
+    console.log(111);
+    this.setState({
+      orderShow: true,
+    })
+  }
+
+  closePopup () {
+    this.setState({
+      orderShow: false,
+    })
+  }
+
   render () {
-    const { lesson, dispatch } = this.props;
+    const { orderShow } = this.state;
+    const { lesson, dispatch, coupon } = this.props;
     if (!lesson) {
       return <div></div>
     }
@@ -160,6 +176,9 @@ class Lesson extends Component {
     if (courseDetail && !courseDetail.purchased && !detail.freeListen) {
       return (
         <div className={styles.normal} ref={`normal`}>
+          {
+            orderShow && <PopupOrder coupon={coupon} course={courseDetail} closePopup={this.closePopup.bind(this)}  />
+          }
           <div className={styles.notPaid}>
             <div className={styles.box}>
               <div className={styles.top}>
@@ -178,7 +197,7 @@ class Lesson extends Component {
                 <div className={styles.who}>{courseDetail.company}{courseDetail.userTitle}</div> 
                 <div className={styles.course}>{courseDetail.title}</div> 
                 <div className={styles.desc}>{courseDetail.subtitle}</div> 
-                <div className={styles.btn}>购买课程  获取知识</div>
+                <div className={styles.btn} onClick={this.showPopup.bind(this)}>购买课程  获取知识</div>
               </div>
             </div> 
             <div className={styles.log}>你已经购买？<span>绑定其他账号</span></div>
@@ -418,7 +437,7 @@ Lesson.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { lesson: state.lesson };
+  return { lesson: state.lesson, coupon: state.coupon };
 }
 
 export default connect(mapStateToProps)(Lesson);

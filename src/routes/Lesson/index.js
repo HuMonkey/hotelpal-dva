@@ -328,7 +328,7 @@ class Lesson extends Component {
           <div className={styles.main} ref={`main`}>
             <div className={styles.courseTitle}>{formatNum(detail.lessonOrder)}&nbsp;|&nbsp;{detail.title}</div>
             <div className={styles.infos}>
-              <div className={styles.time}>{detail.publishTime} 发布</div> 
+              { isCourse && <div className={styles.time}>{detail.publishTime} 发布</div> }
               <div className={styles.other}>
                 <span>
                   <div className={styles.icon + ' ' + styles.time}></div>

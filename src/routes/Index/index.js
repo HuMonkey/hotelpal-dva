@@ -167,7 +167,7 @@ class IndexPage extends Component {
                     </Link>
                   </div>
                   <div className={styles.cell}>
-                    {time}
+                    {/* {time} */}
                   </div>
                 </div>
               })

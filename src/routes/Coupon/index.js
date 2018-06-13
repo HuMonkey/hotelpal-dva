@@ -33,6 +33,9 @@ class Coupon extends Component {
 
     const noCoupon = !courseMemberCardUseful(card) && !liveMemberCardUseful(liveVip) 
       && couponList.length == 0;
+    
+    const hasUselessCoupon = !courseMemberCardUseful(card) || !liveMemberCardUseful(liveVip) 
+      || couponList.length !== coupon.couponList.length;
 
     return (
       <div className={styles.normal}>
@@ -56,7 +59,7 @@ class Coupon extends Component {
             }
           </div>
         }
-        <Link to={'/coupon/useless'}><div className={styles.tips3}>查看无效特权与优惠券<Icon type="right" /></div></Link>
+        { hasUselessCoupon && <Link to={'/coupon/useless'}><div className={styles.tips3}>查看无效特权与优惠券<Icon type="right" /></div></Link> }
       </div>
     );
   }

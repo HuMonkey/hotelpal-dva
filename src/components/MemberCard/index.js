@@ -68,8 +68,7 @@ class MemberCard extends Component {
       </div>
     }
 
-    const uselessClass = (expired || empty) ? ' ' + styles.useless : '';
-
+    const uselessClass = (expired || (type === 'course' && empty)) ? ' ' + styles.useless : '';
     return (
       <div className={styles.memberCard + vipClassName + uselessClass}>
         { topDom }

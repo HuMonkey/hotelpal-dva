@@ -86,6 +86,38 @@ class EnrollPanel extends Component {
     });
   }
 
+  canEnrollFor () {
+    const { invitor, userInfo } = this.props;
+    return userInfo.enrolled === 'N' // 没报名
+      && !userInfo.enrolledFor // 没帮助过别人
+      && (invitor ? true : false) 
+      && invitor !== getToken();
+  }
+
+  async enrollFor () {
+    const { dispatch, live, invitor } = this.props;
+    // 判断是否能帮助别人报名
+    const canEnrollFor = this.canEnrollFor();
+
+    if (canEnrollFor) {
+      dispatch({
+        type: 'live/enrollFor',
+        payload: {
+          id: live.id,
+          invitor,
+        },
+        onResult (res) {}
+      });
+      dispatch({
+        type: 'live/save',
+        payload: {
+          invitor: null
+        },
+        onResult (res) {}
+      });
+    } 
+  }
+
   async enroll () {
     const { dispatch, live, invitor, userInfo } = this.props;
 
@@ -111,23 +143,9 @@ class EnrollPanel extends Component {
           });
         }
       });
-      if (invitor && invitor !== getToken()) {
-        dispatch({
-          type: 'live/enrollFor',
-          payload: {
-            id: live.id,
-            invitor,
-          },
-          onResult (res) {}
-        });
-        dispatch({
-          type: 'live/save',
-          payload: {
-            invitor: null
-          },
-          onResult (res) {}
-        });
-      } 
+      
+      this.enrollFor();
+
       return false;
     }
 
@@ -141,19 +159,20 @@ class EnrollPanel extends Component {
       this.setState({
         enrollForShow: false,
       })
-    }, 8000)
+    }, 8000) // 8秒后隐藏提示
   }
 
   render() {
     const { enrollForShow, posterShow } = this.state;
     const { live, userInfo, invitor } = this.props;
 
-    const showInvitorTips = !userInfo.enrolledFor // 没帮过别人
-      && enrollForShow // 八秒后隐藏
-      && (invitor ? true: false); // 是否是邀请链接点进来
+    const showInvitorTips = this.canEnrollFor() && enrollForShow;
     
-    if (!helpedTipsShow && userInfo.enrolledFor && invitor) {
-      message.error('你已经帮助过别人了！');
+    if (!helpedTipsShow && userInfo.enrolled === 'Y' && invitor) {
+      message.error('你已经报名，不能帮好友解锁~');
+      helpedTipsShow = true;
+    } else if (!helpedTipsShow && userInfo.enrolledFor && invitor) {
+      message.error('你已经帮助过别人了~');
       helpedTipsShow = true;
     }
 

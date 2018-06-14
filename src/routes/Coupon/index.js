@@ -6,7 +6,7 @@ import styles from './index.less';
 
 import moment from 'moment';
 
-import { Navs, MemberCard, CouponItem, PopupCoupon } from '../../components';
+import { Navs, MemberCard, CouponItem } from '../../components';
 import { courseMemberCardUseful, liveMemberCardUseful } from '../../utils';
 
 import emptyPng from '../../assets/coupon-empty.png';
@@ -45,7 +45,7 @@ class Coupon extends Component {
             <img className={styles.emptyPng} src={emptyPng} />
             <div className={styles.tips1}>没有优惠券</div>
             <div className={styles.tips2}>邀请好友获得优惠券哦！</div>
-            <Link to={'/invite'}><div className={styles.btn}><Icon className={styles.icon} type="gift" />邀请</div></Link>
+            <Link to={'/invite'}><div className={styles.btn}><Icon className={styles.icon} type="gift" />邀请得优惠券</div></Link>
           </div>
         }
         { 

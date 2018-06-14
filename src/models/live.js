@@ -21,6 +21,8 @@ export default {
 
     hbShow: false,
     PPTImg: null,
+
+    watchingPeopleNum: null,
   },
 
   subscriptions: {
@@ -94,9 +96,9 @@ export default {
             message.error('socket 断开了');
           }; 
           websocket.onmessage = function(evt) {
-            console.log(evt);
             const data = JSON.parse(evt.data);
             if (data.msgType === 'TYPE_USER_MESSAGE') {
+              // 评论
               dispatch({
                 type: 'saveComment',
                 payload: {
@@ -104,6 +106,7 @@ export default {
                 }
               })
             } else if (data.msgType === 'TYPE_HIDE_COUPON') {
+              // 隐藏红包
               dispatch({
                 type: 'switchHb',
                 payload: {
@@ -111,6 +114,7 @@ export default {
                 }
               })
             } else if (data.msgType === 'TYPE_SHOW_COUPON') {
+              // 显示红包
               dispatch({
                 type: 'switchHb',
                 payload: {
@@ -118,6 +122,7 @@ export default {
                 }
               })
             } else if (data.msgType === 'TYPE_IMAGE_CHANGE') {
+              // 直播图片改变
               dispatch({
                 type: 'save',
                 payload: {
@@ -129,6 +134,33 @@ export default {
                 type: 'saveAMsg',
                 payload: {
                   data: evt.data,
+                }
+              })
+            } else if (data.msgType === 'TYPE_ASSISTANT_MESSAGE_REMOVE') {
+              dispatch({
+                type: 'deleteAMsg',
+                payload: {
+                  data: evt.data,
+                }
+              })
+            } else if (data.msgType === 'TYPE_LIVE_TERMINATE') {
+              // 结束直播
+              dispatch({
+                type: 'fetchLiveDetail',
+                payload: {
+                  data: {
+                    id: liveId
+                  }
+                },
+                onResult (res) {}
+              });
+            } else if (data.msgType === 'TYPE_PRESENT_UPDATE') {
+              // 观看直播人数的更新
+              console.log('观看直播人数的更新');
+              dispatch({
+                type: 'save',
+                payload: {
+                  watchingPeopleNum: data.msg
                 }
               })
             }
@@ -260,9 +292,13 @@ export default {
     },
     saveAMsg(state, action) {
       const data = JSON.parse(action.payload.data && action.payload.data.trim());
-      console.log(111, data);
       const assistantMsg = state.assistantMsg;
       return {...state, assistantMsg: [data, ...assistantMsg]};
+    },
+    deleteAMsg(state, action) {
+      const data = JSON.parse(action.payload.data && action.payload.data.trim());
+      const assistantMsg = state.assistantMsg;
+      return {...state, assistantMsg: assistantMsg.filter(d => d.id !== data.id)};
     },
     saveComment(state, action) {
       const data = JSON.parse(action.payload.data && action.payload.data.trim());

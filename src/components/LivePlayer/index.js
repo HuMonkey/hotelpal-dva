@@ -54,12 +54,12 @@ class LivePlayer extends Component {
       if (userInfo.enrolled === 'Y') {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
-            <img src={PPTImg || live.currentImg || defaultPPT} />
+            <img src={PPTImg || defaultPPT} />
           </div>
           <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
             <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
           </video>
-          <div className={styles.people}><span>{live.totalPeople}人正在收看</span></div>
+          <div className={styles.people}><span>{live.watchingPeopleNum}人正在收看</span></div>
         </div>
       } else {
         dom = <div className={styles.player + ' ' + styles.bg}>

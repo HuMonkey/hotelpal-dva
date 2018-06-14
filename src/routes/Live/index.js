@@ -164,7 +164,7 @@ class Live extends Component {
     const { enrollForShow } = this.state;
     const { live, common, dispatch } = this.props;
 
-    const { liveDetail, now, countDownInter, assistantMsg, chats, hbShow, PPTImg } = live;
+    const { liveDetail, now, countDownInter, assistantMsg, chats, hbShow, PPTImg, watchingPeopleNum } = live;
 
     if (!liveDetail) {
       return <div></div>
@@ -187,7 +187,7 @@ class Live extends Component {
       <div className={styles.close} onClick={this.closeHongbao.bind(this)}></div>
     </div>;
 
-    const openTime = moment(live.openTime);
+    const openTime = moment(liveDetail.openTime);
     const diffTime = openTime - now;
     const duration = moment.duration(diffTime, 'milliseconds');
     if (diffTime <= 0) {
@@ -225,6 +225,7 @@ class Live extends Component {
             countDownInter={countDownInter} 
             PPTImg={PPTImg} 
             userInfo={userInfo}
+            watchingPeopleNum={watchingPeopleNum}
           />
           <div className={styles.switches}>
             <div 

@@ -13,5 +13,9 @@ export function getFreeCourse(data) {
 
 export function createPayOrder(data) {
   const jdbtk = getToken();
-  return request(config.host + '/hotelpal/user/createPayOrder?courseId=' + data.id + '&token=' + jdbtk);
+  let url = config.host + '/hotelpal/user/createPayOrder?courseId=' + data.id + '&token=' + jdbtk;
+  if (data.couponId) {
+    url += '&couponId=' + data.couponId
+  }
+  return request(url);
 }

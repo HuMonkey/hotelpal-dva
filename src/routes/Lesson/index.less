@@ -5,10 +5,31 @@
   background: #f5f5f5;
   overflow: scroll;
   .paid {
-    padding-top: 3.226666rem;
     overflow: auto;
+    .audioPlayer {
+      width: 100%;
+      background: white;
+      z-index: 99;
+    }
     &.fromHongbao {
       padding-top: 6.226666rem;
+    }
+    &.course {
+      padding-top: 3.226666rem;
+      .audioPlayer {
+        position: fixed;
+        left: 0;
+        top: 0;
+      }
+    }
+    &.scrollDown {
+      padding-top: 9.93333rem;
+      .audioPlayer {
+        position: absolute;
+        left: 0;
+        top: -6.64rem;
+        z-index: 99;
+      }
     }
     .main {
       background: #fff;

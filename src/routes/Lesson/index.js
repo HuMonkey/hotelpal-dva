@@ -19,6 +19,7 @@ class Lesson extends Component {
       replyComment: null,
 
       orderShow: false,
+      scrollDown: false,
     };
   }
 
@@ -30,7 +31,28 @@ class Lesson extends Component {
     });
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+    this.refs.normal.onscroll = () => {
+      const scrollDown = this.state.scrollDown;
+      const width = document.body.offsetWidth;
+      const scrollTop = this.refs.normal.scrollTop;
+      if (scrollTop >= width / 10 * (1.173333 + 5.46666)) {
+        if (scrollDown === true) {
+          return false;
+        }
+        this.setState({
+          scrollDown: true,
+        });
+      } else {
+        if (scrollDown === false) {
+          return false;
+        }
+        this.setState({
+          scrollDown: false,
+        });
+      }
+    }
+  }
 
   componentWillUnmount () {
     const {dispatch} = this.props;
@@ -53,7 +75,8 @@ class Lesson extends Component {
     })
   }
 
-  submitComment () {
+  submitComment () 
+  {
     const { dispatch, lesson } = this.props;
     const { replyComment } = this.state;
     const comment = this.refs.reply.value;
@@ -143,7 +166,6 @@ class Lesson extends Component {
   }
 
   showPopup () {
-    console.log(111);
     this.setState({
       orderShow: true,
     })
@@ -156,10 +178,11 @@ class Lesson extends Component {
   }
 
   render () {
-    const { orderShow } = this.state;
+    const { orderShow, scrollDown } = this.state;
     const { lesson, dispatch, coupon } = this.props;
+
     if (!lesson) {
-      return <div></div>
+      return <div className={styles.normal} ref={`normal`}></div>
     }
 
     const { detail, courseDetail } = lesson;
@@ -170,14 +193,14 @@ class Lesson extends Component {
     const isHongbao = route.indexOf('hongbao') > -1;
 
     if (!detail || (isCourse && !courseDetail)) {
-      return <div></div>
+      return <div className={styles.normal} ref={`normal`}></div>
     }
 
     if (courseDetail && !courseDetail.purchased && !detail.freeListen) {
       return (
         <div className={styles.normal} ref={`normal`}>
           {
-            orderShow && <PopupOrder coupon={coupon} course={courseDetail} closePopup={this.closePopup.bind(this)}  />
+            orderShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={courseDetail} closePopup={this.closePopup.bind(this)}  />
           }
           <div className={styles.notPaid}>
             <div className={styles.box}>
@@ -313,13 +336,15 @@ class Lesson extends Component {
 
     const fromHongbao = getParam('fromHongbao');
     const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
+    const isCourseClass = isCourse ? ' ' + styles.course : '';
+    const scrollDownClass = scrollDown ? ' ' + styles.scrollDown : '';
+    console.log(scrollDownClass);
 
     return (
-      <div className={styles.normal} ref={`main`}>
+      <div className={styles.normal} ref={`normal`}>
         { 
           isHongbao && <ShareTips type="hongbao" clickCallBack={this.hideHongbaoTips.bind(this)} />
         }
-        <AudioPlayer free={detail.freeListen} fromHongbao={fromHongbao || detail.isGift} dispatch={dispatch} lid={detail.id} nextLesson={nextLesson && nextLesson.title} courseId={courseDetail && courseDetail.id} isCourse={isCourse} audioUrl={detail.audio} previous={detail.previousLessonId} next={detail.nextLessonId}></AudioPlayer>
         { 
           !replying && <div className={styles.commentBox + hongbaoClass}>
             <div className={styles.pen}></div> 
@@ -343,7 +368,23 @@ class Lesson extends Component {
             </div>
           </div>
         }
-        <div className={styles.paid + fromHongbaoClass} ref={`paid`}>
+        <div className={styles.paid + fromHongbaoClass + isCourseClass + scrollDownClass} ref={`paid`}>
+          <div className={styles.audioPlayer}>
+            <AudioPlayer 
+              free={detail.freeListen} 
+              fromHongbao={fromHongbao || detail.isGift} 
+              dispatch={dispatch} 
+              lid={detail.id} 
+              nextLesson={nextLesson && nextLesson.title} 
+              courseId={courseDetail && courseDetail.id} 
+              isCourse={isCourse} 
+              audioUrl={detail.audio} 
+              previous={detail.previousLessonId} 
+              next={detail.nextLessonId}
+              coverImg={detail.coverImg}
+            >
+            </AudioPlayer>
+          </div>
           <div className={styles.main} ref={`main`}>
             <div className={styles.courseTitle}>{formatNum(detail.lessonOrder)}&nbsp;|&nbsp;{detail.title}</div>
             <div className={styles.infos}>

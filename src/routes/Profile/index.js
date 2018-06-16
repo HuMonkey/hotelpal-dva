@@ -45,6 +45,7 @@ class Profile extends Component {
   
   render () {
     const { common, profile, coupon } = this.props;
+    console.log(1);
     if (!common.userInfo || !profile || !coupon) {
       return <div></div>
     }

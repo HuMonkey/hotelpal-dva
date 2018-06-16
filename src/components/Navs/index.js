@@ -13,7 +13,11 @@ class Navs extends Component {
   }
 
   goback () {
-    window.history.go(-1);
+    if (window.history.length > 0) {
+      window.history.go(-1);
+    } else {
+      window.location.href = '/';
+    }
   }
 
   render() {

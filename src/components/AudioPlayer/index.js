@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'dva/router';
 import ReactPlayer from 'react-player';
 import styles from './index.less';
 
@@ -6,6 +7,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import hongbaoGot from '../../assets/zshb_banner.png';
+import banner from '../../assets/jiudianbang-big.png';
 
 class AudioPlayer extends Component {
   constructor(props) {
@@ -17,6 +19,8 @@ class AudioPlayer extends Component {
       duration: 0,
       goOn: false,
       playing: false,
+
+      speed: 1.0,
     };
   }
 
@@ -101,10 +105,24 @@ class AudioPlayer extends Component {
     location.href = `/${isCourse ? `?courseId=${courseId}` : ''}#/lesson/${isCourse ? 'pay' : 'free'}/${next}`;
   }
 
-  render() {
-    const { played, loaded, duration, playedSeconds, goOn, playing } = this.state;
+  setSpeed () {
+    const { speed } = this.state;
+    let newSpeed = +speed + 0.2;
+    if (newSpeed > 2) {
+      newSpeed = 1;
+    }
+    newSpeed = newSpeed.toFixed(1);
+    const video = this.refs.player.getInternalPlayer();
+    video.playbackRate = newSpeed;
+    this.setState({
+      speed: newSpeed,
+    })
+  }
 
-    const { audioUrl, previous, next, nextLesson, fromHongbao, free } = this.props;
+  render() {
+    const { played, duration, playedSeconds, goOn, playing, speed } = this.state;
+
+    const { audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -124,6 +142,7 @@ class AudioPlayer extends Component {
 
     const playClass = playing ? ' ' + styles.playing : '';
     const clickClass = goOn ? ' ' + styles.clicked : '';
+    const speedClickClass = speed > 1 ? ' ' + styles.clicked : '';
 
     const previousEmpty = previous == null ? ' ' + styles.empty : '';
     const nextEmpty = next == null ? ' ' + styles.empty : '';
@@ -136,10 +155,22 @@ class AudioPlayer extends Component {
       <div className={styles.tips}>{ leftDuration }s后将自动为你播放</div>
       <div className={styles.lessonTitle}>{ nextLesson || '下一节课' }</div>
       <div className={styles.btn} onClick={this.setGoOn.bind(this)}>取消自动播放</div>
-    </div> : <div></div>
+    </div> : <div></div>;
 
     return (
       <div className={styles.audioPlayer}>
+        { 
+          !isCourse && <div>
+            <Link to="/"><div className={styles.goback}>
+              <img src={banner} />
+              <span>成长专栏</span>
+              <div className={styles.arrowRight}></div>
+            </div></Link>
+            <div className={styles.banner}>
+              <img src={coverImg} />
+            </div> 
+          </div>
+        }
         <div className={styles.wrapper}>
           { fromHongbao && !free ? <img src={hongbaoGot} className={styles.hongbaoGot} /> : null }
           <div className={styles.top}>
@@ -150,6 +181,7 @@ class AudioPlayer extends Component {
               </div> 
               <div className={styles.left}>{durationMinute}:{durationSecond}</div>
             </div> 
+            <div className={styles.speed + speedClickClass} onClick={this.setSpeed.bind(this)}>倍速{(+speed).toFixed(1)}</div>
             <div className={styles.goOn + clickClass} onClick={this.setGoOn.bind(this)}>连续听</div>
           </div> 
           <div className={styles.bottom}>

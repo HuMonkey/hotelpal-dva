@@ -32,35 +32,6 @@ class Course extends Component {
     location.href = `/?courseId=${this.props.course.detail.id}#/lesson/pay/${lesson.id}`;
   }
 
-  async createOrder () {
-    const { dispatch, course, common } = this.props;
-    const { detail } = course;
-    let result;
-    await dispatch({
-      type: 'course/createPayOrder',
-      payload: {
-        data: {
-          id: detail.id,
-        }
-      },
-      onResult (res) {
-        result = res;
-      }
-    });
-    if (result.data.code === 0) {
-      const data = result.data.data;
-      const pk = data.package;
-      const { appId, nonceStr, paySign, timeStamp, tradeNo } = data;
-      callWxPay({
-        pk, appId, nonceStr, paySign, timeStamp, tradeNo
-      }, (res) => {
-        console.log('支付成功！', res);
-      })
-    } else {
-      alert(result.data.msg);
-    }
-  }
-
   async buyCourse () {
     this.showOrderPopup();
   }
@@ -84,7 +55,7 @@ class Course extends Component {
 
   render () {
     const { freeTipsShow, orderPopupShow } = this.state;
-    const { course, common, coupon } = this.props;
+    const { course, common, coupon, dispatch } = this.props;
 
     if (!course) {
       return <div></div>
@@ -133,7 +104,7 @@ class Course extends Component {
     return (
       <div className={styles.normal}>
         {freeChanceDom}
-        { orderPopupShow && <PopupOrder coupon={coupon} course={detail} closePopup={this.closePopup.bind(this)} /> }
+        { orderPopupShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={detail} closePopup={this.closePopup.bind(this)} /> }
         <div className={styles.header}>
           <img src={`${detail.bannerImg[0]}`} />
           <div className={styles.desc}>

@@ -14,7 +14,7 @@ class LivePlayer extends Component {
   }
 
   render() {
-    const { live, now, countDownInter, PPTImg, userInfo } = this.props;
+    const { live, now, countDownInter, PPTImg, userInfo, watchingPeopleNum } = this.props;
 
     const openTime = moment(live.openTime);
     const diffTime = openTime - now;
@@ -51,7 +51,7 @@ class LivePlayer extends Component {
         <div className={styles.cover} style={{ backgroundImage: `url(${live.bannerImg || defaultPPT})` }}></div>
       </div>
     } else if (status === 'ONGOING') {
-      if (userInfo.enrolled === 'Y') {
+      if (userInfo.enrolled === 'Y' || userInfo.liveVip === 'Y') {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
             <img src={PPTImg || defaultPPT} />
@@ -59,7 +59,7 @@ class LivePlayer extends Component {
           <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
             <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
           </video>
-          <div className={styles.people}><span>{live.watchingPeopleNum}人正在收看</span></div>
+          <div className={styles.people}><span>{watchingPeopleNum}人正在收看</span></div>
         </div>
       } else {
         dom = <div className={styles.player + ' ' + styles.bg}>

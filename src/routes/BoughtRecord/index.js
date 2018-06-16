@@ -44,6 +44,8 @@ class BoughtRecord extends Component {
     if (!bought) {
       return <div></div>
     }
+
+    console.log(bought);
   
     const { boughtList } = bought;
   
@@ -66,6 +68,16 @@ class BoughtRecord extends Component {
               </div>
             </Link>
           })
+        }
+        {
+          (boughtList && boughtList.length === 0) && <div className={styles.nothing}>
+            <div className={styles.shoppingCar}></div>
+              <p>你还没有购买课程</p>
+              <Link to={`/`}><div className={styles.buy}>
+                <div className={styles.magnifier}></div>
+                发现课程
+              </div></Link>
+            </div>
         }
       </div>
     );

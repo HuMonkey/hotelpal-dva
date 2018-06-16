@@ -26,7 +26,7 @@ class PopupCoupon extends Component {
       return today < moment(d.validity);
     });
 
-    const card = courseMemberCardUseful(coupon.card) ? card : null;
+    const card = courseMemberCardUseful(coupon.card) ? coupon.card : null;
 
     const noUsePic = couponSelected === '不使用' ? tickedPng : tickPng;
 
@@ -44,9 +44,13 @@ class PopupCoupon extends Component {
               <div className={styles.check}><img src={noUsePic} /></div>
             </div>
             <div className={styles.list}>
-              { card && <MemberCard onClick={() => {
-                selectCallback('card')
-              }} type="course" mode={'select'} selected={couponSelected.type === 'card'} data={card}/> }
+              { 
+                card && <div onClick={() => {
+                  selectCallback('card')
+                }}>
+                  <MemberCard type="course" mode={'select'} selected={couponSelected.type === 'card'} data={card}/> 
+                </div>
+              }
               {
                 couponList.map((d, i) => {
                   const selected = d.id === couponSelected.id;

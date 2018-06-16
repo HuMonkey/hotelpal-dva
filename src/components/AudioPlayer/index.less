@@ -2,11 +2,51 @@
 
 .audioPlayer {
     width: 100%;
-    height: 3.226666rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 99;
+    // height: 3.226666rem;
+    // position: fixed;
+    // top: 0;
+    // left: 0;
+    // z-index: 99;
+    .goback {
+        width: 100%;
+        height: 1.173333rem;
+        background: white;
+        padding: 0.186666rem 0.4rem;
+        display: flex;
+        align-items: center;
+        position: relative;
+        img {
+          width: 0.8rem;
+          height: 0.8rem;
+          border-radius: 4px;
+        }
+        span {
+          font-size: 0.4rem;
+          color: @black3;
+          margin-left: 0.26666rem;
+        }
+        .arrowRight {
+          position: absolute;
+          top: 0;
+          right: 0.4rem;
+          width: 0.2rem;
+          height: 100%;
+          background-image: url('../../assets/arrow-right.svg');
+          background-size: 0.2rem auto;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+    }
+    .banner {
+        width: 100%;
+        height: 5.46666rem;
+        position: relative;
+        z-index: 1;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+    }
     .player {
         display: none;
     }
@@ -57,11 +97,12 @@
             font-size: 0.26666rem;
             overflow: hidden;
             .progress {
-                width: 7.5rem;
+                width: 6.2rem;
                 display: table;
                 float: left;
                 position: relative;
                 top: 0.16rem;
+                margin-right: 0.1rem;
                 .current, .left {
                     height: 0.4rem;
                     width: 0.8rem;
@@ -87,15 +128,18 @@
                     }
                 }
             }
-            .goOn {
+            .goOn, .speed {
+                margin-right: 0.1rem;
+                margin-top: 0.1rem;
                 float: right;
-                width: 1.4rem;
-                height: 0.8rem;
+                width: 1.2rem;
+                height: 0.6rem;
                 text-align: center;
                 background-image: url('../../assets/goon-grey.svg');
-                background-size: 1.4rem 0.8rem;
-                transform: scale(0.8);
-                line-height: 0.7rem;
+                background-size: 1.2rem 100%;
+                // transform: scale(0.8);
+                line-height: 0.6rem;
+                font-size: 0.26666rem;
                 &.clicked {
                     color: @red;
                     background-image: url('../../assets/goon-red.svg');

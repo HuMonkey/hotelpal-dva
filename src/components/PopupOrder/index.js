@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
-import { Icon } from 'antd';
+import { Icon, message } from 'antd';
 import moment from 'moment';
 
 import PopupCoupon from '../PopupCoupon/';
@@ -16,13 +16,78 @@ class PopupOrder extends Component {
 
       maxDiscount: 0,
       couponSelected: null,
+
+      paying: false,
     };
   }
 
-  createOrder () {
-    const { dispatch } = this.props;
-    // TODO
-    alert('进入支付！');
+  async createOrder () {
+    const { paying, couponSelected } = this.state;
+    const { dispatch, course } = this.props;
+    if (paying) {
+      return false;
+    }
+    await this.setState({
+      paying: true,
+    });
+    if (couponSelected && couponSelected.type === 'card') {
+      dispatch({
+        type: 'course/getFreeCourse',
+        payload: {
+          data: {
+            id: course.id,
+          }
+        },
+        onResult: async (res) => {
+          await this.setState({
+            paying: false,
+          });
+          if (res.data.code === 0) {
+            message.success('支付成功~');
+          } else {
+            message.error('支付出了点问题，请稍后再试~');
+          }
+        }
+      })
+    } else {
+      const data = {
+        id: course.id
+      }
+      if (couponSelected && couponSelected !== '不使用') {
+        data.couponId = couponSelected.id;
+      }
+      dispatch({
+        type: 'course/createPayOrder',
+        payload: {
+          data
+        },
+        onResult: async (res) => {
+          await this.setState({
+            paying: false,
+          });
+          if (res.data.code === 0) {
+            const { appId, nonceStr, paySign, timeStamp } = res.data.data;
+            wx.chooseWXPay({
+              timestamp: timeStamp,
+              appId: appId,
+              nonceStr: nonceStr, // 支付签名随机串，不长于 32 位
+              package: res.data.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+              signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+              paySign: paySign, // 支付签名
+              success: (res) => {
+                // TODO 支付成功后的回调函数
+                message.success('支付成功~');
+              },
+              error: () => {
+                message.error('支付出了点问题，请稍后再试~');
+              }
+            });
+          } else {
+            message.error('支付出了点问题，请稍后再试~');
+          }
+        }
+      })
+    }
   }
 
   openCoupon () {
@@ -57,10 +122,10 @@ class PopupOrder extends Component {
       maxDiscount = price;
       couponSelected = card;
       couponSelected.type = 'card';
-    } else if (couponList) {
+    } else if (couponList.length > 0) {
       // 优先用面额最大的优惠券
       const couponMoneys = couponList.map(d => d.value);
-      maxDiscount = Math.max(...couponMoneys);
+      maxDiscount = Math.max(...couponMoneys) || 0;
       couponSelected = couponList.find(d => d.value === maxDiscount);
     }
     this.setState({
@@ -98,12 +163,12 @@ class PopupOrder extends Component {
     const { closePopup, course, coupon } = this.props;
 
     const today = moment();
-    const couponList = coupon.couponList && coupon.couponList.filter(d => {
+    let couponList = coupon.couponList && coupon.couponList.filter(d => {
       return today < moment(d.validity);
     })
 
     const card = coupon.card;
-    const cardCanUse = courseMemberCardUseful(card);
+    let cardCanUse = courseMemberCardUseful(card);
 
     const speaker = course.speaker || {
       nick: course.userName,
@@ -114,8 +179,6 @@ class PopupOrder extends Component {
     const price = (course.price || course.charge) / 100;
 
     const { couponSelected, maxDiscount } = this.state;
-
-    console.log(111, couponSelected, maxDiscount)
 
     return (
       <div className={styles.PopupOrder}>

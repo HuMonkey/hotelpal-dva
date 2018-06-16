@@ -17,9 +17,6 @@ import simleLogo from '../../assets/smile.svg';
 
 import { formatNum, getHtmlContent } from '../../utils';
 
-let helpedTipsShow = false; // "是否帮助过别人的提示"
-let commentScroll = false; // 评论框滚动到最下面
-
 class Live extends Component {
   constructor(props) {
     super(props);
@@ -40,17 +37,18 @@ class Live extends Component {
     document.getElementById('root').scrollTop = 20000000;
   }
 
-  openHongbao () {
+  showHongbao () {
     this.setState({
       hongbaoShow: true,
     });
   }
 
-  closeHongbao () {
+  hideHongbao () {
     this.setState({
       hongbaoShow: false,
     });
   }
+  
 
   changePage (page) {
     this.setState({
@@ -61,7 +59,24 @@ class Live extends Component {
   }
 
   openHongbao () {
-    // TODO 打开红包
+    const { dispatch, live } = this.props;
+
+    dispatch({
+      type: 'live/getCoupon',
+      payload: {
+        data: {
+          id: live.liveDetail.id
+        }
+      },
+      onResult(res) {
+        if (res.data.code === 0) {
+          message.success('您已成功获得优惠券~');
+        } else {
+          message.error(res.data.messages);
+        }
+      }
+    })
+
     this.setState({
       hongbaoShow: false,
     });
@@ -162,7 +177,7 @@ class Live extends Component {
 
   render () {
     const { enrollForShow } = this.state;
-    const { live, common, dispatch } = this.props;
+    const { live, common, dispatch, coupon } = this.props;
 
     const { liveDetail, now, countDownInter, assistantMsg, chats, hbShow, PPTImg, watchingPeopleNum } = live;
 
@@ -184,7 +199,7 @@ class Live extends Component {
         <div className={styles.price}>￥<span>20</span></div>
         <div className={styles.btn} onClick={this.openHongbao.bind(this)}>抢</div>
       </div>
-      <div className={styles.close} onClick={this.closeHongbao.bind(this)}></div>
+      <div className={styles.close} onClick={this.hideHongbao.bind(this)}></div>
     </div>;
 
     const openTime = moment(liveDetail.openTime);
@@ -205,7 +220,7 @@ class Live extends Component {
                 <div className={styles.cancel} onClick={() => this.setReply.call(this, false)}>取消</div> 
                 <div className={styles.confirm} onClick={this.submitComment.bind(this)}>发布</div>
               </div> 
-              <textarea maxlength="100" onFocus={this.onCommentFocus.bind(this)} ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
+              <textarea maxLength="100" onFocus={this.onCommentFocus.bind(this)} ref={'reply'} placeholder="一起来参与讨论吧！"></textarea>
             </div>
           </div>
         }
@@ -214,7 +229,7 @@ class Live extends Component {
           popup && <div>
             { popup === 'detail' && <PopupCourse course={relaCourse} onSubmit={this.onCourseSubmit.bind(this)} closePopup={this.closePopup.bind(this)} /> }
             { popup === 'login' && <PopupLogin closePopup={this.closePopup.bind(this)} /> }
-            { popup === 'order' && <PopupOrder course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'order' && <PopupOrder dispatch={dispatch} coupon={coupon} course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
           </div>
         }
         <Navs/>
@@ -265,7 +280,7 @@ class Live extends Component {
         { 
           page === 'chat' && <div className={styles.commentBox}>
             { 
-              hbShow ? <div className={styles.hongbao} onClick={this.openHongbao.bind(this)}>
+              hbShow ? <div className={styles.hongbao} onClick={this.showHongbao.bind(this)}>
                 <div className={styles.inner}>
                   <div className={styles.square}>
                     <div className={styles.money}>￥<span>20</span></div>
@@ -300,7 +315,7 @@ Live.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { live: state.live, common: state.common };
+  return { live: state.live, common: state.common, coupon: state.coupon };
 }
 
 export default connect(mapStateToProps)(Live);

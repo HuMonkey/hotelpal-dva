@@ -20,8 +20,8 @@ const isLogin = function () {
 }
 
 const config = {
-    host: `${location.origin}`, // 线上
-    // host: `${location.origin}/test`, // 测试
+    // host: `${location.origin}`, // 线上
+    host: `${location.origin}/test`, // 测试
     appId: 'wxfe666ebbf0e42897'
 }
 

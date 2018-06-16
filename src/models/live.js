@@ -85,7 +85,7 @@ export default {
           });
 
           // 讨论 ws
-          const wsUri = `ws://t.hotelpal.cn:8080/hotelpal/live/chat/${liveId}/${getToken()}`;
+          const wsUri = `ws://47.98.220.31:8080/hotelpal/live/chat/${liveId}/${getToken()}`;
           console.log(wsUri)
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
@@ -96,6 +96,7 @@ export default {
             message.error('socket 断开了');
           }; 
           websocket.onmessage = function(evt) {
+            console.log(evt);
             const data = JSON.parse(evt.data);
             if (data.msgType === 'TYPE_USER_MESSAGE') {
               // 评论
@@ -261,6 +262,22 @@ export default {
     },
     *enrollFor({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(liveService.enrollFor, payload.data || {});
+      if (res.data.code === 0) {
+        onResult && onResult(res);
+      } else {
+        onResult && onResult(res);
+      }
+    },
+    *getCoupon({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(liveService.getCoupon, payload.data || {});
+      if (res.data.code === 0) {
+        onResult && onResult(res);
+      } else {
+        onResult && onResult(res);
+      }
+    },
+    *createPayOrder({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(liveService.createPayOrder, payload.data || {});
       if (res.data.code === 0) {
         onResult && onResult(res);
       } else {

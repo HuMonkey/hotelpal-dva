@@ -42,24 +42,26 @@ class EnrollPanel extends Component {
 
     this.openPoster();
 
-    if (!userInfo.enrolledFor && invitor) {
-      dispatch({
-        type: 'live/enrollFor',
-        payload: {
-          data: {
-            invitor,
-            id: live.id,
-          }
-        },
-        onResult (res) {
-          if (res.data.code === 0) {
-            message.success('您已经成功帮好友解锁~');
-          } else {
-            message.error(res.data.messages[0]);
-          }
-        }
-      });
-    }
+    // if (!userInfo.enrolledFor && invitor) {
+    //   dispatch({
+    //     type: 'live/enrollFor',
+    //     payload: {
+    //       data: {
+    //         invitor,
+    //         id: live.id,
+    //       }
+    //     },
+    //     onResult (res) {
+    //       if (res.data.code === 0) {
+    //         message.success('您已经成功帮好友解锁~');
+    //       } else {
+    //         message.error(res.data.messages[0]);
+    //       }
+    //     }
+    //   });
+    // }
+
+    this.enrollFor();
 
     if (userInfo.status === 'INVITING') {
       return false;
@@ -98,50 +100,59 @@ class EnrollPanel extends Component {
     const { dispatch, live, invitor } = this.props;
     // 判断是否能帮助别人报名
     const canEnrollFor = this.canEnrollFor();
+    helpedTipsShow = true;
 
     if (canEnrollFor) {
+      // await dispatch({
+      //   type: 'live/save',
+      //   payload: {
+      //     invitor: null
+      //   },
+      //   onResult (res) {}
+      // });
       dispatch({
         type: 'live/enrollFor',
         payload: {
           id: live.id,
           invitor,
         },
-        onResult (res) {}
-      });
-      dispatch({
-        type: 'live/save',
-        payload: {
-          invitor: null
-        },
-        onResult (res) {}
+        onResult (res) {
+          if (res.data.code === 0) {
+            message.success('您已经成功帮好友解锁~');
+            window.history.pushState(null, null, `/#/live/${live.id}`);
+          } else {
+            message.error('系统出了点问题，请稍后再试~');
+          }
+        }
       });
     } 
   }
 
   async enroll () {
-    const { dispatch, live, invitor, userInfo } = this.props;
+    const { dispatch, live, userInfo } = this.props;
 
     // VIP 或者免费课直接调用报名接口了
     if (userInfo.liveVip === 'Y' || live.price === 0) {
-      dispatch({
+      await dispatch({
         type: 'live/liveEnroll',
         payload: {
           data: {
             id: live.id
           }
         },
-        onResult (res) {
-          // TODO 容错
-          dispatch({
-            type: 'live/fetchLiveDetail',
-            payload: {
-              data: {
-                id: live.id
-              }
-            },
-            onResult (res) {}
-          });
-        }
+        onResult (res) {}
+      });
+
+      message.success('您已成功报名~');
+
+      await dispatch({
+        type: 'live/fetchLiveDetail',
+        payload: {
+          data: {
+            id: live.id
+          }
+        },
+        onResult (res) {}
       });
       
       this.enrollFor();
@@ -149,8 +160,39 @@ class EnrollPanel extends Component {
       return false;
     }
 
-    // TODO 调用支付接口
-    message.error('支付还没写好！');
+    // 调用支付接口
+    const data = {
+      id: live.id
+    }
+    // TODO
+    dispatch({
+      type: 'live/createPayOrder',
+      payload: {
+        data
+      },
+      onResult (res) {
+        if (res.data.code === 0) {
+          const { appId, nonceStr, paySign, timeStamp } = res.data.data;
+          wx.chooseWXPay({
+            timestamp: timeStamp,
+            appId: appId,
+            nonceStr: nonceStr, // 支付签名随机串，不长于 32 位
+            package: res.data.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+            signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: paySign, // 支付签名
+            success: (res) => {
+              // TODO 支付成功后的回调函数
+              message.success('支付成功~');
+            },
+            error: () => {
+              message.error('支付出了点问题，请稍后再试~');
+            }
+          });
+        } else {
+          message.error('支付出了点问题，请稍后再试~');
+        }
+      }
+    })
     
   }
 
@@ -256,8 +298,6 @@ class EnrollPanel extends Component {
     } else if (status === 'ENDED') {
       statusClass = ' ' + styles.end;
     }
-
-    console.log(111, status, signup);
 
     return (
       <div className={styles.enrollPanel}>

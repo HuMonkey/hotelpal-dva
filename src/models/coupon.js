@@ -15,8 +15,9 @@ export default {
       return history.listen(({ pathname, query }) => {
         if (pathname.indexOf('/course/') === -1 
           && pathname.indexOf('/coupon') === -1 
-          && pathname != '/profile'
+          && pathname.indexOf('/profile') === -1
           && pathname.indexOf('/lesson/pay') === -1
+          && pathname.indexOf('/live') === -1
         ) {
             return false;
         }

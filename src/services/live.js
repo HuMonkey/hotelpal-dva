@@ -35,3 +35,13 @@ export function enrollFor(data) {
   const jdbtk = getToken();
   return request(`${config.host}/hotelpal/live/enrollFor?courseId=${data.id}&inviter=${data.invitor}&token=${jdbtk}`);
 }
+
+export function getCoupon(data) {
+  const jdbtk = getToken();
+  return request(`${config.host}/hotelpal/live/getCoupon?courseId=${data.id}&token=${jdbtk}`);
+}
+
+export function createPayOrder(data) {
+  const jdbtk = getToken();
+  return request(`${config.host}/hotelpal/live/createPayOrder?courseId=${data.id}&token=${jdbtk}`);
+}

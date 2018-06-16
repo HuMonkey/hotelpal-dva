@@ -51,7 +51,7 @@ function RouterConfig({ history }) {
         <Route path="/coupon" exact render={() => requireWechat(Coupon)} />
         <Route path="/coupon/useless" exact render={() => requireWechat(UselessCoupon)} />
         <Route path="/invite" exact render={() => requireWechat(Invite)} />
-        <Route path="/invitePage" exact render={() => requireWechat(InvitePage)} />
+        <Route path="/invitepage" exact render={() => requireWechat(InvitePage)} />
         <Route path="/modify" exact render={() => requireWechat(Modify)} />
         <Route path="/wechat" exact render={() => requireWechat(WeChat)} />
         <Route path="/login" exact component={Login} />

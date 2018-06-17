@@ -23,7 +23,7 @@ class PopupOrder extends Component {
 
   async createOrder () {
     const { paying, couponSelected } = this.state;
-    const { dispatch, course } = this.props;
+    const { dispatch, course, paySuccessCallback } = this.props;
     if (paying) {
       return false;
     }
@@ -44,6 +44,7 @@ class PopupOrder extends Component {
           });
           if (res.data.code === 0) {
             message.success('支付成功~');
+            paySuccessCallback && paySuccessCallback()
           } else {
             message.error('支付出了点问题，请稍后再试~');
           }

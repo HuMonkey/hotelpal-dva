@@ -4,7 +4,7 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import banner from '../../assets/jdbs-banner.png';
-import { getAudioLength, throttle, configWechat, updateWechartShare, isIphoneX } from '../../utils';
+import { getAudioLength, throttle, dispatchWechatShare, isIphoneX } from '../../utils';
 
 class Jdbs extends Component {
   constructor (props) {
@@ -30,22 +30,7 @@ class Jdbs extends Component {
       desc: '给你新的启发与思考，周一到周五更新。',
     }
 
-    await dispatch({
-      type: 'common/getWechatSign',
-      payload: {
-        data: {
-          url: location.href.split('#')[0]
-        }
-      },
-      onResult (res) {
-        if (res.data.code === 0) {
-          const {appid, noncestr, sign, timestamp, url} = res.data.data;
-          configWechat(appid, timestamp, noncestr, sign, () => {
-            updateWechartShare(dict);
-          });
-        }
-      }
-    });
+    dispatchWechatShare(dict, dispatch);
 
   }
 

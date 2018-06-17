@@ -8,6 +8,7 @@ export default {
     state: {
         userInfo: null,
         invitor: null,
+        couponInfo: null,
     },
 
     subscriptions: {
@@ -104,6 +105,20 @@ export default {
         * newInvitedUser({ payload: {data}, onResult }, { call, put }) {
             const result = yield call(commonService.newInvitedUser, data || {});
             onResult(result)
+        },
+        * getSysCoupon({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.getSysCoupon, data || {});
+            onResult(result)
+        },
+        * getSysCouponInfo({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.getSysCouponInfo, data || {});
+            const couponInfo = result.data.code === 0 ? result.data.data : null;
+            yield put({
+                type: 'save',
+                payload: {
+                    couponInfo
+                },
+            });
         },
     },
 

@@ -5,11 +5,23 @@ import styles from './index.less';
 import moment from 'moment';
 
 import { Navs, MemberCard, CouponItem } from '../../components';
+import { dispatchWechatShare } from '../../utils';
 
 class UselessCoupon extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount () {
+    const { dispatch } = this.props;
+    const dict = {
+      title: '酒店邦成长营',
+      link: location.protocol + '//' + location.hostname,
+      imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
+      desc: '为你提供高效、有价值的行业知识服务。',
+    }
+    dispatchWechatShare(dict, dispatch);
   }
 
   render() {

@@ -6,7 +6,7 @@ import styles from './index.less';
 import { message } from 'antd';
 
 import logo from '../../assets/jiudianbang-big.png';
-import { getParam } from '../../utils';
+import { getParam, dispatchWechatShare } from '../../utils';
 
 class Login extends Component {
   constructor(props) {
@@ -16,6 +16,17 @@ class Login extends Component {
       disabled: true,
       btnText: null,
     };
+  }
+
+  componentDidMount () {
+    const { dispatch } = this.props;
+    const dict = {
+      title: '酒店邦成长营',
+      link: location.protocol + '//' + location.hostname,
+      imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
+      desc: '为你提供高效、有价值的行业知识服务。',
+    }
+    dispatchWechatShare(dict, dispatch);
   }
 
   async getVerifyCode() {

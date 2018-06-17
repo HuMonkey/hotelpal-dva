@@ -7,7 +7,7 @@ import Slider from 'react-slick';
 
 import arrow from '../../assets/arrow-right.svg';
 import { BottomBar } from '../../components/';
-import { configWechat, updateWechartShare } from '../../utils/';
+import { dispatchWechatShare } from '../../utils/';
 
 import { Icon } from 'antd';
 
@@ -27,30 +27,13 @@ class IndexPage extends Component {
 
   async componentDidMount () {
     const { dispatch } = this.props;
-
     const dict = {
       title: '酒店邦成长营',
-      link: location.href,
+      link: location.protocol + '//' + location.hostname,
       imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
       desc: '为你提供高效、有价值的行业知识服务。',
     }
-
-    await dispatch({
-      type: 'common/getWechatSign',
-      payload: {
-        data: {
-          url: location.href.split('#')[0]
-        }
-      },
-      onResult (res) {
-        if (res.data.code === 0) {
-          const {appid, noncestr, sign, timestamp, url} = res.data.data;
-          configWechat(appid, timestamp, noncestr, sign, () => {
-            updateWechartShare(dict);
-          });
-        }
-      }
-    });
+    dispatchWechatShare(dict, dispatch);
   }
 
   onTouchStart (event) {
@@ -130,7 +113,7 @@ class IndexPage extends Component {
                       <div className={styles.left}>
                         <div className={styles.tag + ' ' + styles[d.status]}>
                           {liveStatus[d.status]}
-                          <div className={styles.tri}></div>
+                          {/* <div className={styles.tri}></div> */}
                         </div>
                         <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
                       </div>

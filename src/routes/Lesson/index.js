@@ -4,10 +4,12 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import { AudioPlayer, ShareTips, PopupOrder } from '../../components';
-import { formatNum, getAudioLength, formatTime, getParam } from '../../utils';
+import { formatNum, getAudioLength, formatTime, getParam, getHtmlContent } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
 const likedTemp = [];
+
+let init = false;
 
 class Lesson extends Component {
   constructor(props) {
@@ -177,6 +179,20 @@ class Lesson extends Component {
     })
   }
 
+  paySuccessCallback () {
+    const { dispatch, lesson } = this.props;
+    this.closePopup();
+    dispatch({
+      type: 'lesson/fetchLessonDetail',
+      payload: {
+        data: {
+          id: lesson.detail.id,
+        }
+      },
+      onResult () {}
+    });
+  }
+
   render () {
     const { orderShow, scrollDown } = this.state;
     const { lesson, dispatch, coupon } = this.props;
@@ -200,7 +216,13 @@ class Lesson extends Component {
       return (
         <div className={styles.normal} ref={`normal`}>
           {
-            orderShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={courseDetail} closePopup={this.closePopup.bind(this)}  />
+            orderShow && <PopupOrder 
+              paySuccessCallback={this.paySuccessCallback.bind(thid)} 
+              dispatch={dispatch} 
+              coupon={coupon} 
+              course={courseDetail} 
+              closePopup={this.closePopup.bind(this)}  
+            />
           }
           <div className={styles.notPaid}>
             <div className={styles.box}>

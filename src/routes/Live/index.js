@@ -6,16 +6,17 @@ import styles from './index.less';
 import { Navs, PopupCourse, PopupLogin, PopupOrder, 
   IntroPanel, EnrollPanel, TaComments, Comments, LivePlayer } from '../../components';
 
-import { Icon, Input, message, Popover } from 'antd';
+import { message } from 'antd';
 
 import 'video.js/dist/video-js.css';
 import videojs from 'video.js';
 import 'videojs-contrib-hls';
 
 import hbBg from '../../assets/hb-bg.png';
-import simleLogo from '../../assets/smile.svg';
 
-import { formatNum, getHtmlContent } from '../../utils';
+import { getHtmlContent, configWechat, updateWechartShare } from '../../utils';
+
+let initFlag = false;
 
 class Live extends Component {
   constructor(props) {
@@ -168,6 +169,46 @@ class Live extends Component {
     })
   }
 
+  async updateWechatShare () {
+    const { dispatch, live } = this.props;
+    const { liveDetail } = live;
+
+    const dict = {
+      title: liveDetail.title,
+      link: location.href,
+      imgUrl: liveDetail.bannerImg || 'http://hotelpal.cn/static/jiudianbang-big.png',
+      desc: getHtmlContent(liveDetail.introduce),
+    }
+
+    await dispatch({
+      type: 'common/getWechatSign',
+      payload: {
+        data: {
+          url: location.href.split('#')[0]
+        }
+      },
+      onResult (res) {
+        if (res.data.code === 0) {
+          const {appid, noncestr, sign, timestamp, url} = res.data.data;
+          configWechat(appid, timestamp, noncestr, sign, () => {
+            updateWechartShare(dict);
+          });
+        }
+      }
+    });
+  }
+
+  componentDidUpdate () {
+    const { live } = this.props;
+    const { liveDetail } = live;
+
+    if (!initFlag && liveDetail) {
+      initFlag = true;
+      this.updateWechatShare();
+    }
+
+  }
+
   componentWillUnmount () {
     const {dispatch} = this.props;
     dispatch({
@@ -175,8 +216,11 @@ class Live extends Component {
     })
   }
 
+  paySuccessCallback () {
+    this.closePopup();
+  }
+
   render () {
-    const { enrollForShow } = this.state;
     const { live, common, dispatch, coupon } = this.props;
 
     const { liveDetail, now, countDownInter, assistantMsg, chats, hbShow, PPTImg, watchingPeopleNum } = live;
@@ -229,7 +273,7 @@ class Live extends Component {
           popup && <div>
             { popup === 'detail' && <PopupCourse course={relaCourse} onSubmit={this.onCourseSubmit.bind(this)} closePopup={this.closePopup.bind(this)} /> }
             { popup === 'login' && <PopupLogin closePopup={this.closePopup.bind(this)} /> }
-            { popup === 'order' && <PopupOrder dispatch={dispatch} coupon={coupon} course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'order' && <PopupOrder paySuccessCallback={this.paySuccessCallback.bind(this)} dispatch={dispatch} coupon={coupon} course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
           </div>
         }
         <Navs/>

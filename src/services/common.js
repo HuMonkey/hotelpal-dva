@@ -55,3 +55,13 @@ export function newInvitedUser(data) {
   const jdbtk = getToken();
   return request(config.host + '/hotelpal/user/newInvitedUser?token=' + jdbtk + '&nonce=' + data.nonce)
 }
+
+export function getSysCouponInfo(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/coupon/getSysCouponInfo?token=' + jdbtk + '&sysCouponId=' + data.sysCouponId)
+}
+
+export function getSysCoupon(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/coupon/getSysCoupon?token=' + jdbtk + '&nonce=' + data.nonce + '&sysCouponId=' + data.sysCouponId)
+}

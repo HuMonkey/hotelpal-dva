@@ -1,7 +1,7 @@
 import * as lessonService from '../services/lesson';
 import * as courseService from '../services/course';
 
-import { configWechat, updateWechartShare, getHtmlContent, getParam } from '../utils';
+import { dispatchWechatShare, getHtmlContent, getParam } from '../utils';
 
 export default {
 
@@ -101,22 +101,7 @@ export default {
           }
         }
         
-        await dispatch({
-          type: 'common/getWechatSign',
-          payload: {
-            data: {
-              url: location.href.split('#')[0]
-            }
-          },
-          onResult (res) {
-            if (res.data.code === 0) {
-              const {appid, noncestr, sign, timestamp} = res.data.data;
-              configWechat(appid, timestamp, noncestr, sign, () => {
-                updateWechartShare(dict);
-              });
-            }
-          }
-        });
+        dispatchWechatShare(dict, dispatch);
 
       });
     },

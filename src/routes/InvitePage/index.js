@@ -14,13 +14,40 @@ class InvitePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: null, // got late old
+      result: null, // got late old err
       phone: null,
       pwd: null,
 
       disabled: false,
       btnText: null,
     };
+  }
+
+  getSysCoupon () {
+    const { dispatch } = this.props;
+    const nonce = getParam('nonce');
+    const sysCouponId = getParam('sysCouponId');
+
+    dispatch({
+      type: 'common/getSysCoupon',
+      payload: {
+        data: {
+          nonce, sysCouponId,
+        }
+      },
+      onResult: (res) => {
+        if (res.data.code === 0) {
+          this.setState({
+            result: 'got',
+          })
+        } else {
+          this.setState({
+            result: 'err',
+          })
+          message.error(res.data.messages || '领取优惠券出了点问题，请刷新页面重试')
+        }
+      }
+    });
   }
 
   async register () {
@@ -33,7 +60,7 @@ class InvitePage extends Component {
       type: 'common/verifyPhone',
       payload: {
         data: {
-          phone, code: pwd, inviterToken: invitor.wechatOpenId
+          phone, code: pwd, inviterToken: invitor && invitor.wechatOpenId
         }
       },
       onResult (res) {
@@ -41,19 +68,31 @@ class InvitePage extends Component {
       }
     });
     if (result.data.code === 0) {
+      this.getSysCoupon();
       this.setState({
         result: 'got'
       });
     } else {
-      // TODO
-      message.error(result.data.msg);
+      message.error(result.data.messages);
     }
   }
 
   componentDidUpdate () {
     const { common } = this.props;
     const { result } = this.state;
-    if (common.userInfo && common.userInfo.phone && !result) {
+    const nonce = getParam('nonce');
+    const sysCouponId = getParam('sysCouponId');
+
+    const oldUser = common.userInfo && common.userInfo.phone && !result;
+
+    if (nonce || sysCouponId) {
+      if (oldUser) {
+        this.getSysCoupon();
+      }
+      return false;
+    }
+    // 如果是邀请好友页面
+    if (oldUser) {
       this.setState({
         result: 'old',
       })
@@ -63,9 +102,23 @@ class InvitePage extends Component {
   componentDidMount () {
     const { dispatch } = this.props;
     const invitor = getParam('invitor');
-    if (!invitor) {
+    const sysCouponId = getParam('sysCouponId');
+
+    // 获取优惠券信息
+    if (sysCouponId) {
+      dispatch({
+        type: 'common/getSysCouponInfo',
+        payload: {
+          data: {
+            sysCouponId: sysCouponId
+          }
+        },
+        onResult() {}
+      })
       return false;
     }
+    
+    // 获取邀请人用户信息
     dispatch({
       type: 'common/fetchUserInfo',
       payload: {
@@ -133,13 +186,29 @@ class InvitePage extends Component {
     const { result, phone, pwd, disabled, btnText } = this.state;
     const { common } = this.props;
 
-    const invitor = common.invitor || {};
+    const invitor = common.invitor || null;
+    const couponInfo = common.couponInfo || null;
 
-    const rp = <div className={styles.rp}>
-      <div className={styles.stitle}>优惠券</div>
-      <div className={styles.price}><span>20</span>元</div>
-      <div className={styles.tips}>所有订阅专栏可用</div>
-    </div>
+    let rp;
+    if (couponInfo) {
+      let tips;
+      if (couponInfo.apply === 'PARTICULAR') {
+        tips = '部分订阅专栏可用';
+      } else if (couponInfo.apply === 'ALL') {
+        tips = '所有订阅专栏可用';
+      }
+      rp = <div className={styles.rp}>
+        <div className={styles.stitle}>{couponInfo.name}优惠券</div>
+        <div className={styles.price}><span>{couponInfo.value / 100}</span>元</div>
+        <div className={styles.tips}>{tips}</div>
+      </div>;
+    } else if (invitor) {
+      rp = <div className={styles.rp}>
+        <div className={styles.stitle}>优惠券</div>
+        <div className={styles.price}><span>20</span>元</div>
+        <div className={styles.tips}>所有订阅专栏可用</div>
+      </div>;
+    }
 
     const gotDom = <div>
       <div>
@@ -163,16 +232,28 @@ class InvitePage extends Component {
       <div className={styles.text}>您已经注册过了</div>
     </div>;
 
+    const errDom = <div>
+      <div className={styles.blank}></div>
+      { rp }
+    </div>;
+
     const disabledClass = disabled ? ' ' + styles.disabled : '';
     const newDom = <div className={styles.new}>
-      <div className={styles.title}>
-        <span>邀请函</span>
-      </div>
-      <div className={styles.text}>我是<span>{invitor.nickname}</span></div>
-      <div className={styles.text}>正在<span>“酒店邦成长营”</span>学习</div>
-      <div className={styles.text}>邀请你成为我的同学</div>
-      <div className={styles.text + ' ' + styles.last}>让我们一起成长</div>
-      <div className={styles.tips}>注册成新用户，即可得</div>
+      {
+        invitor && <div>
+          <div className={styles.title}>
+            <span>邀请函</span>
+          </div>
+          <div className={styles.text}>我是<span>{invitor.nickname}</span></div>
+          <div className={styles.text}>正在<span>“酒店邦成长营”</span>学习</div>
+          <div className={styles.text}>邀请你成为我的同学</div>
+          <div className={styles.text + ' ' + styles.last}>让我们一起成长</div>
+          <div className={styles.tips}>注册成新用户，即可得</div>
+        </div>
+      }
+      {
+        !invitor && <div className={styles.blank}></div>
+      }
       { rp }
       <div className={styles.wrap1}>
         <Input type="number" onChange={(e) => {
@@ -195,6 +276,7 @@ class InvitePage extends Component {
         {result === 'old' && oldDom}
         {result === 'got' && gotDom}
         {result === 'late' && lateDom}
+        {result === 'err' && errDom}
         <div className={styles.label}>您可以</div>
         <Link to='/invite'><div className={styles.sbtn}>
           推荐好友得20元

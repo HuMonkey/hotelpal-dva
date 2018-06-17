@@ -53,6 +53,22 @@ class Course extends Component {
     location.href = `/?courseId=${course.detail.id}#/coursedetail`;
   }
 
+  paySuccessCallback () {
+    const { dispatch, course } = this.props;
+    this.setState({
+      orderPopupShow: false,
+    });
+    dispatch({
+      type: 'course/fetchCourseDetail',
+      payload: {
+        data: {
+          id: course.detail.id,
+        }
+      },
+      onResult (res) {}
+    });
+  }
+
   render () {
     const { freeTipsShow, orderPopupShow } = this.state;
     const { course, common, coupon, dispatch } = this.props;
@@ -104,7 +120,7 @@ class Course extends Component {
     return (
       <div className={styles.normal}>
         {freeChanceDom}
-        { orderPopupShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={detail} closePopup={this.closePopup.bind(this)} /> }
+        { orderPopupShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={detail} paySuccessCallback={this.paySuccessCallback.bind(this)} closePopup={this.closePopup.bind(this)} /> }
         <div className={styles.header}>
           <img src={`${detail.bannerImg[0]}`} />
           <div className={styles.desc}>

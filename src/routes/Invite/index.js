@@ -9,6 +9,8 @@ import { configWechat, updateWechartShare, getToken } from '../../utils';
 import hbBg from '../../assets/invite-hb.png';
 import simleLogo from '../../assets/smile.svg';
 
+let init;
+
 class Invite extends Component {
   constructor(props) {
     super(props);
@@ -18,14 +20,14 @@ class Invite extends Component {
     };
   }
 
-  async componentDidMount () {
-    const { dispatch } = this.props;
+  async updateWechatShare () {
+    const { dispatch, common } = this.props;
 
     const dict = {
-      title: '酒店邦成长营',
+      title: '我邀请你成为新用户，注册得￥20',
       link: `${location.origin}/?invitor=${getToken()}#/invitePage`,
       imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
-      desc: '为你提供高效、有价值的行业知识服务。',
+      desc: `${common.userInfo.nickname}邀请你加入酒店邦成长营，一起获取知识！`,
     }
 
     await dispatch({
@@ -74,6 +76,14 @@ class Invite extends Component {
     })
   }
 
+  componentDidUpdate () {
+    const { common } = this.props;
+    if (!init && common.userInfo) {
+      init = true;
+      this.updateWechatShare();
+    }
+  }
+
   render() {
     const { ruleShow, shareShow } = this.state;
     const { invite } = this.props;
@@ -98,10 +108,10 @@ class Invite extends Component {
           {emptys}
         </div>
         {
-          couponCollected === 'N' && userList.length < 3 && <div className={styles.right + ' ' + styles.ing}>还差{3 - userList.length}人</div>
+          couponCollected !== 'Y' && userListLength < 3 && <div className={styles.right + ' ' + styles.ing}>还差{3 - userListLength}人</div>
         }
         {
-          couponCollected === 'N' && userList.length === 3 && <div className={styles.right}>
+          couponCollected !== 'Y' && userListLength === 3 && <div className={styles.right}>
             <div className={styles.sbtn} onClick={() => {
               this.getCoupon.call(this, batch);
             }}>领取优惠券</div>

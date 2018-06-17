@@ -14,7 +14,7 @@
       float: left;
       font-size: 0.293333rem;
       .tag {
-        width: 1.46666rem;
+        width: 1.6rem;
         height: 0.48rem;
         text-align: center;
         line-height: 0.48rem;
@@ -22,32 +22,15 @@
         border-radius: 2px;
         position: relative;
         float: left;
-        .tri {
-          position: absolute;
-          right: -0.12rem;
-          top: 0.09rem;
-          width: 0;
-          height: 0;
-          border-top: 0.12rem solid transparent;
-          border-bottom: 0.12rem solid transparent; 
-        }
+        background-size: cover;
         &.before {
-          background: @orange;
-          .tri {
-            border-left: 0.16rem solid @orange;
-          }
+          background-image: url('../../assets/kuang-orange.svg');
         }
         &.ing {
-          background: @red;
-          .tri {
-            border-left: 0.16rem solid @red;
-          }
+          background-image: url('../../assets/kuang-red.svg');
         }
         &.end {
-          background: #999999;
-          .tri {
-            border-left: 0.16rem solid #999999;
-          }
+          background-image: url('../../assets/kuang-grey.svg');
         }
       }
       .time {

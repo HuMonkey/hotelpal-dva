@@ -45,8 +45,9 @@ class Coupon extends Component {
     const noCoupon = !courseMemberCardUseful(card) && !liveMemberCardUseful(liveVip) 
       && couponList.length == 0;
     
-    const hasUselessCoupon = !courseMemberCardUseful(card) || !liveMemberCardUseful(liveVip) 
-      || couponList.length !== coupon.couponList.length;
+    const hasUselessCoupon = (couponList.length !== coupon.couponList.length && coupon.couponList.length !== 0) // 有过期优惠券
+      || (!courseMemberCardUseful(card) && card.existed === 'Y')
+      || (!liveMemberCardUseful(liveVip) && liveVip.existed === 'Y');
 
     return (
       <div className={styles.normal}>
@@ -61,8 +62,8 @@ class Coupon extends Component {
         }
         { 
           !noCoupon && <div className={styles.list}>
-            { card.exists === 'Y' && <MemberCard type={'course'} data={card} /> }
-            { liveVip.exists === 'Y' && <MemberCard type={'live'} data={liveVip} /> }
+            { courseMemberCardUseful(card) && <MemberCard type={'course'} data={card} /> }
+            { liveMemberCardUseful(liveVip) && <MemberCard type={'live'} data={liveVip} /> }
             {
               couponList.map((d, i) => {
                 return <CouponItem key={i} data={d} />

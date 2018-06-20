@@ -47,8 +47,10 @@ class LivePlayer extends Component {
         <div className={styles.cover} style={{ backgroundImage: `url(${live.bannerImg || defaultPPT})` }}></div>
       </div>
     } else if (status === 'ENDED') {
-      dom = <div className={styles.player}>
-        <div className={styles.cover} style={{ backgroundImage: `url(${live.bannerImg || defaultPPT})` }}></div>
+      dom = <div className={styles.player + ' ' + styles.bg}>
+        <div className={styles.split}></div>
+        <div className={styles.tips}>公开课已结束，下次早点来哦~</div>
+        <div className={styles.people}><span>{live.totalPeople}人正在收看</span></div>
       </div>
     } else if (status === 'ONGOING') {
       if (userInfo.enrolled === 'Y' || userInfo.liveVip === 'Y') {

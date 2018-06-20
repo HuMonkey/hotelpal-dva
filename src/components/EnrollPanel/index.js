@@ -42,25 +42,6 @@ class EnrollPanel extends Component {
 
     this.openPoster();
 
-    // if (!userInfo.enrolledFor && invitor) {
-    //   dispatch({
-    //     type: 'live/enrollFor',
-    //     payload: {
-    //       data: {
-    //         invitor,
-    //         id: live.id,
-    //       }
-    //     },
-    //     onResult (res) {
-    //       if (res.data.code === 0) {
-    //         message.success('您已经成功帮好友解锁~');
-    //       } else {
-    //         message.error(res.data.messages[0]);
-    //       }
-    //     }
-    //   });
-    // }
-
     this.enrollFor();
 
     if (userInfo.status === 'INVITING') {
@@ -103,18 +84,13 @@ class EnrollPanel extends Component {
     helpedTipsShow = true;
 
     if (canEnrollFor) {
-      // await dispatch({
-      //   type: 'live/save',
-      //   payload: {
-      //     invitor: null
-      //   },
-      //   onResult (res) {}
-      // });
-      dispatch({
+      await dispatch({
         type: 'live/enrollFor',
         payload: {
-          id: live.id,
-          invitor,
+          data: {
+            id: live.id,
+            invitor,
+          }
         },
         onResult (res) {
           if (res.data.code === 0) {
@@ -133,6 +109,8 @@ class EnrollPanel extends Component {
 
     // VIP 或者免费课直接调用报名接口了
     if (userInfo.liveVip === 'Y' || live.price === 0) {
+      this.enrollFor();
+
       await dispatch({
         type: 'live/liveEnroll',
         payload: {
@@ -154,8 +132,6 @@ class EnrollPanel extends Component {
         },
         onResult (res) {}
       });
-      
-      this.enrollFor();
 
       return false;
     }
@@ -164,7 +140,6 @@ class EnrollPanel extends Component {
     const data = {
       id: live.id
     }
-    // TODO
     dispatch({
       type: 'live/createPayOrder',
       payload: {
@@ -172,7 +147,7 @@ class EnrollPanel extends Component {
       },
       onResult (res) {
         if (res.data.code === 0) {
-          const { appId, nonceStr, paySign, timeStamp } = res.data.data;
+          const { appId, nonceStr, paySign, timeStamp, tradeNo } = res.data.data;
           wx.chooseWXPay({
             timestamp: timeStamp,
             appId: appId,
@@ -180,9 +155,28 @@ class EnrollPanel extends Component {
             package: res.data.data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
             signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
             paySign: paySign, // 支付签名
-            success: (res) => {
-              // TODO 支付成功后的回调函数
+            success: async (res) => {
               message.success('支付成功~');
+              await dispatch({
+                type: 'common/paySuccess',
+                payload: {
+                  data: {
+                    tradeNo,
+                  }
+                },
+                onResult(res) {
+                  console.log(res);
+                }
+              })
+              await dispatch({
+                type: 'live/fetchLiveDetail',
+                payload: {
+                  data: {
+                    id: live.id
+                  }
+                },
+                onResult (res) {}
+              });
             },
             error: () => {
               message.error('支付出了点问题，请稍后再试~');
@@ -205,6 +199,7 @@ class EnrollPanel extends Component {
   }
 
   render() {
+    console.log(1);
     const { enrollForShow, posterShow } = this.state;
     const { live, userInfo, invitor } = this.props;
 
@@ -222,7 +217,7 @@ class EnrollPanel extends Component {
     const openTime = moment(live.openTime);
     const openTimeStr = openTime.format('MM-DD');
     const openTimeWeekStr = openTime.format('dddd');
-    const openTimeHourStr = openTime.format('hh:mm');
+    const openTimeHourStr = openTime.format('HH:mm');
 
     const enrollCount = (live.vipEnrolledTimes || 0) + (live.purchasedTimes || 0) + (live.freeEnrolledTimes || 0); // 报名人数等于买的人数加上免费报名的人数
 
@@ -308,7 +303,12 @@ class EnrollPanel extends Component {
                 {liveStatus[status]}
                 <div className={styles.tri}></div>
               </div>
-              <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
+              {
+                status === 'ENROLLING' && <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
+              }
+              {
+                (status === 'ONGOING' || status === 'ENDED') && <div className={styles.time}>{live.speakerNick}：{live.title}</div>
+              }
             </div>
             { 
               status !== 'ENDED' && (signup === 'paid' || signup === 'free' || (signup === 'vip' && status === 'ONGOING') ? 

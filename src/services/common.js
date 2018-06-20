@@ -65,3 +65,8 @@ export function getSysCoupon(data) {
   const jdbtk = getToken();
   return request(config.host + '/hotelpal/user/coupon/getSysCoupon?token=' + jdbtk + '&nonce=' + data.nonce + '&sysCouponId=' + data.sysCouponId)
 }
+
+export function paySuccess(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/pay?token=' + jdbtk + '&tradeNo=' + data.tradeNo)
+}

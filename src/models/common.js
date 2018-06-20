@@ -20,6 +20,9 @@ export default {
                 })
             }
             return history.listen(async ({ pathname, query }) => {
+                if (pathname === '/clear') {
+                    return false;
+                }
                 const code = getParam('code'); // url上的code
                 const token = getCookie('jdbtk'); // cookie 里的jdbtk
                 if (token) {
@@ -119,6 +122,10 @@ export default {
                     couponInfo
                 },
             });
+        },
+        * paySuccess({ payload: {data}, onResult }, { call, put }) {
+            const result = yield call(commonService.paySuccess, data || {});
+            onResult(result)
         },
     },
 

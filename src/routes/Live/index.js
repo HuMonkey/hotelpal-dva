@@ -38,6 +38,10 @@ class Live extends Component {
     document.getElementById('root').scrollTop = 20000000;
   }
 
+  scrollToTop () {
+    document.getElementById('root').scrollTop = 0;
+  }
+
   showHongbao () {
     this.setState({
       hongbaoShow: true,
@@ -55,7 +59,11 @@ class Live extends Component {
     this.setState({
       page
     }, () => {
-      this.scrollToBottom();
+      if (page === 'chat') {
+        this.scrollToBottom();
+      } else {
+        this.scrollToTop();
+      } 
     })
   }
 
@@ -95,7 +103,7 @@ class Live extends Component {
     });
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate (prevProps) {
     const { playerInit } = this.state;
 
     const chats = this.props.live && this.props.live.chats;
@@ -113,7 +121,15 @@ class Live extends Component {
 
     this.setState({
       playerInit: true,
-    })
+    });
+
+    const { live } = this.props;
+    const { liveDetail } = live;
+
+    if (!initFlag && liveDetail) {
+      initFlag = true;
+      this.updateWechatShare();
+    }
   }
 
   setReply (replying) {
@@ -142,13 +158,13 @@ class Live extends Component {
         }
       },
       onResult () {
-        message.success('成功发布评论~');
+        // message.success('成功发布评论~');
       }
     });
-
-    this.setState({
+    await this.setState({
       replying: false,
-    })
+    });
+    this.scrollToBottom();
   }
 
   onCommentFocus () {
@@ -198,17 +214,6 @@ class Live extends Component {
     });
   }
 
-  componentDidUpdate () {
-    const { live } = this.props;
-    const { liveDetail } = live;
-
-    if (!initFlag && liveDetail) {
-      initFlag = true;
-      this.updateWechatShare();
-    }
-
-  }
-
   componentWillUnmount () {
     const {dispatch} = this.props;
     dispatch({
@@ -254,8 +259,9 @@ class Live extends Component {
     }
 
     const isChatPageClass = page === 'chat' ? ' ' + styles.chat : '';
+    const hasAssistClass = assistantMsg.length > 0 ? ' ' + styles.hasAssist : '';
     return (
-      <div className={styles.normal + isChatPageClass}>
+      <div className={styles.normal + isChatPageClass + hasAssistClass} ref={`normal`}>
         {
           replying && <div className={styles.replyBox}>
             <div className={styles.cover} onClick={() => this.setReply.call(this, false)}></div> 
@@ -309,13 +315,6 @@ class Live extends Component {
         {
           page === 'chat' && assistantMsg.length > 0 && <TaComments comments={assistantMsg}/>
         }
-        {/* {
-          page === 'chat' && <div className={styles.chatPage} ref={`chatPage`}>
-            <div className={styles.comments} ref={`comments`}>
-              {!taOpen && commentsDom}
-            </div>
-          </div>
-        } */}
         {
           page === 'chat' && <div className={styles.chatPage} ref={`chatPage`}>
             <Comments chats={chats} />

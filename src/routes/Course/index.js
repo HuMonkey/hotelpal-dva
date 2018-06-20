@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import styles from './index.less';
 
 import cross from '../../assets/cross.png';
+import { message } from 'antd';
 import { formatNum, getAudioLength, callWxPay, courseMemberCardUseful } from '../../utils';
 import { CourseContent, BackBtn, PopupOrder } from '../../components';
 
@@ -55,6 +56,7 @@ class Course extends Component {
 
   paySuccessCallback () {
     const { dispatch, course } = this.props;
+    message.info('我在回调里面！！');
     this.setState({
       orderPopupShow: false,
     });

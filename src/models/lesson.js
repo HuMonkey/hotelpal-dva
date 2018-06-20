@@ -93,7 +93,7 @@ export default {
               desc = desc.slice(0, 30) + '...';
             }
             dict = {
-              title: detail.userName + '：' + detail.title,
+              title: course.userName + '：' + detail.title,
               link: `http://${location.origin}/?courseId=${courseId}#/lesson/pay/${lessonId}`,
               imgUrl: course.headImg,
               desc

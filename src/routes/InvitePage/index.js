@@ -216,7 +216,7 @@ class InvitePage extends Component {
         <div className={styles.text}>获得一张优惠券</div>
       </div>
       { rp }
-      <div className={styles.label1}>优惠券已经放入您的账号18768114210</div>
+      <div className={styles.label1}>优惠券已经放入您的账号{common.userInfo && common.userInfo.phone}</div>
     </div>;
 
     const lateDom = <div>
@@ -233,8 +233,10 @@ class InvitePage extends Component {
     </div>;
 
     const errDom = <div>
-      <div className={styles.blank}></div>
+      {/* <div className={styles.blank}></div> */}
+      <div className={styles.text}>您已获取过该优惠券</div>
       { rp }
+      <div className={styles.label1}>优惠券已经放入您的账号{common.userInfo && common.userInfo.phone}</div>
     </div>;
 
     const disabledClass = disabled ? ' ' + styles.disabled : '';

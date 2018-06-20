@@ -49,7 +49,7 @@ class CouponItem extends Component {
     return (
       <div className={styles.CouponItem + borderClassName + uselessClassName}>
         <div className={styles.bg}>
-          <div className={styles.money}>￥<span>{value}</span></div>
+          <div className={styles.money}>￥<span>{value / 100}</span></div>
           <div className={styles.desc}>{name || '没名字的红包'}</div>
         </div>
         <div className={styles.right}>

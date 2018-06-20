@@ -12,7 +12,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 2,
+      step: 1,
       disabled: true,
       btnText: null,
     };
@@ -27,6 +27,11 @@ class Login extends Component {
       desc: '为你提供高效、有价值的行业知识服务。',
     }
     dispatchWechatShare(dict, dispatch);
+
+    const href = location.href;
+    if (href.indexOf('/force') === -1) {
+      location.href = decodeURIComponent(getParam('redirect')) || '/';
+    }
   }
 
   async getVerifyCode() {

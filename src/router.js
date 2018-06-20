@@ -19,6 +19,7 @@ import Modify from './routes/Modify/';
 import Login from './routes/Login/';
 import GotoWechat from './routes/GotoWechat/';
 import Hongbao from './routes/Hongbao/';
+import Clear from './routes/Clear/';
 
 import { ua } from './utils';
 
@@ -55,6 +56,8 @@ function RouterConfig({ history }) {
         <Route path="/modify" exact render={() => requireWechat(Modify)} />
         <Route path="/wechat" exact render={() => requireWechat(WeChat)} />
         <Route path="/login" exact component={Login} />
+        <Route path="/login/force" exact component={Login} />
+        <Route path="/clear" exact component={Clear} />
         <Route path="/gotoWechat" exact render={() => {
             if (ua.wechat) {
               return <Redirect to="/"/>;

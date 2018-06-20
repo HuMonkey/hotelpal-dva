@@ -105,7 +105,9 @@ class IndexPage extends Component {
                 const openTimeWeekStr = openTime.format('dddd');
                 const openTimeHourStr = openTime.format('hh:mm');
 
-                const count = d.purchasedTimes || 0 + d.freeEnrolledTimes || 0;
+                const count = (d.vipEnrolledTimes || 0) 
+                  + (d.purchasedTimes || 0) 
+                  + (d.freeEnrolledTimes || 0);
 
                 return <Link key={i} to={`/live/${d.id}`}>
                   <div className={styles.item}>

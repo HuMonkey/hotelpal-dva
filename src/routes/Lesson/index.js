@@ -245,7 +245,7 @@ class Lesson extends Component {
                 <div className={styles.btn} onClick={this.showPopup.bind(this)}>购买课程  获取知识</div>
               </div>
             </div> 
-            <div className={styles.log}>你已经购买？<span>绑定其他账号</span></div>
+            <Link to='/login/force'><div className={styles.log}>你已经购买？<span>绑定其他账号</span></div></Link>
           </div>
         </div>
       )

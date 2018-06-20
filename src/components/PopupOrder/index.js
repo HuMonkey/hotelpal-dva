@@ -67,7 +67,7 @@ class PopupOrder extends Component {
             paying: false,
           });
           if (res.data.code === 0) {
-            const { appId, nonceStr, paySign, timeStamp } = res.data.data;
+            const { appId, nonceStr, paySign, timeStamp, tradeNo } = res.data.data;
             wx.chooseWXPay({
               timestamp: timeStamp,
               appId: appId,
@@ -76,7 +76,17 @@ class PopupOrder extends Component {
               signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
               paySign: paySign, // 支付签名
               success: (res) => {
-                // TODO 支付成功后的回调函数
+                dispatch({
+                  type: 'common/paySuccess',
+                  payload: {
+                    data: {
+                      tradeNo,
+                    }
+                  },
+                  onResult(res) {
+                    console.log(res);
+                  }
+                })
                 message.success('支付成功~');
               },
               error: () => {
@@ -126,7 +136,7 @@ class PopupOrder extends Component {
     } else if (couponList.length > 0) {
       // 优先用面额最大的优惠券
       const couponMoneys = couponList.map(d => d.value);
-      maxDiscount = Math.max(...couponMoneys) || 0;
+      maxDiscount = Math.max(...couponMoneys) / 100 || 0;
       couponSelected = couponList.find(d => d.value === maxDiscount);
     }
     this.setState({
@@ -149,7 +159,7 @@ class PopupOrder extends Component {
         couponSelected = card;
         couponSelected.type = 'card';
       } else {
-        maxDiscount = couponItem.value;
+        maxDiscount = couponItem.value / 100;
         couponSelected = couponItem;
       }
     }
@@ -180,6 +190,8 @@ class PopupOrder extends Component {
     const price = (course.price || course.charge) / 100;
 
     const { couponSelected, maxDiscount } = this.state;
+
+    const total = price - maxDiscount > 0 ? price - maxDiscount : 0;
 
     return (
       <div className={styles.PopupOrder}>
@@ -213,7 +225,7 @@ class PopupOrder extends Component {
               </div>
               <div className={styles.row + ' ' + styles.total}>
                 <div className={styles.left}>合计</div>
-                <div className={styles.right}>￥{price - maxDiscount}</div>
+                <div className={styles.right}>￥{total}</div>
               </div>
               <div className={styles.buy} onClick={this.createOrder.bind(this)}>确认支付</div>
             </div>

@@ -14,40 +14,15 @@ class InvitePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: null, // got late old err
+      result: null, // 获取成功 got 老用户 old 新用户 new
       phone: null,
       pwd: null,
 
       disabled: false,
       btnText: null,
+
+      init: false,
     };
-  }
-
-  getSysCoupon () {
-    const { dispatch } = this.props;
-    const nonce = getParam('nonce');
-    const sysCouponId = getParam('sysCouponId');
-
-    dispatch({
-      type: 'common/getSysCoupon',
-      payload: {
-        data: {
-          nonce, sysCouponId,
-        }
-      },
-      onResult: (res) => {
-        if (res.data.code === 0) {
-          this.setState({
-            result: 'got',
-          })
-        } else {
-          this.setState({
-            result: 'err',
-          })
-          message.error(res.data.messages || '领取优惠券出了点问题，请刷新页面重试')
-        }
-      }
-    });
   }
 
   async register () {
@@ -79,22 +54,20 @@ class InvitePage extends Component {
 
   componentDidUpdate () {
     const { common } = this.props;
-    const { result } = this.state;
-    const nonce = getParam('nonce');
-    const sysCouponId = getParam('sysCouponId');
-
-    const oldUser = common.userInfo && common.userInfo.phone && !result;
-
-    if (nonce || sysCouponId) {
-      if (oldUser) {
-        this.getSysCoupon();
-      }
+    const { init } = this.state;
+    if (init) {
       return false;
     }
-    // 如果是邀请好友页面
+    const oldUser = common.userInfo && common.userInfo.phone;
     if (oldUser) {
       this.setState({
         result: 'old',
+        init: true,
+      })
+    } else {
+      this.setState({
+        result: 'new',
+        init: true,
       })
     }
   }
@@ -102,22 +75,6 @@ class InvitePage extends Component {
   componentDidMount () {
     const { dispatch } = this.props;
     const invitor = getParam('invitor');
-    const sysCouponId = getParam('sysCouponId');
-
-    // 获取优惠券信息
-    if (sysCouponId) {
-      dispatch({
-        type: 'common/getSysCouponInfo',
-        payload: {
-          data: {
-            sysCouponId: sysCouponId
-          }
-        },
-        onResult() {}
-      })
-      return false;
-    }
-    
     // 获取邀请人用户信息
     dispatch({
       type: 'common/fetchUserInfo',
@@ -185,62 +142,54 @@ class InvitePage extends Component {
   render() {
     const { result, phone, pwd, disabled, btnText } = this.state;
     const { common } = this.props;
+    const { invitor } = common;
 
-    const invitor = common.invitor || null;
-    const couponInfo = common.couponInfo || null;
+    let rp = <div className={styles.rp}>
+      <div className={styles.stitle}>优惠券</div>
+      <div className={styles.price}><span>20</span>元</div>
+      <div className={styles.tips}>所有订阅专栏可用</div>
+    </div>
 
-    let rp;
-    if (couponInfo) {
-      let tips;
-      if (couponInfo.apply === 'PARTICULAR') {
-        tips = '部分订阅专栏可用';
-      } else if (couponInfo.apply === 'ALL') {
-        tips = '所有订阅专栏可用';
-      }
-      rp = <div className={styles.rp}>
-        <div className={styles.stitle}>{couponInfo.name}优惠券</div>
-        <div className={styles.price}><span>{couponInfo.value / 100}</span>元</div>
-        <div className={styles.tips}>{tips}</div>
-      </div>;
-    } else if (invitor) {
-      rp = <div className={styles.rp}>
-        <div className={styles.stitle}>优惠券</div>
-        <div className={styles.price}><span>20</span>元</div>
-        <div className={styles.tips}>所有订阅专栏可用</div>
-      </div>;
-    }
+    const ucan = <div className={styles.ucan}>
+      <div className={styles.label}>您可以</div>
+      <Link to='/invite'><div className={styles.sbtn}>
+        推荐好友得20元
+        <img src={moneyIcon} className={styles.money} />
+        <Icon className={styles.icon} type="right" />
+      </div></Link>
+      <BackBtn />
+    </div>;
 
-    const gotDom = <div>
+    // 获取成功
+    const gotDom = <div className={styles.got}>
       <div>
         <div className={styles.text}>恭喜您！</div>
         <div className={styles.text}>获得一张优惠券</div>
       </div>
       { rp }
       <div className={styles.label1}>优惠券已经放入您的账号{common.userInfo && common.userInfo.phone}</div>
+      { ucan }
     </div>;
 
-    const lateDom = <div>
-      <div>
-        <div className={styles.text}>来晚了</div>
-        <div className={styles.text}>优惠券已领完</div>
-      </div>
-      <img className={styles.latePng} src={couponEmpty} />
-    </div>;
-
-    const oldDom = <div>
-      <div className={styles.white}></div>
+    // 已经注册过
+    const oldDom = <div className={styles.old}>
       <div className={styles.text}>您已经注册过了</div>
+      { ucan }
     </div>;
 
-    const errDom = <div>
-      {/* <div className={styles.blank}></div> */}
-      <div className={styles.text}>您已获取过该优惠券</div>
-      { rp }
-      <div className={styles.label1}>优惠券已经放入您的账号{common.userInfo && common.userInfo.phone}</div>
-    </div>;
-
+    // 新用户
     const disabledClass = disabled ? ' ' + styles.disabled : '';
     const newDom = <div className={styles.new}>
+      <div>
+        <Icon className={styles.plus} type="plus" />
+        <Icon className={styles.plus} type="plus" />
+        <Icon className={styles.plus} type="plus" />
+        <Icon className={styles.plus} type="plus" />
+      </div>
+      <div className={styles.inner1}><div className={styles.border} /></div>
+      <div className={styles.inner2}>
+        <div className={styles.border} />
+      </div>
       {
         invitor && <div>
           <div className={styles.title}>
@@ -252,9 +201,6 @@ class InvitePage extends Component {
           <div className={styles.text + ' ' + styles.last}>让我们一起成长</div>
           <div className={styles.tips}>注册成新用户，即可得</div>
         </div>
-      }
-      {
-        !invitor && <div className={styles.blank}></div>
       }
       { rp }
       <div className={styles.wrap1}>
@@ -272,38 +218,11 @@ class InvitePage extends Component {
       <div className={styles.tips2}>点击登录代表您已阅读并同意<span>《酒店邦成长营》会员条款</span></div>
       </div>;
 
-    if (result) {
-      // 注册过
-      return <div className={styles.resultPage}>
-        {result === 'old' && oldDom}
-        {result === 'got' && gotDom}
-        {result === 'late' && lateDom}
-        {result === 'err' && errDom}
-        <div className={styles.label}>您可以</div>
-        <Link to='/invite'><div className={styles.sbtn}>
-          推荐好友得20元
-          <img src={moneyIcon} className={styles.money} />
-          <Icon className={styles.icon} type="right" />
-        </div></Link>
-        <BackBtn />
-      </div>
-    } else {
-      return <div className={styles.normal}>
-        <div className={styles.main}>
-          <div>
-            <Icon className={styles.plus} type="plus" />
-            <Icon className={styles.plus} type="plus" />
-            <Icon className={styles.plus} type="plus" />
-            <Icon className={styles.plus} type="plus" />
-          </div>
-          <div className={styles.inner1}><div className={styles.border} /></div>
-          <div className={styles.inner2}>
-            <div className={styles.border} />
-          </div>
-          { newDom }
-        </div>
-      </div>
-    }
+    return <div className={styles.normal}>
+      { result === 'got' && gotDom }
+      { result === 'old' && oldDom }
+      { result === 'new' && newDom }
+    </div>
 
   }
 }

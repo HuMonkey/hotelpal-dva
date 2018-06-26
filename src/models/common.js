@@ -20,7 +20,7 @@ export default {
                 })
             }
             return history.listen(async ({ pathname, query }) => {
-                if (pathname === '/clear') {
+                if (pathname === '/clear' || pathname === 'set') {
                     return false;
                 }
                 const code = getParam('code'); // url上的code
@@ -69,6 +69,7 @@ export default {
         * fetchUserInfo({ payload: data }, { call, put }) {
             const result = yield call(commonService.fetchUserInfo, data || {});
             const userInfo = result.data.code === 0 ? result.data.data : {};
+            console.log(1112312);
             if (data.token) {
                 yield put({
                     type: 'save',

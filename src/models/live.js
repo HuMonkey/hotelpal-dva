@@ -23,6 +23,7 @@ export default {
     PPTImg: null,
 
     watchingPeopleNum: null,
+    couponInfo: null,
   },
 
   subscriptions: {
@@ -43,7 +44,19 @@ export default {
                 id: liveId
               }
             },
-            onResult (res) {}
+            onResult (res) {
+              if (res.sysCouponId) {
+                dispatch({
+                  type: 'getSysCouponInfo',
+                  payload: {
+                    data: {
+                      sysCouponId: res.sysCouponId
+                    }
+                  },
+                  onResult() {}
+                })
+              }
+            }
           });
           dispatch({
             type: 'fetchChatHistory',
@@ -76,17 +89,8 @@ export default {
             });
           }, 1000);
 
-          dispatch({
-            type: 'save',
-            payload: {
-              countDownInter: inter,
-              invitor,
-            }
-          });
-
-          // 讨论 ws
+          // ws
           const wsUri = `ws://47.98.220.31:8080/hotelpal/live/chat/${liveId}/${getToken()}`;
-          console.log(wsUri)
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
             console.log(evt) 
@@ -95,10 +99,12 @@ export default {
             console.log(evt);
             message.error('socket 断开了');
           }; 
-          websocket.onmessage = function(evt) {
+          websocket.onmessage = async function(evt) {
             console.log(evt);
             const data = JSON.parse(evt.data);
             if (data.msgType === 'TYPE_USER_MESSAGE') {
+              message.info(evt.data);
+              console.log(111);
               // 评论
               dispatch({
                 type: 'saveComment',
@@ -115,7 +121,6 @@ export default {
                 }
               })
             } else if (data.msgType === 'TYPE_SHOW_COUPON') {
-              // 显示红包
               dispatch({
                 type: 'switchHb',
                 payload: {
@@ -157,7 +162,6 @@ export default {
               });
             } else if (data.msgType === 'TYPE_PRESENT_UPDATE') {
               // 观看直播人数的更新
-              console.log('观看直播人数的更新');
               dispatch({
                 type: 'save',
                 payload: {
@@ -169,6 +173,14 @@ export default {
           websocket.onerror = function(evt) { 
             console.log(evt) 
           };
+
+          dispatch({
+            type: 'save',
+            payload: {
+              countDownInter: inter,
+              invitor,
+            }
+          });
         }
         if (pathname == '/') {
           dispatch({
@@ -288,6 +300,16 @@ export default {
       websocket.send(payload.data.msg || '');
       onResult && onResult();
     },
+    * getSysCouponInfo({ payload: {data}, onResult }, { call, put }) {
+      const result = yield call(liveService.getSysCouponInfo, data || {});
+      const couponInfo = result.data.code === 0 ? result.data.data : null;
+      yield put({
+          type: 'save',
+          payload: {
+              couponInfo
+          },
+      });
+  },
   },
 
   reducers: {
@@ -295,11 +317,11 @@ export default {
       return { ...state, ...action.payload };
     },
     switchHb(state, action) {
-      console.log(111, action.payload);
       return { ...state, hbShow: action.payload.show };
     },
     reset(state, action) {
       state.countDownInter && clearInterval(state.countDownInter);
+      websocket && websocket.close();
       return {
         ...state,
         liveDetail: null,
@@ -310,7 +332,7 @@ export default {
     saveAMsg(state, action) {
       const data = JSON.parse(action.payload.data && action.payload.data.trim());
       const assistantMsg = state.assistantMsg;
-      return {...state, assistantMsg: [data, ...assistantMsg]};
+      return {...state, assistantMsg: [...assistantMsg, data]};
     },
     deleteAMsg(state, action) {
       const data = JSON.parse(action.payload.data && action.payload.data.trim());

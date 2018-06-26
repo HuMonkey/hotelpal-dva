@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import { BottomBar } from '../../components/';
@@ -9,7 +9,9 @@ import { getTimeStr, dispatchWechatShare } from '../../utils/';
 class Bought extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      init: false,
+    };
   }
 
   async componentDidMount () {
@@ -21,6 +23,19 @@ class Bought extends Component {
       desc: '为你提供高效、有价值的行业知识服务。',
     }
     dispatchWechatShare(dict, dispatch);
+  }
+
+  async componentDidUpdate () {
+    const { common, history } = this.props;
+    const { init } = this.state;
+    if (!init && common.userInfo) {
+      this.setState({
+        init: true,
+      })
+      if (!common.userInfo.phone) {
+        history.replace('/login');
+      }
+    }
   }
 
   render () {
@@ -96,7 +111,7 @@ Bought.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { bought: state.bought };
+  return { bought: state.bought, common: state.common };
 }
 
-export default connect(mapStateToProps)(Bought);
+export default connect(mapStateToProps)(withRouter(Bought));

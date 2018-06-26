@@ -360,7 +360,6 @@ class Lesson extends Component {
     const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
     const isCourseClass = isCourse ? ' ' + styles.course : '';
     const scrollDownClass = scrollDown ? ' ' + styles.scrollDown : '';
-    console.log(scrollDownClass);
 
     return (
       <div className={styles.normal} ref={`normal`}>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import moment from 'moment';
@@ -12,7 +12,9 @@ import { dispatchWechatShare } from '../../utils';
 class Profile extends Component {
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      init: false,
+    };
   }
 
   async componentDidMount () {
@@ -25,10 +27,22 @@ class Profile extends Component {
     }
     dispatchWechatShare(dict, dispatch);
   }
+
+  async componentDidUpdate () {
+    const { common, history } = this.props;
+    const { init } = this.state;
+    if (!init && common.userInfo) {
+      this.setState({
+        init: true,
+      })
+      if (!common.userInfo.phone) {
+        history.replace('/login');
+      }
+    }
+  }
   
   render () {
     const { common, profile, coupon } = this.props;
-    console.log(1);
     if (!common.userInfo || !profile || !coupon) {
       return <div></div>
     }
@@ -129,4 +143,4 @@ const mapStateToProps = (state) => {
   return { common: state.common, profile: state.profile, coupon: state.coupon };
 }
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps)(withRouter(Profile));

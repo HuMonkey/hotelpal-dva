@@ -14,12 +14,14 @@ import Coupon from './routes/Coupon/';
 import UselessCoupon from './routes/UselessCoupon/';
 import Invite from './routes/Invite/';
 import InvitePage from './routes/InvitePage/';
+import SysCoupon from './routes/SysCoupon/';
 import WeChat from './routes/WeChat/';
 import Modify from './routes/Modify/';
 import Login from './routes/Login/';
 import GotoWechat from './routes/GotoWechat/';
 import Hongbao from './routes/Hongbao/';
 import Clear from './routes/Clear/';
+import SetUser from './routes/SetUser/';
 
 import { ua } from './utils';
 
@@ -53,11 +55,13 @@ function RouterConfig({ history }) {
         <Route path="/coupon/useless" exact render={() => requireWechat(UselessCoupon)} />
         <Route path="/invite" exact render={() => requireWechat(Invite)} />
         <Route path="/invitepage" exact render={() => requireWechat(InvitePage)} />
+        <Route path="/syscoupon" exact render={() => requireWechat(SysCoupon)} />
         <Route path="/modify" exact render={() => requireWechat(Modify)} />
         <Route path="/wechat" exact render={() => requireWechat(WeChat)} />
         <Route path="/login" exact component={Login} />
         <Route path="/login/force" exact component={Login} />
         <Route path="/clear" exact component={Clear} />
+        <Route path="/SetUser" exact component={SetUser} />
         <Route path="/gotoWechat" exact render={() => {
             if (ua.wechat) {
               return <Redirect to="/"/>;

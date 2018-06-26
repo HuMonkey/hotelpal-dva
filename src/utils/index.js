@@ -341,6 +341,10 @@ const dispatchWechatShare = function (dict, dispatch) {
   });
 }
 
+const strip = function (num, precision = 12) {
+  return +parseFloat(num.toPrecision(precision));
+}
+
 export {
   ua,
   isIphoneX,
@@ -362,5 +366,6 @@ export {
   callWxPay,
   courseMemberCardUseful,
   liveMemberCardUseful,
-  dispatchWechatShare
+  dispatchWechatShare,
+  strip
 }

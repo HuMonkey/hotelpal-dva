@@ -119,7 +119,9 @@ class IndexPage extends Component {
                         </div>
                         <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
                       </div>
-                      <div className={styles.right}>已有{count}人报名</div>
+                      { d.status === 'ENROLLING' && <div className={styles.right}>已有{count}人报名</div> }
+                      { d.status === 'ONGOING' && <div className={styles.right}>{count}人正在收看</div> }
+                      { d.status === 'ENDED' && <div className={styles.right}>累计{d.totalPeople}人收看</div> }
                     </div>
                     <div className={styles.detail}>
                       <div className={styles.title}>{d.title}</div>

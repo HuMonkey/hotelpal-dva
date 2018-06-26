@@ -1,263 +1,261 @@
 @import '../../common.less';
 
-.rp {
-  width: 4.7rem;
-  height: 4.44rem;
-  margin: auto;
-  background-image: url('../../assets/invite-rp.png');
-  background-size: 100% 100%;
-  margin-bottom: 0.4rem;
-  margin-top: 0.4rem;
-  .stitle {
-    font-size: 0.4rem;
-    text-align: center;
-    color: @black2;
-    display: inline-block;
-    line-height: 1;
-    margin-top: 0.18rem;
-  }
-  .price {
-    color: @red;
-    font-size: 0.48rem;
-    line-height: 1;
-    margin-top: 0.4rem;
-    span {
-      font-size: 0.8rem;
-    }
-  }
-  .tips {
-    color: @red;
-    line-height: 1;
-    margin-top: 0.16rem;
-    font-weight: normal;
-    font-size: 0.293333rem;
-  }
-}
-.blank {
-  width: 100%;
-  height: 1rem;
-}
-.resultPage {
-  width: 100%;
-  height: 100%;
-  background: #f4f5f6;
-  text-align: center;
-  padding-top: 1.06666rem;
-  line-height: 1;
-  position: relative;
-  .white {
-    padding-top: 1.8rem;
-  }
-  .text {
-    font-size: 0.64rem;
-    color: @black2;
-    font-weight: bolder;
-    &:last-child {
-      margin-bottom: 0.8rem;
-      margin-top: 0.2rem;
-    }
-  }
-  .latePng {
-    height: 2.5rem;
-    margin-bottom: 0.8rem;
-  }
-  .label1 {
-    color: @black1;
-    // font-weight: 0.289999px;
-    margin-top: 0.26666rem;
-    margin-bottom: 0.8rem;
-  }
-  .label {
-    color: @black2;
-    font-size: 0.48rem;
-    font-weight: normal;
-    margin-bottom: 0.4rem;
-  }
-  .sbtn {
-    width: 9.2rem;
-    height: 1.6rem;
-    line-height: 1.6rem;
-    padding-left: 1.28rem;
-    background: @red;
-    color: white;
-    font-size: 0.426666rem;
-    text-align: left;
-    margin: auto;
-    border-radius: 4px;
-    font-weight: bold;
-    position: relative;
-    .icon {
-      position: absolute;
-      right: 0.4rem;
-      top: 50%;
-      transform: translate(0, -50%);
-      font-size: 0.3rem;
-      font-weight: normal;
-    }
-    .money {
-      width: 0.6666rem;
-      height: 0.6666rem;
-      position: absolute;
-      left: 0.4rem;
-      top: 50%;
-      transform: translate(0, -50%);
-    }
-  }
-}
-
 .normal {
   width: 100%;
   height: 100%;
-  background: #edeeef;
   text-align: center;
   line-height: 1;
-  .main {
-    width: 100%;
-    padding: 0 0.4rem 1.2rem 0.4rem;
-    position: relative;
-    min-height: 100%;
-  }
-  .plus {
-    position: absolute;
-    color: @red;
-    font-weight: bold;
-    &:nth-child(1) {
-      top: 0.13333rem;
-      left: 0.13333rem;
-    }
-    &:nth-child(2) {
-      top: 0.13333rem;
-      right: 0.13333rem;
-    }
-    &:nth-child(3) {
-      bottom: 0.13333rem;
-      left: 0.13333rem;
-    }
-    &:nth-child(4) {
-      bottom: 0.13333rem;
-      right: 0.13333rem;
-    }
-  }
-  .inner1 {
-    width: 100%;
-    height: 100%;
-    padding: 0.4rem;
-    position: absolute;
-    left: 0;
-    top: 0;
-    .border {
-      border: solid thin @red;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .inner2 {
-    width: 100%;
-    height: 100%;
-    padding: 0.53333rem 0.26666rem;
-    position: absolute;
-    left: 0;
-    top: 0;
-    .border {
-      border: solid 2px @red;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .title {
-    color: @red;
-    font-size: 0.48rem;
-    display: inline-block;
-    margin-top: 1.3333rem;
-    margin-bottom: 0.53333rem;
-    span {
-      &:before {
-        display: inline-block;
-        margin-right: 0.13333rem;
-        content: '';
-        width: 0.13333rem;
-        height: 0.06rem;
-        background: @red;
-        vertical-align: middle;
-      }
-      &:after {
-        display: inline-block;
-        margin-left: 0.13333rem;
-        content: '';
-        width: 0.13333rem;
-        height: 0.06rem;
-        background: @red;
-        vertical-align: middle;
-      }
-    }
-  }
-  .text {
-    color: @red;
-    font-weight: bold;
-    font-size: 0.48rem;
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  .rp {
+    width: 4.7rem;
+    height: 4.44rem;
+    margin: auto;
+    background-image: url('../../assets/invite-rp.png');
+    background-size: 100% 100%;
     margin-bottom: 0.4rem;
-    span {
-      font-size: 0.56rem;
+    margin-top: 0.4rem;
+    .stitle {
+      font-size: 0.4rem;
+      text-align: center;
+      color: @black2;
+      display: inline-block;
+      line-height: 1;
+      margin-top: 0.18rem;
     }
-    &.last {
+    .price {
+      color: @red;
+      font-size: 0.48rem;
+      line-height: 1;
+      margin-top: 0.4rem;
+      span {
+        font-size: 0.8rem;
+      }
+    }
+    .tips {
+      color: @red;
+      line-height: 1;
+      margin-top: 0.16rem;
+      font-weight: normal;
+      font-size: 0.293333rem;
+    }
+  }
+  .got, .new, .old {
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    z-index: 3;
+    .ucan {
+      .label {
+        color: @black2;
+        font-size: 0.48rem;
+        font-weight: normal;
+        margin-bottom: 0.4rem;
+      }
+      .sbtn {
+        width: 9.2rem;
+        height: 1.6rem;
+        line-height: 1.6rem;
+        padding-left: 1.28rem;
+        background: @red;
+        color: white;
+        font-size: 0.426666rem;
+        text-align: left;
+        margin: auto;
+        border-radius: 4px;
+        font-weight: bold;
+        position: relative;
+        .icon {
+          position: absolute;
+          right: 0.4rem;
+          top: 50%;
+          transform: translate(0, -50%);
+          font-size: 0.3rem;
+          font-weight: normal;
+        }
+        .money {
+          width: 0.6666rem;
+          height: 0.6666rem;
+          position: absolute;
+          left: 0.4rem;
+          top: 50%;
+          transform: translate(0, -50%);
+        }
+      }
+    }
+  }
+  .old {
+    .text {
+      font-size: 0.64rem;
+      color: @black2;
+      font-weight: bolder;
+      margin-bottom: 1.2rem;
+      &:last-child {
+        margin-bottom: 0.8rem;
+        margin-top: 0.2rem;
+      }
+    }
+  }
+  .got {
+    .text {
+      font-size: 0.64rem;
+      color: @black2;
+      font-weight: bolder;
+      margin-bottom: 0.4rem;
+      &:last-child {
+        margin-bottom: 0.8rem;
+        margin-top: 0.2rem;
+      }
+    }
+    .label1 {
+      color: @black1;
+      // font-weight: 0.289999px;
+      margin-top: 0.26666rem;
       margin-bottom: 0.8rem;
     }
   }
-  .tips {
-    font-size: 0.346666rem;
-    font-weight: bold;
-    color: @black2;
-    margin-bottom: 0.26666rem;
-  }
-  .wrap1, .wrap2 {
-    width: 7.8rem;
-    margin: auto;
-    position: relative;
-    .input {
-      width: 100%;
-    }
-  }
-  .wrap1 {
-    margin-top: 0.8rem;
-    margin-bottom: 0.53333rem;
-  }
-  .wrap2 {
-    margin-bottom: 0.8rem;
-    position: relative;
-    .code {
-      font-size: 0.32rem;
-      color: @red;
+  .new {
+    min-height: 100%;
+    background: #edeeef;
+    padding-bottom: 1.4rem;
+    .plus {
       position: absolute;
-      right: 0.4rem;
-      top: 0;
-      line-height: 1rem;
-      &.disabled {
-        color: #cccccc;
+      color: @red;
+      font-weight: bold;
+      &:nth-child(1) {
+        top: 0.13333rem;
+        left: 0.13333rem;
+      }
+      &:nth-child(2) {
+        top: 0.13333rem;
+        right: 0.13333rem;
+      }
+      &:nth-child(3) {
+        bottom: 0.13333rem;
+        left: 0.13333rem;
+      }
+      &:nth-child(4) {
+        bottom: 0.13333rem;
+        right: 0.13333rem;
       }
     }
-  }
-  .tips2 {
-    color: #cccccc;
-    font-size: 0.289999rem;
-    text-align: center;
-    span {
-      color: @black1;
+    .inner1 {
+      width: 100%;
+      height: 100%;
+      padding: 0.4rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+      .border {
+        border: solid thin @red;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .inner2 {
+      width: 100%;
+      height: 100%;
+      padding: 0.53333rem 0.26666rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+      .border {
+        border: solid 2px @red;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .title {
+      color: @red;
+      font-size: 0.48rem;
+      display: inline-block;
+      margin-top: 1.3333rem;
+      margin-bottom: 0.53333rem;
+      span {
+        &:before {
+          display: inline-block;
+          margin-right: 0.13333rem;
+          content: '';
+          width: 0.13333rem;
+          height: 0.06rem;
+          background: @red;
+          vertical-align: middle;
+        }
+        &:after {
+          display: inline-block;
+          margin-left: 0.13333rem;
+          content: '';
+          width: 0.13333rem;
+          height: 0.06rem;
+          background: @red;
+          vertical-align: middle;
+        }
+      }
+    }
+    .text {
+      color: @red;
+      font-weight: bold;
+      font-size: 0.48rem;
+      margin-bottom: 0.4rem;
+      span {
+        font-size: 0.56rem;
+      }
+      &.last {
+        margin-bottom: 0.8rem;
+      }
+    }
+    .tips {
+      font-size: 0.346666rem;
+      font-weight: bold;
+      color: @black2;
+      margin-bottom: 0.26666rem;
+    }
+    .wrap1, .wrap2 {
+      width: 7.8rem;
+      margin: auto;
+      position: relative;
+      .input {
+        width: 100%;
+      }
+    }
+    .wrap1 {
+      margin-top: 0.8rem;
+      margin-bottom: 0.53333rem;
+    }
+    .wrap2 {
+      margin-bottom: 0.8rem;
+      position: relative;
+      .code {
+        font-size: 0.32rem;
+        color: @red;
+        position: absolute;
+        right: 0.4rem;
+        top: 0;
+        line-height: 1rem;
+        &.disabled {
+          color: #cccccc;
+        }
+      }
+    }
+    .tips2 {
+      color: #cccccc;
+      font-size: 0.289999rem;
+      text-align: center;
+      span {
+        color: @black1;
+      }
+    }
+    .btn {
+      height: 1.146666rem;
+      width: 7.8rem;
+      border-radius: 4px;
+      background: @red;
+      color: white;
+      font-size: 0.4rem;
+      margin: auto;
+      line-height: 1.146666rem;
+      margin-bottom: 0.26666rem;
     }
   }
-  .btn {
-    height: 1.146666rem;
-    width: 7.8rem;
-    border-radius: 4px;
-    background: @red;
-    color: white;
-    font-size: 0.4rem;
-    margin: auto;
-    line-height: 1.146666rem;
-    margin-bottom: 0.26666rem;
-  }
-}
-
-.new {
-  position: relative;
-  z-index: 3;
 }

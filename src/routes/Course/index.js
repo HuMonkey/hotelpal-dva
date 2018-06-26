@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
+import { withRouter } from 'dva/router';
 import styles from './index.less';
 
 import cross from '../../assets/cross.png';
@@ -34,6 +35,11 @@ class Course extends Component {
   }
 
   async buyCourse () {
+    const { common, history } = this.props;
+    if (!common.userInfo.phone) {
+      history.push('/login');
+      return false;
+    }
     this.showOrderPopup();
   }
 
@@ -187,4 +193,4 @@ const mapStateToProps = (state) => {
   return { course: state.course, common: state.common, coupon: state.coupon };
 }
 
-export default connect(mapStateToProps)(Course);
+export default connect(mapStateToProps)(withRouter(Course));

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
+import { withRouter } from 'dva/router';
 import styles from './index.less';
 
 import { Navs, PopupCourse, PopupLogin, PopupOrder, 
@@ -8,15 +9,16 @@ import { Navs, PopupCourse, PopupLogin, PopupOrder,
 
 import { message } from 'antd';
 
-import 'video.js/dist/video-js.css';
-import videojs from 'video.js';
-import 'videojs-contrib-hls';
+// import 'video.js/dist/video-js.css';
+// import videojs from 'video.js';
+// import 'videojs-contrib-hls';
 
 import hbBg from '../../assets/hb-bg.png';
 
 import { getHtmlContent, configWechat, updateWechartShare } from '../../utils';
 
 let initFlag = false;
+let interval;
 
 class Live extends Component {
   constructor(props) {
@@ -27,10 +29,12 @@ class Live extends Component {
       // signup: 'init', // inviting init paid vip free
       // state: 'ing', // before ing after
       popup: null, // detail, order, login
-      playerInit: false,
+      // playerInit: false,
       replying: false,
 
       enrollForShow: true,
+
+      hbCountDown: moment(),
     };
   }
 
@@ -104,24 +108,12 @@ class Live extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    const { playerInit } = this.state;
-
     const chats = this.props.live && this.props.live.chats;
     const prevChats = prevProps.live && prevProps.live.chats;
 
     if (((prevChats && prevChats.length)) !== (chats && chats.length)) {
       this.scrollToBottom();
     }
-    
-    if (playerInit || !this.refs.player) {
-      return false;
-    }
-
-    videojs('my-video');
-
-    this.setState({
-      playerInit: true,
-    });
 
     const { live } = this.props;
     const { liveDetail } = live;
@@ -218,7 +210,8 @@ class Live extends Component {
     const {dispatch} = this.props;
     dispatch({
       type: 'live/reset',
-    })
+    });
+    interval && clearInterval(interval);
   }
 
   paySuccessCallback () {
@@ -228,7 +221,7 @@ class Live extends Component {
   render () {
     const { live, common, dispatch, coupon } = this.props;
 
-    const { liveDetail, now, countDownInter, assistantMsg, chats, hbShow, PPTImg, watchingPeopleNum } = live;
+    const { liveDetail, couponInfo, now, countDownInter, assistantMsg, chats, hbShow, PPTImg, watchingPeopleNum } = live;
 
     if (!liveDetail) {
       return <div></div>
@@ -238,14 +231,14 @@ class Live extends Component {
 
     const { relaCourse } = liveDetail;
 
-    const { page, taOpen, hongbaoShow, popup, replying } = this.state;
+    const { page, hongbaoShow, popup, replying, hbCountDown } = this.state;
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
 
-    const hongbaoDom = <div className={styles.hb}>
+    const hongbaoDom = couponInfo && <div className={styles.hb}>
       <div className={styles.main} style={{ backgroundImage: `url(${hbBg})` }}>
-        <div className={styles.price}>￥<span>20</span></div>
+        <div className={styles.price}>￥<span>{couponInfo.value / 100}</span></div>
         <div className={styles.btn} onClick={this.openHongbao.bind(this)}>抢</div>
       </div>
       <div className={styles.close} onClick={this.hideHongbao.bind(this)}></div>
@@ -253,13 +246,21 @@ class Live extends Component {
 
     const openTime = moment(liveDetail.openTime);
     const diffTime = openTime - now;
-    const duration = moment.duration(diffTime, 'milliseconds');
+    // const duration = moment.duration(diffTime, 'milliseconds');
     if (diffTime <= 0) {
       clearInterval(countDownInter);
     }
 
     const isChatPageClass = page === 'chat' ? ' ' + styles.chat : '';
     const hasAssistClass = assistantMsg.length > 0 ? ' ' + styles.hasAssist : '';
+
+    // 红包倒计时
+    let hbCountDownStr = '';
+    if (couponInfo) {
+      const expired = moment(couponInfo.validity);
+      console.log(expired - hbCountDown);
+    }
+
     return (
       <div className={styles.normal + isChatPageClass + hasAssistClass} ref={`normal`}>
         {
@@ -284,14 +285,16 @@ class Live extends Component {
         }
         <Navs/>
         <div className={styles.banner}>
-          <LivePlayer 
-            live={liveDetail} 
-            now={now} 
-            countDownInter={countDownInter} 
-            PPTImg={PPTImg} 
-            userInfo={userInfo}
-            watchingPeopleNum={watchingPeopleNum}
-          />
+          {
+            liveDetail && <LivePlayer 
+              live={liveDetail} 
+              now={now} 
+              countDownInter={countDownInter} 
+              PPTImg={PPTImg} 
+              userInfo={userInfo}
+              watchingPeopleNum={watchingPeopleNum}
+            />
+          }
           <div className={styles.switches}>
             <div 
               className={styles.item + detailClass} 
@@ -303,7 +306,7 @@ class Live extends Component {
         </div>
         {
           page === 'detail' && <div>
-            <EnrollPanel dispatch={dispatch} live={liveDetail} userInfo={userInfo} invitor={live.invitor} />
+            <EnrollPanel coupon={coupon} dispatch={dispatch} live={liveDetail} userInfo={userInfo} invitor={live.invitor} />
             <div className={styles.intro}>
               <IntroPanel title={'公开课介绍'} html={liveDetail.introduce} />
             </div>
@@ -323,10 +326,10 @@ class Live extends Component {
         { 
           page === 'chat' && <div className={styles.commentBox}>
             { 
-              hbShow ? <div className={styles.hongbao} onClick={this.showHongbao.bind(this)}>
+              hbShow && couponInfo ? <div className={styles.hongbao} onClick={this.showHongbao.bind(this)}>
                 <div className={styles.inner}>
                   <div className={styles.square}>
-                    <div className={styles.money}>￥<span>20</span></div>
+                    <div className={styles.money}>￥<span>{couponInfo.value / 100}</span></div>
                     <div className={styles.btn}>抢</div>
                     <div className={styles.time}>11:12:15</div>
                   </div>
@@ -335,7 +338,7 @@ class Live extends Component {
                   <div className={styles.bubble3}></div>
                   <div className={styles.bubble4}></div>
                 </div>
-              </div> : relaCourse ? <div className={styles.ad} onClick={this.openCourceDetail.bind(this)}>
+              </div> : relaCourse && userInfo.relateCoursePurchased === 'N' ? <div className={styles.ad} onClick={this.openCourceDetail.bind(this)}>
                 <div className={styles.inner}>
                   <div className={styles.avatar} style={{ backgroundImage: `url(${relaCourse.bannerImg})` }}></div>
                   <div className={styles.title}>{relaCourse.title}</div>
@@ -361,4 +364,4 @@ const mapStateToProps = (state) => {
   return { live: state.live, common: state.common, coupon: state.coupon };
 }
 
-export default connect(mapStateToProps)(Live);
+export default connect(mapStateToProps)( withRouter(Live) );

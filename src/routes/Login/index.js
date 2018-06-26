@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
+import { withRouter } from 'dva/router';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import styles from './index.less';
 
@@ -7,6 +8,8 @@ import { message } from 'antd';
 
 import logo from '../../assets/jiudianbang-big.png';
 import { getParam, dispatchWechatShare } from '../../utils';
+
+let init = false;
 
 class Login extends Component {
   constructor(props) {
@@ -28,9 +31,19 @@ class Login extends Component {
     }
     dispatchWechatShare(dict, dispatch);
 
-    const href = location.href;
-    if (href.indexOf('/force') === -1) {
-      location.href = decodeURIComponent(getParam('redirect')) || '/';
+    // const href = location.href;
+    // if (href.indexOf('/force') === -1) {
+    //   location.href = decodeURIComponent(getParam('redirect')) || '/';
+    // }
+  }
+
+  componentDidUpdate () {
+    const { common } = this.props;
+    if (!init && common.userInfo) {
+      init = true;
+      if (common.userInfo.phone && location.href.indexOf('/force') === -1) {
+        this.jump();
+      }
     }
   }
 
@@ -88,9 +101,9 @@ class Login extends Component {
   }
 
   jump () {
-    // 跳转
+    const { history } = this.props;
     const redirect = getParam('redirect') || '/';
-    location.href = redirect;
+    history.push(redirect);
   }
 
   async submitVerify () {
@@ -140,31 +153,31 @@ class Login extends Component {
   }
 
   fileInputClick () {
-    this.refs.avatar.click();
+    this.refs.file.click();
   }
 
   fileInputChange () {
     const { dispatch, common } = this.props;
     const { userInfo } = common;
-    const fileInput = this.refs.avatar;
+    const fileInput = this.refs.file;
     const data = new FormData();
-    data.append('file', fileInput.files[0])
+    data.append('imgFile', fileInput.files[0])
     dispatch({
       type: 'common/uploadAvatar',
       payload: { data },
       onResult (res) {
-        if (res.data.code = 0) {
+        if (res.data.success) {
           dispatch({
             type: 'common/save',
             payload: {
               userInfo: {
                 ...userInfo,
-                headImg: res.data.data.imgurl,
+                headImg: res.data.vo,
               }
             }
           })
         } else {
-          message.error(res.data.msg);
+          message.error(res.data.messages);
         }
       }
     })
@@ -228,9 +241,9 @@ class Login extends Component {
           step === 2 && userInfo && <div className={styles.step + ' ' + styles.second}>
             <div className={styles.welcome}>欢迎加入酒店营成长邦！</div>
             <div className={styles.avatar}>
-              <img src={userInfo.headImg} onClick={this.fileInputClick.bind(this)}/>
+              <img src={userInfo.headImg} onClick={this.fileInputClick.bind(this)} ref={'avatar'}/>
             </div>
-            <input className={styles.avatarUpload} onChange={this.fileInputChange.bind(this)} ref={'avatar'} type="file"></input>
+            <input className={styles.avatarUpload} onChange={this.fileInputChange.bind(this)} type="file" ref={`file`}></input>
             <div className={styles.wechatName}>{userInfo.nickname}</div>
             <div className={styles.row + ' ' + styles.name}>
               <div className={styles.label}>姓名</div>
@@ -263,4 +276,4 @@ const mapStateToProps = (state) => {
   return { common: state.common };
 }
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(withRouter(Login));

@@ -27,8 +27,6 @@ class BoughtRecord extends Component {
     if (!bought) {
       return <div></div>
     }
-
-    console.log(bought);
   
     const { boughtList } = bought;
   

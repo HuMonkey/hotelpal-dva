@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import { message, Popover } from 'antd';
 import moment from 'moment';
-import { getToken } from '../../utils';
+import { getToken, liveMemberCardUseful } from '../../utils';
 
 import simleLogo from '../../assets/smile.svg';
 
@@ -105,10 +105,14 @@ class EnrollPanel extends Component {
   }
 
   async enroll () {
-    const { dispatch, live, userInfo } = this.props;
+    const { dispatch, live, userInfo, coupon, history } = this.props;
+    if (!userInfo.phone) {
+      history.push('/login');
+      return false;
+    }
 
     // VIP 或者免费课直接调用报名接口了
-    if (userInfo.liveVip === 'Y' || live.price === 0) {
+    if ((userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip)) || live.price === 0) {
       this.enrollFor();
 
       await dispatch({
@@ -199,9 +203,8 @@ class EnrollPanel extends Component {
   }
 
   render() {
-    console.log(1);
     const { enrollForShow, posterShow } = this.state;
-    const { live, userInfo, invitor } = this.props;
+    const { live, userInfo, invitor, coupon } = this.props;
 
     const showInvitorTips = this.canEnrollFor() && enrollForShow;
     
@@ -231,7 +234,7 @@ class EnrollPanel extends Component {
         signup = 'paid';
       }
     } else {
-      if (userInfo.liveVip === 'Y') {
+      if (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip)) {
         signup = 'vip';
       } else {
         if (userInfo.status === 'INVITING') {
@@ -385,4 +388,4 @@ class EnrollPanel extends Component {
   }
 }
 
-export default EnrollPanel;
+export default withRouter(EnrollPanel);

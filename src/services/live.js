@@ -45,3 +45,9 @@ export function createPayOrder(data) {
   const jdbtk = getToken();
   return request(`${config.host}/hotelpal/live/createPayOrder?courseId=${data.id}&token=${jdbtk}`);
 }
+
+export function getSysCouponInfo(data) {
+  console.log(111);
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/coupon/getSysCouponInfo?token=' + jdbtk + '&sysCouponId=' + data.sysCouponId)
+}

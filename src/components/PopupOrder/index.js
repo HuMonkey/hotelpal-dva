@@ -6,7 +6,7 @@ import { Icon, message } from 'antd';
 import moment from 'moment';
 
 import PopupCoupon from '../PopupCoupon/';
-import { courseMemberCardUseful } from '../../utils';
+import { courseMemberCardUseful, strip } from '../../utils';
 
 class PopupOrder extends Component {
   constructor(props) {
@@ -191,7 +191,7 @@ class PopupOrder extends Component {
 
     const { couponSelected, maxDiscount } = this.state;
 
-    const total = price - maxDiscount > 0 ? price - maxDiscount : 0;
+    const total = price - maxDiscount > 0 ? strip(price - maxDiscount) : 0;
 
     return (
       <div className={styles.PopupOrder}>

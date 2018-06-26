@@ -5,12 +5,20 @@ import styles from './index.less';
 import moment from 'moment';
 import { formatNum } from '../../utils';
 
+import 'video.js/dist/video-js.css';
+import videojs from 'video.js';
+import 'videojs-contrib-hls';
+
 import defaultPPT from '../../assets/live-banner-default.png';
 
 class LivePlayer extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount() {
+    // videojs('my-video');
   }
 
   render() {
@@ -50,7 +58,7 @@ class LivePlayer extends Component {
       dom = <div className={styles.player + ' ' + styles.bg}>
         <div className={styles.split}></div>
         <div className={styles.tips}>公开课已结束，下次早点来哦~</div>
-        <div className={styles.people}><span>{live.totalPeople}人正在收看</span></div>
+        <div className={styles.people}><span>累计{live.totalPeople}人收看</span></div>
       </div>
     } else if (status === 'ONGOING') {
       if (userInfo.enrolled === 'Y' || userInfo.liveVip === 'Y') {
@@ -58,7 +66,17 @@ class LivePlayer extends Component {
           <div className={styles.ppt}>
             <img src={PPTImg || defaultPPT} />
           </div>
-          <video ref={`player`} id="my-video" className="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%">
+          <video 
+            ref={`player`} 
+            id="my-video" 
+            className="video-js vjs-default-skin" 
+            controls 
+            width="100%" 
+            height="100%"
+            preload="load" 
+            playsInline="true"
+            autoPlay="autoplay"
+          >
             <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
           </video>
           <div className={styles.people}><span>{watchingPeopleNum}人正在收看</span></div>
@@ -67,11 +85,10 @@ class LivePlayer extends Component {
         dom = <div className={styles.player + ' ' + styles.bg}>
           <div className={styles.split}></div>
           <div className={styles.tips}>需要报名才能观看公开课</div>
-          <div className={styles.people}><span>{live.totalPeople}人正在收看</span></div>
+          <div className={styles.people}><span>{watchingPeopleNum}人正在收看</span></div>
         </div>
       }
     }
-
     return (
       <div className={styles.livePlayer}>
         { dom }

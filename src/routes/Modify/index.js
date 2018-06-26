@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
+import { withRouter } from 'dva/router';
 import styles from './index.less';
 
+import { message } from 'antd';
 import { dispatchWechatShare } from '../../utils';
 
 class Modify extends Component {
@@ -11,44 +13,44 @@ class Modify extends Component {
   }
 
   uploadClick () {
-    this.refs.file.click();
+    this.refs.imgFile.click();
   }
 
   onFileChange () {
     const { dispatch, common } = this.props;
     const { userInfo } = common;
-    const fileInput = this.refs.file;
+    const fileInput = this.refs.imgFile;
     const data = new FormData();
-    data.append('file', fileInput.files[0])
+    data.append('imgFile', fileInput.files[0])
     dispatch({
       type: 'common/uploadAvatar',
       payload: { data },
       onResult (res) {
-        if (res.data.code = 0) {
+        if (res.data.success) {
           dispatch({
             type: 'common/save',
             payload: {
               userInfo: {
                 ...userInfo,
-                headImg: res.data.data.imgurl,
+                headImg: res.data.vo,
               }
             }
           })
         } else {
-          alert(res.data.msg);
+          message.error(res.data.messages);
         }
       }
     })
   }
 
   onSubmit () {
-    const {dispatch} = this.props;
+    const { dispatch, history } = this.props;
     const nickname = this.refs.nickname.value;
     const title = this.refs.title.value;
     const company = this.refs.company.value;
     const avatar = this.refs.avatar.src;
     if (!nickname) {
-      alert('昵称不能为空');
+      message.error('昵称不能为空');
       return false;
     }
     dispatch({
@@ -60,7 +62,8 @@ class Modify extends Component {
       },
       onResult (res) {
         if (res.data.code === 0) {
-          alert('修改成功！');
+          message.success('修改成功！');
+          history.go(-1);
         }
       }
     })
@@ -81,7 +84,7 @@ class Modify extends Component {
     const { common } = this.props;
     const { userInfo } = common;
 
-    if (!userInfo.nickname) {
+    if (!userInfo) {
       return <div></div>
     }
 
@@ -92,7 +95,7 @@ class Modify extends Component {
             <img ref={'avatar'} src={userInfo.headImg} onClick={this.uploadClick.bind(this)} />
           </div>
         </div> 
-        <input type="file" className={styles.avaterUpload} ref={`file`} onChange={this.onFileChange.bind(this)}/> 
+        <input type="file" className={styles.avaterUpload} ref={`imgFile`} onChange={this.onFileChange.bind(this)}/> 
         <div className={styles.wechatName}></div> 
         <div className={styles.row + ' ' + styles.name}>
           <div className={styles.label}>姓名</div> 
@@ -122,4 +125,4 @@ const mapStateToProps = (state) => {
   return { common: state.common };
 }
 
-export default connect(mapStateToProps)(Modify);
+export default connect(mapStateToProps)(withRouter(Modify));

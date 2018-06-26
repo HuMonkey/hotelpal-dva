@@ -1,7 +1,16 @@
 import fetch from 'dva/fetch';
 
 function parseJSON(response) {
-  return response.json();
+  try {
+    return response.json();
+  } catch (e) {
+    return {
+      code: -99999,
+      data: null,
+      messages: null,
+      success: false,
+    };
+  }
 }
 
 function checkStatus(response) {

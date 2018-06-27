@@ -47,7 +47,6 @@ export function createPayOrder(data) {
 }
 
 export function getSysCouponInfo(data) {
-  console.log(111);
   const jdbtk = getToken();
   return request(config.host + '/hotelpal/user/coupon/getSysCouponInfo?token=' + jdbtk + '&sysCouponId=' + data.sysCouponId)
 }

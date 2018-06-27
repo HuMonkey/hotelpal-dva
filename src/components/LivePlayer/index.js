@@ -22,14 +22,11 @@ class LivePlayer extends Component {
   }
 
   render() {
-    const { live, now, countDownInter, PPTImg, userInfo, watchingPeopleNum } = this.props;
+    const { live, now, PPTImg, userInfo, watchingPeopleNum } = this.props;
 
     const openTime = moment(live.openTime);
     const diffTime = openTime - now;
     const duration = moment.duration(diffTime, 'milliseconds');
-    if (diffTime <= 0) {
-      clearInterval(countDownInter);
-    }
 
     let status = live.status;
 

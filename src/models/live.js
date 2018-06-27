@@ -104,7 +104,6 @@ export default {
             const data = JSON.parse(evt.data);
             if (data.msgType === 'TYPE_USER_MESSAGE') {
               message.info(evt.data);
-              console.log(111);
               // 评论
               dispatch({
                 type: 'saveComment',
@@ -177,7 +176,7 @@ export default {
           dispatch({
             type: 'save',
             payload: {
-              countDownInter: inter,
+              ƒ: inter,
               invitor,
             }
           });

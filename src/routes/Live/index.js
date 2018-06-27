@@ -47,6 +47,11 @@ class Live extends Component {
   }
 
   showHongbao () {
+    const { live } = this.props;
+    const { couponInfo } = live;
+    if (couponInfo.acquired === 'Y') {
+      return false;
+    }
     this.setState({
       hongbaoShow: true,
     });
@@ -71,10 +76,10 @@ class Live extends Component {
     })
   }
 
-  openHongbao () {
+  async openHongbao () {
     const { dispatch, live } = this.props;
 
-    dispatch({
+    await dispatch({
       type: 'live/getCoupon',
       payload: {
         data: {
@@ -88,6 +93,16 @@ class Live extends Component {
           message.error(res.data.messages);
         }
       }
+    })
+
+    dispatch({
+      type: 'live/getSysCouponInfo',
+      payload: {
+        data: {
+          sysCouponId: live.liveDetail.sysCouponId
+        }
+      },
+      onResult() {}
     })
 
     this.setState({
@@ -244,22 +259,45 @@ class Live extends Component {
       <div className={styles.close} onClick={this.hideHongbao.bind(this)}></div>
     </div>;
 
-    const openTime = moment(liveDetail.openTime);
-    const diffTime = openTime - now;
-    // const duration = moment.duration(diffTime, 'milliseconds');
-    if (diffTime <= 0) {
-      clearInterval(countDownInter);
-    }
-
     const isChatPageClass = page === 'chat' ? ' ' + styles.chat : '';
     const hasAssistClass = assistantMsg.length > 0 ? ' ' + styles.hasAssist : '';
 
     // 红包倒计时
     let hbCountDownStr = '';
+    let couponExpired = false;
     if (couponInfo) {
       const expired = moment(couponInfo.validity);
-      console.log(expired - hbCountDown);
+      const diff = expired - now;
+      if (diff < 0) {
+        couponExpired = true;
+      } else {
+        const duration = moment.duration(diff, 'milliseconds');
+        let hoursStr = duration.days() * 24 + duration.hours();
+        const minutesStr = duration.minutes();
+        const secondsStr = duration.seconds();
+        hbCountDownStr = hoursStr + ':' + minutesStr + ':' + secondsStr;
+        // if (hoursStr > 99) {
+        //   hbCountDownStr = '99:59:59';
+        // }
+      }
     }
+    let couponClassName = '';
+    if (couponInfo && couponInfo.acquired === 'Y') {
+      couponClassName = ' ' + styles.got;
+    }
+    const couponDom = !couponExpired && couponInfo && <div className={styles.hongbao} onClick={this.showHongbao.bind(this)}>
+      <div className={styles.inner}>
+        <div className={styles.square}>
+          <div className={styles.money}>￥<span>{couponInfo.value / 100}</span></div>
+          <div className={styles.btn + couponClassName}>{ couponInfo.acquired === 'Y' ? '已领' : '抢' }</div>
+          <div className={styles.time}>{hbCountDownStr}</div>
+        </div>
+        <div className={styles.bubble1}></div>
+        <div className={styles.bubble2}></div>
+        <div className={styles.bubble3}></div>
+        <div className={styles.bubble4}></div>
+      </div>
+    </div>;
 
     return (
       <div className={styles.normal + isChatPageClass + hasAssistClass} ref={`normal`}>
@@ -278,7 +316,7 @@ class Live extends Component {
         { hongbaoShow && hongbaoDom }
         {
           popup && <div>
-            { popup === 'detail' && <PopupCourse course={relaCourse} onSubmit={this.onCourseSubmit.bind(this)} closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'detail' && <PopupCourse userInfo={userInfo} course={relaCourse} onSubmit={this.onCourseSubmit.bind(this)} closePopup={this.closePopup.bind(this)} /> }
             { popup === 'login' && <PopupLogin closePopup={this.closePopup.bind(this)} /> }
             { popup === 'order' && <PopupOrder paySuccessCallback={this.paySuccessCallback.bind(this)} dispatch={dispatch} coupon={coupon} course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
           </div>
@@ -326,19 +364,8 @@ class Live extends Component {
         { 
           page === 'chat' && <div className={styles.commentBox}>
             { 
-              hbShow && couponInfo ? <div className={styles.hongbao} onClick={this.showHongbao.bind(this)}>
-                <div className={styles.inner}>
-                  <div className={styles.square}>
-                    <div className={styles.money}>￥<span>{couponInfo.value / 100}</span></div>
-                    <div className={styles.btn}>抢</div>
-                    <div className={styles.time}>11:12:15</div>
-                  </div>
-                  <div className={styles.bubble1}></div>
-                  <div className={styles.bubble2}></div>
-                  <div className={styles.bubble3}></div>
-                  <div className={styles.bubble4}></div>
-                </div>
-              </div> : relaCourse && userInfo.relateCoursePurchased === 'N' ? <div className={styles.ad} onClick={this.openCourceDetail.bind(this)}>
+              hbShow && couponInfo && !couponExpired ? couponDom : relaCourse && userInfo.relateCoursePurchased === 'N' ? 
+              <div className={styles.ad} onClick={this.openCourceDetail.bind(this)}>
                 <div className={styles.inner}>
                   <div className={styles.avatar} style={{ backgroundImage: `url(${relaCourse.bannerImg})` }}></div>
                   <div className={styles.title}>{relaCourse.title}</div>

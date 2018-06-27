@@ -11,7 +11,7 @@ class PopupCourse extends Component {
   }
 
   render() {
-    const { course, closePopup, onSubmit } = this.props;
+    const { course, userInfo = {}, closePopup, onSubmit } = this.props;
 
     const { courseContent } = course;
 
@@ -63,7 +63,7 @@ class PopupCourse extends Component {
                 <div className={styles.text} dangerouslySetInnerHTML={createMarkupSubscribe()}></div>
               </div>
             </div>
-            <div className={styles.buy} onClick={onSubmit}>立即订阅：{course.price / 100} / {course.lessonNum} 课时</div>
+            { userInfo.relateCoursePurchased !== 'Y' && <div className={styles.buy} onClick={onSubmit}>立即订阅：{course.price / 100} / {course.lessonNum} 课时</div> }
           </div>
         </div>
       </div>

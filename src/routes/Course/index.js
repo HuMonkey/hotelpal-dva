@@ -160,7 +160,7 @@ class Course extends Component {
                     {d.freeListen === 1 && <span className={styles.tag}>免费试听</span>}
                   </div> 
                   <div className={styles.down}>
-                    <p>
+                    <div>
                       <span>{d.publishTime}</span> 
                       <span>{d.resourceSize}</span> 
                       <span>{getAudioLength(d.audioLen)}</span> 
@@ -170,7 +170,7 @@ class Course extends Component {
                       { 
                         d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : null
                       }
-                    </p>
+                    </div>
                   </div> 
                   <div className={styles.arrow}></div>
                 </div>

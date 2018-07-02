@@ -43,7 +43,6 @@ class InvitePage extends Component {
       }
     });
     if (result.data.code === 0) {
-      this.getSysCoupon();
       this.setState({
         result: 'got'
       });

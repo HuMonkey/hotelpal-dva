@@ -3,13 +3,13 @@ import { connect } from 'dva';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
+import { message } from 'antd';
+
 import { AudioPlayer, ShareTips, PopupOrder } from '../../components';
 import { formatNum, getAudioLength, formatTime, getParam, getHtmlContent } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
 const likedTemp = [];
-
-let init = false;
 
 class Lesson extends Component {
   constructor(props) {
@@ -84,7 +84,7 @@ class Lesson extends Component {
     const comment = this.refs.reply.value;
 
     if (comment.length < 20) {
-      alert('回复至少20字以上');
+      message.error('回复至少20字以上');
       return false;
     }
     const that = this;
@@ -110,10 +110,11 @@ class Lesson extends Component {
                 id: lesson.detail.id,
               }
             },
+            onResult() {}
           });
-          alert('发布评论成功！');
+          message.success('发布评论成功！');
         } else {
-          alert('发布评论失败，请稍后重试~');
+          message.error('发布评论失败，请稍后重试~');
         }
       }
     })
@@ -141,6 +142,7 @@ class Lesson extends Component {
                 id: lid,
               }
             },
+            onResult() {}
           });
         }
       }
@@ -359,7 +361,7 @@ class Lesson extends Component {
     const fromHongbao = getParam('fromHongbao');
     const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
     const isCourseClass = isCourse ? ' ' + styles.course : '';
-    const scrollDownClass = scrollDown ? ' ' + styles.scrollDown : '';
+    const scrollDownClass = !isCourse && scrollDown ? ' ' + styles.scrollDown : '';
 
     return (
       <div className={styles.normal} ref={`normal`}>
@@ -403,11 +405,13 @@ class Lesson extends Component {
               previous={detail.previousLessonId} 
               next={detail.nextLessonId}
               coverImg={detail.coverImg}
+              listenLen={detail.listenLen}
+              audioLen={detail.audioLen}
             >
             </AudioPlayer>
           </div>
           <div className={styles.main} ref={`main`}>
-            <div className={styles.courseTitle}>{formatNum(detail.lessonOrder)}&nbsp;|&nbsp;{detail.title}</div>
+            <div className={styles.courseTitle}>{isCourse && (formatNum(detail.lessonOrder))}{isCourse && <span>&nbsp;|&nbsp;</span>}{detail.title}</div>
             <div className={styles.infos}>
               { isCourse && <div className={styles.time}>{detail.publishTime} 发布</div> }
               <div className={styles.other}>

@@ -67,6 +67,10 @@ class PopupOrder extends Component {
             paying: false,
           });
           if (res.data.code === 0) {
+            if (res.data.data.purchased === 'Y') {
+              paySuccessCallback && paySuccessCallback();
+              return false;
+            }
             const { appId, nonceStr, paySign, timeStamp, tradeNo } = res.data.data;
             wx.chooseWXPay({
               timestamp: timeStamp,
@@ -84,10 +88,10 @@ class PopupOrder extends Component {
                     }
                   },
                   onResult(res) {
-                    console.log(res);
+                    message.success('支付成功~');
+                    paySuccessCallback && paySuccessCallback()
                   }
                 })
-                message.success('支付成功~');
               },
               error: () => {
                 message.error('支付出了点问题，请稍后再试~');
@@ -219,8 +223,8 @@ class PopupOrder extends Component {
                   {
                     couponSelected === '不使用' && <div className={styles.right + ' ' + styles.coupon} onClick={this.openCoupon.bind(this)}>不使用优惠<Icon type="right" className={styles.chooseCoupons} /></div>
                   }
-                  { couponSelected !== '不使用' && (cardCanUse || couponList) && <div className={styles.right + ' ' + styles.coupon} onClick={this.openCoupon.bind(this)}>-￥{maxDiscount}<Icon type="right" className={styles.chooseCoupons} /></div>}
-                  { !cardCanUse && !couponList && <div className={styles.right + ' ' + styles.coupon}>无可用优惠</div> }
+                  { couponSelected !== '不使用' && (cardCanUse || (couponList && couponList.length > 0)) && <div className={styles.right + ' ' + styles.coupon} onClick={this.openCoupon.bind(this)}>-￥{maxDiscount}<Icon type="right" className={styles.chooseCoupons} /></div>}
+                  { !cardCanUse && (!couponList || couponList.length === 0) && <div className={styles.right + ' ' + styles.coupon}>无可用优惠</div> }
                 </div>
               </div>
               <div className={styles.row + ' ' + styles.total}>

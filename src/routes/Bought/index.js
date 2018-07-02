@@ -47,16 +47,18 @@ class Bought extends Component {
     const { boughtList } = bought;
   
     let mainDom;
-    if (!boughtList || boughtList.length === 0) {
+    if (!boughtList) {
+      return <div></div>
+    } else if (boughtList && boughtList.length === 0) {
       mainDom = <div className={styles.nothing}>
         <div className={styles.shoppingCar}></div>
         <p>你还没有购买课程</p>
-        <Link to={`/`}>
+        {/* <Link to={`/`}>
           <div className={styles.buy}>
             <div className={styles.magnifier}></div>
             发现课程
           </div>
-        </Link>
+        </Link> */}
       </div>
     } else {
       const temp = boughtList.slice(0, Math.ceil(boughtList.length / 2));
@@ -95,13 +97,21 @@ class Bought extends Component {
         </div>
       )
     }
+
+    const nothingClass = boughtList && boughtList.length === 0 ? ' ' + styles.n : '';
   
     return (
-      <div className={styles.normal}>
+      <div className={styles.normal + nothingClass}>
         <BottomBar selected={1}></BottomBar>
         {
           mainDom
         }
+        <Link to={`/`}>
+          <div className={styles.buy}>
+            <div className={styles.magnifier}></div>
+            {nothingClass ? `发现课程` : `发现更多课程`}
+          </div>
+        </Link>
       </div>
     );
   }

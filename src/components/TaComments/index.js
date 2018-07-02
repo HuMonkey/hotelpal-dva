@@ -51,6 +51,7 @@ class TaComments extends Component {
 
       function createMarkup() { 
         const msg = open ? d.msg || '' : getHtmlContent(d.msg || '');
+        console.log(msg);
         return { __html: msg }; 
       };
 
@@ -59,11 +60,12 @@ class TaComments extends Component {
           <div className={styles.title}>
             <div className={styles.name}>
               <div className={styles.icon}><div className={styles.tri}></div></div>
-              <div className={styles.text}>助教小燕子</div>
+              { open && <div className={styles.text}>助教</div>}
+              { !open && <div className={styles.text}>助教：<span dangerouslySetInnerHTML={createMarkup()}></span></div>}
             </div>  
-            <div className={styles.time}>{pubTime}</div>
+            { open && <div className={styles.time}>{pubTime}</div>}
           </div>  
-          <div className={styles.comment} dangerouslySetInnerHTML={createMarkup()}></div>
+          { open && <div className={styles.comment} dangerouslySetInnerHTML={createMarkup()}></div>}
         </div>
         { hasPic && <div className={styles.right} style={{ backgroundImage: `url(${pic})` }}></div> }
       </div>
@@ -76,7 +78,7 @@ class TaComments extends Component {
         </div>
         <div className={styles.more}>
           { open && <Icon onClick={() => this.switchTa.call(this, false)} type="up" /> }
-          { !open && <Icon onClick={() => this.switchTa.call(this, true)} type="down" /> }
+          { !open && <Icon className={styles.openBtn} onClick={() => this.switchTa.call(this, true)} type="down" /> }
         </div>
       </div>
     )

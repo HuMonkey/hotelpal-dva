@@ -5,7 +5,7 @@ export default {
   namespace: 'jdbs',
 
   state: {
-    courses: [],
+    courses: null,
     total: 0,
     hasMore: true,
     unListenedCount: 0,

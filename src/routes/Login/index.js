@@ -148,7 +148,7 @@ class Login extends Component {
         this.jump();
       }
     } else {
-      message.error(result.data.msg);
+      message.error(result.data.messages || '绑定手机出错，请检查验证码是否正确');
     }
   }
 
@@ -205,7 +205,7 @@ class Login extends Component {
         if (res.data.code === 0) {
           that.jump();
         } else {
-          message.error(res.data.msg);
+          message.error(res.data.messages);
         }
       }
     })
@@ -243,12 +243,12 @@ class Login extends Component {
             <div className={styles.avatar}>
               <img src={userInfo.headImg} onClick={this.fileInputClick.bind(this)} ref={'avatar'}/>
             </div>
-            <input className={styles.avatarUpload} onChange={this.fileInputChange.bind(this)} type="file" ref={`file`}></input>
-            <div className={styles.wechatName}>{userInfo.nickname}</div>
+            <input accept="image/*" className={styles.avatarUpload} onChange={this.fileInputChange.bind(this)} type="file" ref={`file`}></input>
+            {/* <div className={styles.wechatName}>{userInfo.nickname}</div> */}
             <div className={styles.row + ' ' + styles.name}>
               <div className={styles.label}>姓名</div>
               <div className={styles.vr}></div>
-              <input ref={`name`} type="text" name="name" ref={'nickname'} placeholder="请输入您的姓名" />
+              <input defaultValue={userInfo.nickname} ref={`name`} type="text" name="name" ref={'nickname'} placeholder="请输入您的姓名" />
             </div>
             <div className={styles.row + ' ' + styles.company}>
               <div className={styles.label}>公司</div>

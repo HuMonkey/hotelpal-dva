@@ -5,7 +5,7 @@ export default {
   namespace: 'bought',
 
   state: {
-    boughtList: []
+    boughtList: null
   },
 
   subscriptions: {

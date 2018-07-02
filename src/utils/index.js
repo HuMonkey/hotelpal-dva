@@ -1,6 +1,8 @@
 import request from './request';
 import moment from 'moment';
 
+import { message } from 'antd';
+
 /**
  * 判断userAgent的一些方法
  */
@@ -20,8 +22,8 @@ const isLogin = function () {
 }
 
 const config = {
-  host: `${location.origin}`, // 线上
-  // host: `${location.origin}/test`, // 测试
+  // host: `${location.origin}`, // 线上
+  host: `${location.origin}/test`, // 测试
   appId: 'wxfe666ebbf0e42897'
 }
 
@@ -118,6 +120,9 @@ const formatTime = function (time) {
 }
 
 const getHtmlContent = function (str) {
+  if (!str) {
+    return '';
+  }
   return str.replace(/<style(.|\n)*\/style>/g, "").replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ");
 }
 
@@ -217,7 +222,7 @@ const configWechat = function (appId, timestamp, nonceStr, signature, callback) 
   });
   wx.ready(callback)
   wx.error(function (res) {
-    alert(JSON.stringify(res));
+    message.error(JSON.stringify(res));
   })
 }
 
@@ -275,7 +280,7 @@ const callWxPay = function ({
       callback && callback(res);
     },
     error: () => {
-      alert('支付失败')
+      message.error('支付失败')
     }
   });
 }

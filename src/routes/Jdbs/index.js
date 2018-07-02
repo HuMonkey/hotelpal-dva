@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import banner from '../../assets/jdbs-banner.png';
@@ -81,21 +81,32 @@ class Jdbs extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const {dispatch} = this.props;
     dispatch({
       type: 'jdbs/reset',
     })
   }
 
+  gotoFirstFree() {
+    const { jdbs, history } = this.props;
+    const { courses } = jdbs;
+    const lessons = courses.filter((d) => d.listenLen === null || d.listenLen === 0);
+    const notListenLesson = lessons[0];
+    if (!notListenLesson) {
+      return false;
+    }
+    history.push(`/lesson/free/${notListenLesson.id}`);
+  }
+
   render () {
     const { loading } = this.state;
     const { jdbs } = this.props;
-    if (!jdbs) {
-      return <div></div>
+    if (!jdbs.courses) {
+      return <div ref={`jdbs`}></div>
     }
   
-    const { courses, hasMore, total, unListenedCount } = jdbs;
+    const { courses, total, unListenedCount } = jdbs;
 
     const width = window.innerWidth;
     const elementHeight = width / 10 * 1.82;
@@ -110,8 +121,8 @@ class Jdbs extends Component {
         </div>
         <div className={styles.toolbar}>
           <div className={styles.tips}>已更新{total}条</div> 
-          <div className={styles.sort}>
-            <div className={styles.icon} onClick={this.changeOrder.bind(this)}></div>
+          <div className={styles.sort} onClick={this.changeOrder.bind(this)}>
+            <div className={styles.icon}></div>
             倒序
           </div>
         </div>
@@ -132,10 +143,10 @@ class Jdbs extends Component {
                     <span>{d.resourceSize}</span> 
                     <span>{audioLen}</span> 
                     {
-                      d.listenLen && d.listenLen >= d.audioLen && <span className={styles.over}>已播完</span>
+                      d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : <span/>
                     }
                     { 
-                      d.listenLen && d.listenLen < d.audioLen && <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span>
+                      d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : <span/>
                     }
                   </div>
                   <div className={styles.arrowRight}></div>
@@ -152,10 +163,12 @@ class Jdbs extends Component {
               <span>首页</span>
             </Link>
           </div> 
-          <div className={styles.item + ' ' + styles.left}>
-            <div className={styles.icon}></div>
-            {unListenedCount}条未听
-          </div>
+          { 
+            unListenedCount ? <div className={styles.item + ' ' + styles.left} onClick={this.gotoFirstFree.bind(this)}>
+              <div className={styles.icon}></div>
+              {unListenedCount}条未听
+            </div> : <div className={styles.item + ' ' + styles.left + ' ' + styles.empty}>全部听完</div>
+          }
         </div>
       </div>
     );
@@ -169,4 +182,4 @@ const mapStateToProps = (state) => {
   return { jdbs: state.jdbs };
 }
 
-export default connect(mapStateToProps)(Jdbs);
+export default connect(mapStateToProps)(withRouter(Jdbs));

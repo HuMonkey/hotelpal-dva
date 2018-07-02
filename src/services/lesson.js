@@ -10,7 +10,7 @@ export function submitComment(data) {
   const jdbtk = getToken();
   let url = config.host + '/hotelpal/user/newComment' + '?token=' + jdbtk + '&lessonId=' + data.lessonId + '&comment=' + encodeURIComponent(data.comment);
   if (data.replyToCommentId) {
-    url += '&replyToCommentId=' + replyToCommentId
+    url += '&replyToCommentId=' + data.replyToCommentId
   }
   return request(url);
 }

@@ -5,8 +5,8 @@ import styles from './index.less';
 
 import cross from '../../assets/cross.png';
 import { message } from 'antd';
-import { formatNum, getAudioLength, callWxPay, courseMemberCardUseful } from '../../utils';
-import { CourseContent, BackBtn, PopupOrder } from '../../components';
+import { formatNum, getAudioLength, courseMemberCardUseful } from '../../utils';
+import { CourseContent, BackBtn, PopupOrder, PopupLogin } from '../../components';
 
 class Course extends Component {
   constructor (props) {
@@ -14,6 +14,7 @@ class Course extends Component {
     this.state = {
       freeTipsShow: true,
       orderPopupShow: false,
+      loginPopupShow: false,
     };
   }
 
@@ -37,7 +38,10 @@ class Course extends Component {
   async buyCourse () {
     const { common, history } = this.props;
     if (!common.userInfo.phone) {
-      history.push('/login');
+      // 弹出注册框
+      this.setState({
+        loginPopupShow: true,
+      })
       return false;
     }
     this.showOrderPopup();
@@ -60,7 +64,7 @@ class Course extends Component {
     location.href = `/?courseId=${course.detail.id}#/coursedetail`;
   }
 
-  paySuccessCallback () {
+  paySuccessCallback() {
     const { dispatch, course } = this.props;
     message.info('我在回调里面！！');
     this.setState({
@@ -77,8 +81,20 @@ class Course extends Component {
     });
   }
 
+  loginCallback() {
+    const { dispatch } = this.props;
+    this.setState({
+      loginPopupShow: false,
+      orderPopupShow: true,
+    });
+    dispatch({
+      type: 'common/fetchUserInfo',
+      payload: {},
+    })
+  }
+
   render () {
-    const { freeTipsShow, orderPopupShow } = this.state;
+    const { freeTipsShow, orderPopupShow, loginPopupShow } = this.state;
     const { course, common, coupon, dispatch } = this.props;
 
     if (!course) {
@@ -129,12 +145,14 @@ class Course extends Component {
       <div className={styles.normal}>
         {freeChanceDom}
         { orderPopupShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={detail} paySuccessCallback={this.paySuccessCallback.bind(this)} closePopup={this.closePopup.bind(this)} /> }
+        { loginPopupShow && <PopupLogin dispatch={dispatch} closePopup={this.loginCallback.bind(this)} /> }
         <div className={styles.header}>
           <img src={`${detail.bannerImg[0]}`} />
           <div className={styles.desc}>
             <div className={styles.title}>{detail.userName}</div> 
             <div className={styles.subTitle}>{detail.company} {detail.userTitle}</div>
           </div>
+          { detail.status === 0 && <div className={styles.coming}>预告</div> }
         </div>
         { 
           detail.purchased && <div className={styles.gotoDetail} onClick={this.gotoDetail.bind(this)}>
@@ -152,27 +170,36 @@ class Course extends Component {
             {
               detail.lessonList.map((d, i) => {
                 const freeListenClass = d.freeListen === 1 ? ' ' + styles.freeListen : '';
-                return <div key={i} className={styles.item} onClick={() => {
+                const futureClass = !d.isPublish ? ' ' + styles.future : '';
+                const finishedClass = d.listenLen && d.listenLen >= d.audioLen ? ' ' + styles.finished : '';
+                return <div key={i} className={styles.item + futureClass + finishedClass} onClick={() => {
+                  if (!d.isPublish) {
+                    return false;
+                  }
                   location.href = `/?courseId=${detail.id}#/lesson/pay/${d.id}`;
                 }}>
                   <div className={styles.up}>
                     <span className={styles.ltitle}><div className={freeListenClass}>{formatNum(d.lessonOrder)}&nbsp;|&nbsp;{d.title}</div></span> 
                     {d.freeListen === 1 && <span className={styles.tag}>免费试听</span>}
                   </div> 
-                  <div className={styles.down}>
-                    <div>
-                      <span>{d.publishTime}</span> 
-                      <span>{d.resourceSize}</span> 
-                      <span>{getAudioLength(d.audioLen)}</span> 
-                      {
-                        d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : null
-                      }
-                      { 
-                        d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : null
-                      }
+                  {
+                    d.isPublish ? <div className={styles.down}>
+                      <div>
+                        <span>{d.publishTime}</span> 
+                        <span>{d.resourceSize}</span> 
+                        <span>{getAudioLength(d.audioLen)}</span> 
+                        {
+                          d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : null
+                        }
+                        { 
+                          d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : null
+                        }
+                      </div>
+                    </div> : <div className={styles.down}>
+                        尚未发布
                     </div>
-                  </div> 
-                  <div className={styles.arrow}></div>
+                  }
+                  { d.isPublish ? <div className={styles.arrow}></div> : null }
                 </div>
               })
             }

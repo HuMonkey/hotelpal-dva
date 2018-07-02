@@ -5,7 +5,7 @@ import styles from './index.less';
 import { message, Popover } from 'antd';
 import moment from 'moment';
 import { getToken, liveMemberCardUseful } from '../../utils';
-
+import PopupLogin from '../PopupLogin';
 import simleLogo from '../../assets/smile.svg';
 
 const liveStatus = {
@@ -22,6 +22,7 @@ class EnrollPanel extends Component {
     this.state = {
       enrollForShow: true,
       posterShow: false,
+      loginPopupShow: false,
     };
   }
 
@@ -107,7 +108,10 @@ class EnrollPanel extends Component {
   async enroll () {
     const { dispatch, live, userInfo, coupon, history } = this.props;
     if (!userInfo.phone) {
-      history.push('/login');
+      this.setState({
+        loginPopupShow: true,
+      })
+      // history.push('/login');
       return false;
     }
 
@@ -202,9 +206,20 @@ class EnrollPanel extends Component {
     }, 8000) // 8秒后隐藏提示
   }
 
+  loginCallback() {
+    const { dispatch } = this.props;
+    this.setState({
+      loginPopupShow: false,
+    });
+    dispatch({
+      type: 'common/fetchUserInfo',
+      payload: {},
+    })
+  }
+
   render() {
-    const { enrollForShow, posterShow } = this.state;
-    const { live, userInfo, invitor, coupon } = this.props;
+    const { enrollForShow, posterShow, loginPopupShow } = this.state;
+    const { live, userInfo, invitor, coupon, dispatch } = this.props;
 
     const showInvitorTips = this.canEnrollFor() && enrollForShow;
     
@@ -299,6 +314,7 @@ class EnrollPanel extends Component {
 
     return (
       <div className={styles.enrollPanel}>
+        { loginPopupShow && <PopupLogin dispatch={dispatch} closePopup={this.loginCallback.bind(this)} /> }
         <Popover placement="top" content={`报名即可帮助XXX获取免费报名资格`} visible={showInvitorTips}>
           <div className={styles.course}>
             <div className={styles.left}>

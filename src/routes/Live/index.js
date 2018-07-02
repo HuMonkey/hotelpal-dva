@@ -15,7 +15,7 @@ import { message } from 'antd';
 
 import hbBg from '../../assets/hb-bg.png';
 
-import { getHtmlContent, configWechat, updateWechartShare } from '../../utils';
+import { getHtmlContent, configWechat, updateWechartShare, formatNum } from '../../utils';
 
 let initFlag = false;
 let interval;
@@ -272,9 +272,9 @@ class Live extends Component {
         couponExpired = true;
       } else {
         const duration = moment.duration(diff, 'milliseconds');
-        let hoursStr = duration.days() * 24 + duration.hours();
-        const minutesStr = duration.minutes();
-        const secondsStr = duration.seconds();
+        let hoursStr = formatNum(duration.days() * 24 + duration.hours());
+        const minutesStr = formatNum(duration.minutes());
+        const secondsStr = formatNum(duration.seconds());
         hbCountDownStr = hoursStr + ':' + minutesStr + ':' + secondsStr;
         // if (hoursStr > 99) {
         //   hbCountDownStr = '99:59:59';
@@ -364,7 +364,7 @@ class Live extends Component {
         { 
           page === 'chat' && <div className={styles.commentBox}>
             { 
-              hbShow && couponInfo && !couponExpired ? couponDom : relaCourse && userInfo.relateCoursePurchased === 'N' ? 
+              hbShow && couponInfo && !couponExpired ? couponDom : relaCourse ? 
               <div className={styles.ad} onClick={this.openCourceDetail.bind(this)}>
                 <div className={styles.inner}>
                   <div className={styles.avatar} style={{ backgroundImage: `url(${relaCourse.bannerImg})` }}></div>

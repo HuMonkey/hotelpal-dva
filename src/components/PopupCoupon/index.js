@@ -53,7 +53,7 @@ class PopupCoupon extends Component {
               }
               {
                 couponList.map((d, i) => {
-                  const selected = d.id === couponSelected.id;
+                  const selected = d.id === (couponSelected && couponSelected.id);
                   return <div key={i} onClick={() => {
                     selectCallback(d)
                   }}><CouponItem border={true} mode={'select'} selected={selected} data={d}/></div>

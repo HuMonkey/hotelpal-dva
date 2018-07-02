@@ -120,7 +120,7 @@ class IndexPage extends Component {
                         <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
                       </div>
                       { d.status === 'ENROLLING' && <div className={styles.right}>已有{count}人报名</div> }
-                      { d.status === 'ONGOING' && <div className={styles.right}>{count}人正在收看</div> }
+                      { d.status === 'ONGOING' && <div className={styles.right}>{d.present}人正在收看</div> }
                       { d.status === 'ENDED' && <div className={styles.right}>累计{d.totalPeople}人收看</div> }
                     </div>
                     <div className={styles.detail}>
@@ -172,9 +172,9 @@ class IndexPage extends Component {
               courseList.map((d, i) => {
                 let stateDom = null;
                 if (d.status == 0) {
-                  stateDom = <div className={styles.state + ' ' + styles.isnew}>上新</div>;
-                } else if (d.status == 2) {
                   stateDom = <div className={styles.state + ' ' + styles.coming}>预告</div>;
+                } else if (d.status == 2) {
+                  stateDom = <div className={styles.state + ' ' + styles.isnew}>上新</div>;
                 }
                 return <Link key={i} to={`/course/${d.id}`}>
                   <div className={styles.item}>
@@ -192,7 +192,7 @@ class IndexPage extends Component {
                       <div className={styles.bottom}>
                         <div className={styles.tags}>
                           {
-                            d.tag.map((dd, ii) => {
+                            d.tag && d.tag.map((dd, ii) => {
                               return <div key={ii} className={styles.tag}>{dd.name}</div>
                             })
                           }

@@ -60,20 +60,22 @@ class Invite extends Component {
     })
   }
 
-  getCoupon (batch) {
+  async getCoupon (batch) {
     const { dispatch } = this.props;
-    dispatch({
+    await dispatch({
       type: 'coupon/getCoupon',
       payload: {
-        batch
+        data: {
+          batch
+        }
       },
-      onResult () {
-        dispatch({
-          type: 'coupon/fetchCoupons',
-          payload: {},
-        })
-      }
-    })
+      onResult () {}
+    });
+    dispatch({
+      type: 'invite/fetchInviteRegList',
+      payload: {},
+      onResult () {}
+    });
   }
 
   componentDidUpdate () {
@@ -92,7 +94,6 @@ class Invite extends Component {
 
     const inviteDom = inviteList && inviteList.map((d, ii) => {
       const { batch, couponCollected, userList } = d;
-      const left = 3;
       const userListLength = userList ? userList.length : 0;
       const avatars = [];
       for (let i = 0; i < userListLength; i++) {
@@ -142,7 +143,7 @@ class Invite extends Component {
         <div className={styles.process}>
           <div className={styles.header}>
             活动进度
-            <div className={styles.tips}>您已累计获得￥{totalCoupon}元优惠券</div>
+            <div className={styles.tips}>您已累计获得￥{totalCoupon / 100}元优惠券</div>
           </div>
           <div className={styles.main}>
             {inviteDom}

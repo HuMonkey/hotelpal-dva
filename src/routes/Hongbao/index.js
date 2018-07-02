@@ -6,6 +6,8 @@ import styles from './index.less';
 import hongbaoPng from '../../assets/hongbao.png';
 import { getParam } from '../../utils';
 
+import { message } from 'antd';
+
 class Hongbao extends Component {
   constructor (props) {
     super(props);
@@ -33,7 +35,7 @@ class Hongbao extends Component {
         if (res.data.code === 0) {
           location.href = `/?courseId=${cid}&fromHongbao=1#/lesson/pay/${lid}`
         } else {
-          alert('打开红包出错，请稍后再试~');
+          message.error('打开红包出错，请稍后再试~');
         }
       }
     })

@@ -61,7 +61,7 @@ function RouterConfig({ history }) {
         <Route path="/login" exact component={Login} />
         <Route path="/login/force" exact component={Login} />
         <Route path="/clear" exact component={Clear} />
-        <Route path="/SetUser" exact component={SetUser} />
+        <Route path="/set" exact component={SetUser} />
         <Route path="/gotoWechat" exact render={() => {
             if (ua.wechat) {
               return <Redirect to="/"/>;

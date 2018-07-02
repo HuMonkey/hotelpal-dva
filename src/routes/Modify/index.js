@@ -95,7 +95,7 @@ class Modify extends Component {
             <img ref={'avatar'} src={userInfo.headImg} onClick={this.uploadClick.bind(this)} />
           </div>
         </div> 
-        <input type="file" className={styles.avaterUpload} ref={`imgFile`} onChange={this.onFileChange.bind(this)}/> 
+        <input accept="image/*" type="file" className={styles.avaterUpload} ref={`imgFile`} onChange={this.onFileChange.bind(this)}/> 
         <div className={styles.wechatName}></div> 
         <div className={styles.row + ' ' + styles.name}>
           <div className={styles.label}>姓名</div> 

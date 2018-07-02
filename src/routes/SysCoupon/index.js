@@ -51,10 +51,10 @@ class SysCoupon extends Component {
     });
   }
 
-  getSysCouponInfo() {
+  async getSysCouponInfo() {
     const { dispatch } = this.props;
     const sysCouponId = getParam('sysCouponId');
-    dispatch({
+    await dispatch({
       type: 'common/getSysCouponInfo',
       payload: {
         data: {
@@ -63,6 +63,7 @@ class SysCoupon extends Component {
       },
       onResult() {}
     })
+    this.getSysCoupon();
   }
 
   componentDidMount () {
@@ -137,7 +138,7 @@ class SysCoupon extends Component {
 
     return <div className={styles.normal}>
       <div className={styles.main}>
-        { !result && initDom }
+        {/* { !result && initDom } */}
         { result === 'got' && gotDom }
         { result === 'late' && lateDom }
         { result === 'already' && alreadyDom }

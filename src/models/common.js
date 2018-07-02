@@ -1,6 +1,8 @@
 import * as commonService from '../services/common';
 import { getParam, setCookie, getCookie, config } from '../utils/';
 
+import { message } from 'antd';
+
 export default {
 
     namespace: 'common',
@@ -20,7 +22,7 @@ export default {
                 })
             }
             return history.listen(async ({ pathname, query }) => {
-                if (pathname === '/clear' || pathname === 'set') {
+                if (pathname === '/clear' || pathname === '/set') {
                     return false;
                 }
                 const code = getParam('code'); // url上的code
@@ -52,7 +54,7 @@ export default {
                                 // fetchUserInfo();
                                 location.reload();
                             } else {
-                                alert('微信认证失败，请刷新页面重试');
+                                message.error('微信认证失败，请刷新页面重试');
                             }
                         }
                     })
@@ -69,7 +71,6 @@ export default {
         * fetchUserInfo({ payload: data }, { call, put }) {
             const result = yield call(commonService.fetchUserInfo, data || {});
             const userInfo = result.data.code === 0 ? result.data.data : {};
-            console.log(1112312);
             if (data.token) {
                 yield put({
                     type: 'save',

@@ -9,6 +9,10 @@ import 'rc-slider/assets/index.css';
 import hongbaoGot from '../../assets/zshb_banner.png';
 import banner from '../../assets/jiudianbang-big.png';
 
+import moment from 'moment';
+
+const speeds = [1.0, 1.2, 1.5, 2.0];
+
 class AudioPlayer extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +24,9 @@ class AudioPlayer extends Component {
       goOn: false,
       playing: false,
 
-      speed: 1.0,
+      speedIndex: 0,
+
+      init: false,
     };
   }
 
@@ -39,14 +45,28 @@ class AudioPlayer extends Component {
   }
 
   onProgress (eg) {
+    const { playing, init } = this.state;
     const { dispatch, lid } = this.props;
-    this.setState({
-      played: eg.played,
-      loaded: eg.loaded,
-      playedSeconds: eg.playedSeconds, 
-    });
+    if (!init) {
+      this.setState({
+        init: true,
+      })
+    } else {
+      this.setState({
+        played: eg.played,
+        loaded: eg.loaded,
+        playedSeconds: eg.playedSeconds, 
+      });
+    }
+
+    // 每4s发一次
+    const now = moment();
+    if (now.second() % 4 !== 0) {
+      return false;
+    }
+
     const pos = Math.ceil(eg.playedSeconds);
-    dispatch && dispatch({
+    playing && dispatch({
       type: 'lesson/recordListenPos',
       payload: {
         data: {
@@ -83,7 +103,18 @@ class AudioPlayer extends Component {
   }
 
   onEnded () {
-    const { goOn } = this.state;
+    const { duration, goOn } = this.state;
+    const { dispatch, lid } = this.props;
+    dispatch({
+      type: 'lesson/recordListenPos',
+      payload: {
+        data: {
+          lid, pos: Math.ceil(duration)
+        }
+      },
+      onResult () {}
+    })
+
     if (goOn) {
       this.nextLesson();
     }
@@ -97,30 +128,46 @@ class AudioPlayer extends Component {
 
   previousLesson () {
     const { isCourse, previous, courseId } = this.props;
+    if (!previous) {
+      return false;
+    }
     location.href = `/${isCourse ? `?courseId=${courseId}` : ''}#/lesson/${isCourse ? 'pay' : 'free'}/${previous}`;
   }
 
   nextLesson () {
     const { isCourse, next, courseId } = this.props;
+    if (!next) {
+      return false;
+    }
     location.href = `/${isCourse ? `?courseId=${courseId}` : ''}#/lesson/${isCourse ? 'pay' : 'free'}/${next}`;
   }
 
   setSpeed () {
-    const { speed } = this.state;
-    let newSpeed = +speed + 0.2;
-    if (newSpeed > 2) {
-      newSpeed = 1;
+    const { speedIndex } = this.state;
+    let newSpeedIndex = speedIndex + 1;
+    if (newSpeedIndex > 3) {
+      newSpeedIndex = 0;
     }
-    newSpeed = newSpeed.toFixed(1);
     const video = this.refs.player.getInternalPlayer();
-    video.playbackRate = newSpeed;
+    video.playbackRate = speeds[newSpeedIndex];
     this.setState({
-      speed: newSpeed,
+      speedIndex: newSpeedIndex,
     })
   }
 
+  componentDidMount() {
+    const { audioLen, listenLen } = this.props;
+    if (listenLen) {
+      this.refs.player.seekTo(listenLen);
+      this.setState({
+        played: listenLen / audioLen,
+        playedSeconds: listenLen
+      })
+    }
+  }
+
   render() {
-    const { played, duration, playedSeconds, goOn, playing, speed } = this.state;
+    const { played, duration, playedSeconds, goOn, playing, speedIndex } = this.state;
 
     const { audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg } = this.props;
 
@@ -142,7 +189,7 @@ class AudioPlayer extends Component {
 
     const playClass = playing ? ' ' + styles.playing : '';
     const clickClass = goOn ? ' ' + styles.clicked : '';
-    const speedClickClass = speed > 1 ? ' ' + styles.clicked : '';
+    const speedClickClass = speedIndex > 0 ? ' ' + styles.clicked : '';
 
     const previousEmpty = previous == null ? ' ' + styles.empty : '';
     const nextEmpty = next == null ? ' ' + styles.empty : '';
@@ -161,7 +208,7 @@ class AudioPlayer extends Component {
       <div className={styles.audioPlayer}>
         { 
           !isCourse && <div>
-            <Link to="/"><div className={styles.goback}>
+            <Link to="/jdbs"><div className={styles.goback}>
               <img src={banner} />
               <span>成长专栏</span>
               <div className={styles.arrowRight}></div>
@@ -181,7 +228,7 @@ class AudioPlayer extends Component {
               </div> 
               <div className={styles.left}>{durationMinute}:{durationSecond}</div>
             </div> 
-            <div className={styles.speed + speedClickClass} onClick={this.setSpeed.bind(this)}>倍速{(+speed).toFixed(1)}</div>
+            <div className={styles.speed + speedClickClass} onClick={this.setSpeed.bind(this)}>倍速{(speeds[speedIndex])}</div>
             <div className={styles.goOn + clickClass} onClick={this.setGoOn.bind(this)}>连续听</div>
           </div> 
           <div className={styles.bottom}>

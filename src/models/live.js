@@ -119,6 +119,17 @@ export default {
                   show: false,
                 }
               })
+            } else if (data.msgType === 'TYPE_LIVE_START') {
+              // 隐藏红包
+              dispatch({
+                type: 'fetchLiveDetail',
+                payload: {
+                  data: {
+                    id: liveId
+                  }
+                },
+                onResult (res) {}
+              });
             } else if (data.msgType === 'TYPE_SHOW_COUPON') {
               dispatch({
                 type: 'switchHb',

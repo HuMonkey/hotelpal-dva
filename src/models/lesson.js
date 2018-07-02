@@ -62,7 +62,7 @@ export default {
             desc = desc.slice(0, 30) + '...';
           }
           dict = {
-            title: detail.userName + '：' + detail.title + '「红包分享」',
+            title: course.userName + '：' + detail.title + '「红包分享」',
             link: `http://${location.origin}/?courseId=${courseId}&lessonId=${detail.id}#/hb/${nonce}`,
             imgUrl: course.headImg,
             desc
@@ -141,22 +141,22 @@ export default {
             courseDetail
           },
         });
-        onResult(courseDetail);
+        onResult && onResult(courseDetail);
       } else {
-        onResult(null);
+        onResult && onResult(null);
       }
     },
     *submitComment({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(lessonService.submitComment, payload.data || {});
-      onResult(res);
+      onResult && onResult(res);
     },
     *addZan({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(lessonService.addZan, payload.data || {});
-      onResult(res);
+      onResult && onResult(res);
     },
     *recordListenPos({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(lessonService.recordListenPos, payload.data || {});
-      onResult(res);
+      onResult && onResult(res);
     },
   },
 

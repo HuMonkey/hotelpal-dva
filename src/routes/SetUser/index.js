@@ -11,7 +11,7 @@ class SetUser extends Component {
   }
 
   componentDidMount () {
-    setCookie('jdbtk', 'oyH7Q0SYJCbDFHYs8QkhTZ90P2qk', '12d');
+    setCookie('jdbtk', 'oyH7Q0fvWJo8cdskYjxcGtlStjFs', '12d');
   }
 
   render () {

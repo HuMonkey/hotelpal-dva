@@ -12,13 +12,13 @@ export default {
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(({ pathname, query }) => {
+      return history.listen(({ pathname, search }) => {
         if (pathname.indexOf('/hb') === -1) {
             return false;
         }
         const nonce = pathname.split('/')[2];
-        const cid = getParam('courseId');
-        const lid = getParam('lessonId');
+        const cid = getParam('courseId', search);
+        const lid = getParam('lessonId', search);
         dispatch({
           type: 'fetchHongbaoDetail',
           payload: {
@@ -28,7 +28,10 @@ export default {
           },
           onResult (res) {
             if (res.alreadyOpened) {
-              location.href = `/?courseId=${cid}&fromHongbao=1#/lesson/pay/${lid}`
+              history.push({
+                pathname: `/lesson/pay/${lid}`,
+                search: `?courseId=${cid}&fromHongbao=1`
+              })
             }
           }
         });

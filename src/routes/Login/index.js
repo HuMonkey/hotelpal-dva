@@ -9,8 +9,6 @@ import { message } from 'antd';
 import logo from '../../assets/jiudianbang-big.png';
 import { getParam, dispatchWechatShare } from '../../utils';
 
-let init = false;
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +16,7 @@ class Login extends Component {
       step: 1,
       disabled: true,
       btnText: null,
+      init: false,
     };
   }
 
@@ -30,17 +29,15 @@ class Login extends Component {
       desc: '为你提供高效、有价值的行业知识服务。',
     }
     dispatchWechatShare(dict, dispatch);
-
-    // const href = location.href;
-    // if (href.indexOf('/force') === -1) {
-    //   location.href = decodeURIComponent(getParam('redirect')) || '/';
-    // }
   }
 
   componentDidUpdate () {
+    const { init } = this.state;
     const { common } = this.props;
     if (!init && common.userInfo) {
-      init = true;
+      this.setState({
+        init: true,
+      })
       if (common.userInfo.phone && location.href.indexOf('/force') === -1) {
         this.jump();
       }
@@ -87,7 +84,7 @@ class Login extends Component {
     })
   }
 
-  onPhoneInput () {
+  onPhoneInput() {
     const phone = this.refs.phone.value;
     if (!isMobilePhone(phone, 'zh-CN')) {
       this.setState({
@@ -100,10 +97,20 @@ class Login extends Component {
     }
   }
 
-  jump () {
-    const { history } = this.props;
-    const redirect = getParam('redirect') || '/';
-    history.push(redirect);
+  async jump() {
+    const { history, location, dispatch } = this.props;
+    const pathname = decodeURIComponent(getParam('pathname', location.search));
+    const search = decodeURIComponent(getParam('search', location.search));
+
+    await dispatch({
+      type: 'common/fetchUserInfo',
+      payload: {},
+      onResult() {},
+    })
+
+    history.push({
+      pathname, search
+    });
   }
 
   async submitVerify () {
@@ -184,11 +191,11 @@ class Login extends Component {
   }
 
   onSubmit () {
-    const {dispatch} = this.props;
+    const { dispatch, common } = this.props;
     const nickname = this.refs.nickname.value;
     const title = this.refs.title.value;
     const company = this.refs.company.value;
-    const avatar = this.refs.avatar.src;
+    const avatar = common.userInfo.headImg;
     if (!nickname) {
       message.error('昵称不能为空');
       return false;
@@ -214,7 +221,6 @@ class Login extends Component {
   render() {
     const { step, disabled, btnText } = this.state;
     const { common } = this.props;
-
     const { userInfo } = common;
 
     const disabledClass = disabled ? ' ' + styles.disabled : '';
@@ -240,9 +246,12 @@ class Login extends Component {
         {
           step === 2 && userInfo && <div className={styles.step + ' ' + styles.second}>
             <div className={styles.welcome}>欢迎加入酒店营成长邦！</div>
-            <div className={styles.avatar}>
-              <img src={userInfo.headImg} onClick={this.fileInputClick.bind(this)} ref={'avatar'}/>
-            </div>
+            <div className={styles.avatar} 
+              onClick={this.fileInputClick.bind(this)}
+              style={{
+                backgroundImage: `url(${userInfo.headImg})`
+              }}
+            ></div>
             <input accept="image/*" className={styles.avatarUpload} onChange={this.fileInputChange.bind(this)} type="file" ref={`file`}></input>
             {/* <div className={styles.wechatName}>{userInfo.nickname}</div> */}
             <div className={styles.row + ' ' + styles.name}>

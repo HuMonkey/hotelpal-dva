@@ -12,7 +12,6 @@ class Clear extends Component {
 
   componentDidMount () {
     setCookie('jdbtk', '', '1s');
-    // window.location.href = '/';
   }
 
   render () {

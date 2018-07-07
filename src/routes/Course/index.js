@@ -32,7 +32,11 @@ class Course extends Component {
   }
 
   gotoFree (lesson) {
-    location.href = `/?courseId=${this.props.course.detail.id}#/lesson/pay/${lesson.id}`;
+    const {history} = this.props;
+    history.push({
+      pathname: `/lesson/pay/${lesson.id}`,
+      search: `?courseId=${this.props.course.detail.id}`,
+    })
   }
 
   async buyCourse () {
@@ -60,8 +64,11 @@ class Course extends Component {
   }
 
   gotoDetail () {
-    const { course } = this.props;
-    location.href = `/?courseId=${course.detail.id}#/coursedetail`;
+    const { course, history } = this.props;
+    history.push({
+      pathname: `/coursedetail`,
+      search: `?courseId=${course.detail.id}`
+    })
   }
 
   paySuccessCallback() {
@@ -95,7 +102,7 @@ class Course extends Component {
 
   render () {
     const { freeTipsShow, orderPopupShow, loginPopupShow } = this.state;
-    const { course, common, coupon, dispatch } = this.props;
+    const { course, coupon, dispatch, history } = this.props;
 
     if (!course) {
       return <div></div>
@@ -176,7 +183,10 @@ class Course extends Component {
                   if (!d.isPublish) {
                     return false;
                   }
-                  location.href = `/?courseId=${detail.id}#/lesson/pay/${d.id}`;
+                  history.push({
+                    pathname: `/lesson/pay/${d.id}`,
+                    search: `?courseId=${detail.id}`
+                  })
                 }}>
                   <div className={styles.up}>
                     <span className={styles.ltitle}><div className={freeListenClass}>{formatNum(d.lessonOrder)}&nbsp;|&nbsp;{d.title}</div></span> 
@@ -192,7 +202,7 @@ class Course extends Component {
                           d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : null
                         }
                         { 
-                          d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : null
+                          d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ Math.ceil(d.listenLen / d.audioLen * 100) }%</span> : null
                         }
                       </div>
                     </div> : <div className={styles.down}>

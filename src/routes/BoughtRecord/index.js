@@ -33,7 +33,7 @@ class BoughtRecord extends Component {
     return (
       <div className={styles.normal}>
         {
-          boughtList.map((d, i) => {
+          boughtList && boughtList.map((d, i) => {
             return <Link key={i} to={`/course/${d.id}`}>
               <div className={styles.item}>
                 <div className={styles.avater} style={ {backgroundImage: `url('${d.headImg}')` }}></div> 
@@ -43,7 +43,7 @@ class BoughtRecord extends Component {
                   <div className={styles.time}>购买时间：{d.purchaseDate}</div> 
                   <div className={styles.price}>
                     实付：¥ {d.payment / 100} 
-                    { d.originalCharge && d.originalCharge != d.payment && <span>（优惠：¥ {(d.originalCharge - d.payment) / 100}）</span> }
+                    { d.originalCharge && d.originalCharge != d.payment ? <span>（优惠：¥ {(d.originalCharge - d.payment) / 100}）</span> : <span></span> }
                   </div>
                 </div>
               </div>

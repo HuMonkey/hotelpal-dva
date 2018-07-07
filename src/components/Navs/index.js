@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import ErweimaModal from '../ErweimaModal';
@@ -13,10 +13,11 @@ class Navs extends Component {
   }
 
   goback () {
+    const { history } = this.props;
     if (window.history.length > 0) {
-      window.history.go(-1);
+      history.goBack();
     } else {
-      window.location.href = '/';
+      history.push('/');
     }
   }
 
@@ -41,4 +42,4 @@ class Navs extends Component {
   }
 }
 
-export default Navs;
+export default withRouter(Navs);

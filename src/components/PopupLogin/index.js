@@ -18,9 +18,17 @@ class PopupLogin extends Component {
   }
 
   phoneOnChange(ev) {
-    this.setState({
-      phone: ev.target.value,
-    })
+    if (!isMobilePhone(ev.target.value, 'zh-CN')) {
+      this.setState({
+        phone: ev.target.value,
+        disabled: true,
+      })
+    } else {
+      this.setState({
+        phone: ev.target.value,
+        disabled: false,
+      })
+    }
   }
 
   vCodeOnChange(ev) {
@@ -69,7 +77,7 @@ class PopupLogin extends Component {
   }
 
   async submitVerify () {
-    const { closePopup } = this.props;
+    const { successCallback } = this.props;
     const phone = this.state.phone;
     const code = this.state.vCode;
 
@@ -87,8 +95,7 @@ class PopupLogin extends Component {
       }
     });
     if (result.data.code === 0) {
-      // TODO 注册成功
-      closePopup();
+      successCallback();
     } else {
       message.error(result.data.messages || '绑定手机出错，请检查验证码是否正确');
     }

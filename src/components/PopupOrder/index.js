@@ -141,8 +141,9 @@ class PopupOrder extends Component {
       // 优先用面额最大的优惠券
       const couponMoneys = couponList.map(d => d.value);
       maxDiscount = Math.max(...couponMoneys) / 100 || 0;
-      couponSelected = couponList.find(d => d.value === maxDiscount);
+      couponSelected = couponList.find(d => d.value === maxDiscount * 100);
     }
+    console.log(222, couponSelected);
     this.setState({
       couponSelected, maxDiscount
     })
@@ -221,17 +222,17 @@ class PopupOrder extends Component {
                 <div className={styles.row}>
                   <div className={styles.left}>优惠</div>
                   {
-                    couponSelected === '不使用' && <div className={styles.right + ' ' + styles.coupon} onClick={this.openCoupon.bind(this)}>不使用优惠<Icon type="right" className={styles.chooseCoupons} /></div>
+                    couponSelected === '不使用' && <div className={styles.right + ' ' + styles.coupon + ' ' + styles.notUsing} onClick={this.openCoupon.bind(this)}>不使用优惠<Icon type="right" className={styles.chooseCoupons} /></div>
                   }
                   { couponSelected !== '不使用' && (cardCanUse || (couponList && couponList.length > 0)) && <div className={styles.right + ' ' + styles.coupon} onClick={this.openCoupon.bind(this)}>-￥{maxDiscount}<Icon type="right" className={styles.chooseCoupons} /></div>}
-                  { !cardCanUse && (!couponList || couponList.length === 0) && <div className={styles.right + ' ' + styles.coupon}>无可用优惠</div> }
+                  { !cardCanUse && (!couponList || couponList.length === 0) && <div className={styles.right + ' ' + styles.coupon + ' ' + styles.empty}>无可用优惠</div> }
                 </div>
               </div>
               <div className={styles.row + ' ' + styles.total}>
                 <div className={styles.left}>合计</div>
                 <div className={styles.right}>￥{total}</div>
               </div>
-              <div className={styles.buy} onClick={this.createOrder.bind(this)}>确认支付</div>
+              <div className={styles.buy} onClick={this.createOrder.bind(this)}>{total === 0 ? `免费获取` : `确认支付`}</div>
             </div>
           </div>
         }

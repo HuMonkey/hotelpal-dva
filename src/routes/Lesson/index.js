@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import { message } from 'antd';
+import $ from 'jquery';
 
 import { AudioPlayer, ShareTips, PopupOrder } from '../../components';
-import { formatNum, getAudioLength, formatTime, getParam, getHtmlContent } from '../../utils';
+import { formatNum, getAudioLength, formatTime, getParam, strip, throttle } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
 const likedTemp = [];
@@ -26,6 +27,15 @@ class Lesson extends Component {
   }
 
   setReply (replying, replyComment) {
+    const { common, history, location } = this.props;
+    const { userInfo } = common;
+    if (!userInfo.phone) {
+      history.push({
+        pathname: '/login',
+        search: `?pathname=${encodeURIComponent(location.pathname)}&search=${encodeURIComponent(location.search)}`,
+      });
+      return false;
+    }
     this.setState({
       replying, replyComment,
     }, () => {
@@ -33,26 +43,24 @@ class Lesson extends Component {
     });
   }
 
-  componentDidMount () {
-    this.refs.normal.onscroll = () => {
-      const scrollDown = this.state.scrollDown;
-      const width = document.body.offsetWidth;
-      const scrollTop = this.refs.normal.scrollTop;
-      if (scrollTop >= width / 10 * (1.173333 + 5.46666)) {
-        if (scrollDown === true) {
-          return false;
-        }
-        this.setState({
-          scrollDown: true,
-        });
-      } else {
-        if (scrollDown === false) {
-          return false;
-        }
-        this.setState({
-          scrollDown: false,
-        });
+  onScroll() {
+    const scrollDown = this.state.scrollDown;
+    const width = document.body.offsetWidth;
+    const scrollTop = this.refs.normal.scrollTop;
+    if (scrollTop >= width / 10 * (1.173333 + 5.46666)) {
+      if (scrollDown === true) {
+        return false;
       }
+      this.setState({
+        scrollDown: true,
+      });
+    } else {
+      if (scrollDown === false) {
+        return false;
+      }
+      this.setState({
+        scrollDown: false,
+      });
     }
   }
 
@@ -150,7 +158,7 @@ class Lesson extends Component {
   }
 
   showHongbaoTips () {
-    const { lesson } = this.props;
+    const { lesson, history } = this.props;
 
     const { detail, courseDetail } = lesson;
 
@@ -158,7 +166,10 @@ class Lesson extends Component {
     const lid = detail.id;
     const redPacketNonce = detail.redPacketNonce;
     
-    location.href = `/?courseId=${cid}&nonce=${redPacketNonce}#/hongbao/${lid}`;
+    history.push({
+      pathname: `/hongbao/${lid}`,
+      search: `?courseId=${cid}&nonce=${redPacketNonce}`,
+    })
   }
 
   hideHongbaoTips () {
@@ -181,7 +192,7 @@ class Lesson extends Component {
     })
   }
 
-  paySuccessCallback () {
+  async paySuccessCallback () {
     const { dispatch, lesson } = this.props;
     this.closePopup();
     dispatch({
@@ -193,11 +204,20 @@ class Lesson extends Component {
       },
       onResult () {}
     });
+    dispatch({
+      type: 'lesson/fetchCourseDetail',
+      payload: {
+        data: {
+          id: lesson.courseDetail.id,
+        }
+      },
+      onResult (res) {}
+    })
   }
 
   render () {
     const { orderShow, scrollDown } = this.state;
-    const { lesson, dispatch, coupon } = this.props;
+    const { lesson, dispatch, coupon, history, location } = this.props;
 
     if (!lesson) {
       return <div className={styles.normal} ref={`normal`}></div>
@@ -205,10 +225,8 @@ class Lesson extends Component {
 
     const { detail, courseDetail } = lesson;
 
-    const route = location.hash;
-    const isCourse = location.hash.split('/')[2] !== 'free';
-
-    const isHongbao = route.indexOf('hongbao') > -1;
+    const isCourse = location.pathname.split('/')[2] !== 'free';
+    const isHongbao = location.pathname.indexOf('hongbao') > -1;
 
     if (!detail || (isCourse && !courseDetail)) {
       return <div className={styles.normal} ref={`normal`}></div>
@@ -219,7 +237,7 @@ class Lesson extends Component {
         <div className={styles.normal} ref={`normal`}>
           {
             orderShow && <PopupOrder 
-              paySuccessCallback={this.paySuccessCallback.bind(thid)} 
+              paySuccessCallback={this.paySuccessCallback.bind(this)} 
               dispatch={dispatch} 
               coupon={coupon} 
               course={courseDetail} 
@@ -231,7 +249,7 @@ class Lesson extends Component {
               <div className={styles.top}>
                 <div className={styles.text}>
                   你需要先购买课程<br /> 
-                  <span className={styles.price}>¥ {Math.round(courseDetail.charge / 100)} / {courseDetail.lessonCount}课时</span>
+                  <span className={styles.price}>¥ {strip(courseDetail.charge / 100)} / {courseDetail.lessonCount}课时</span>
                 </div>
               </div> 
               <div className={styles.avater}>
@@ -273,8 +291,8 @@ class Lesson extends Component {
       }, 500);
     }
 
-    const commentList = detail.commentList.commentList;
-    const replyToCommentList = detail.commentList.replyToCommentList;
+    const commentList = detail.commentList.commentList || [];
+    const replyToCommentList = detail.commentList.replyToCommentList || [];
     const commentDom = commentList.map((d, i) => {
       let reply;
       for (let j = 0; j < replyToCommentList.length; j++) {
@@ -313,8 +331,8 @@ class Lesson extends Component {
       </div>
     });
 
-    const eliteCommentList = detail.eliteCommentList.commentList;
-    const eliteReplyToCommentList = detail.commentList.replyToCommentList;
+    const eliteCommentList = detail.eliteCommentList.commentList || [];
+    const eliteReplyToCommentList = detail.commentList.replyToCommentList || [];
     const eliteCommentDom = eliteCommentList.map((d, i) => {
       let reply;
       for (let j = 0; j < eliteReplyToCommentList.length; j++) {
@@ -358,13 +376,12 @@ class Lesson extends Component {
 
     const nextLesson = lessonList && lessonList.filter(d => d.id === detail.nextLessonId)[0];
 
-    const fromHongbao = getParam('fromHongbao');
+    const fromHongbao = getParam('fromHongbao', location.search);
     const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
     const isCourseClass = isCourse ? ' ' + styles.course : '';
-    const scrollDownClass = !isCourse && scrollDown ? ' ' + styles.scrollDown : '';
 
     return (
-      <div className={styles.normal} ref={`normal`}>
+      <div className={styles.normal} ref={`normal`} onScroll={throttle(this.onScroll.bind(this), 50)}>
         { 
           isHongbao && <ShareTips type="hongbao" clickCallBack={this.hideHongbaoTips.bind(this)} />
         }
@@ -391,9 +408,11 @@ class Lesson extends Component {
             </div>
           </div>
         }
-        <div className={styles.paid + fromHongbaoClass + isCourseClass + scrollDownClass} ref={`paid`}>
+        <div className={styles.paid + fromHongbaoClass + isCourseClass} ref={`paid`}>
           <div className={styles.audioPlayer}>
             <AudioPlayer 
+              historyState={location.state}
+              scrollDown={!isCourse && scrollDown}
               free={detail.freeListen} 
               fromHongbao={fromHongbao || detail.isGift} 
               dispatch={dispatch} 
@@ -413,7 +432,7 @@ class Lesson extends Component {
           <div className={styles.main} ref={`main`}>
             <div className={styles.courseTitle}>{isCourse && (formatNum(detail.lessonOrder))}{isCourse && <span>&nbsp;|&nbsp;</span>}{detail.title}</div>
             <div className={styles.infos}>
-              { isCourse && <div className={styles.time}>{detail.publishTime} 发布</div> }
+              <div className={styles.time}>{detail.publishTime} 发布</div>
               <div className={styles.other}>
                 <span>
                   <div className={styles.icon + ' ' + styles.time}></div>
@@ -460,7 +479,10 @@ class Lesson extends Component {
                             let currentClass = d.id === detail.id ? ' ' + styles.current : '';
                             return <div key={i} className={styles.item + currentClass} onClick={() => {
                               this.scrollTop.call(this);
-                              location.href = `/?courseId=${courseDetail.id}#/lesson/pay/${d.id}`;
+                              history.push({
+                                pathname: `/lesson/pay/${d.id}`,
+                                search: `?courseId=${courseDetail.id}`
+                              })
                             }}>
                               <div className={styles.inner}>{formatNum(d.lessonOrder)} | {d.title}</div>
                             </div>
@@ -503,7 +525,7 @@ Lesson.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { lesson: state.lesson, coupon: state.coupon };
+  return { lesson: state.lesson, coupon: state.coupon, common: state.common };
 }
 
-export default connect(mapStateToProps)(Lesson);
+export default connect(mapStateToProps)(withRouter(Lesson));

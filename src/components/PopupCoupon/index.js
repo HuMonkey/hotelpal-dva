@@ -20,6 +20,7 @@ class PopupCoupon extends Component {
 
   render() {
     const { coupon, couponSelected, closePopup, selectCallback } = this.props;
+    console.log(111, couponSelected);
 
     const today = moment();
     const couponList = coupon.couponList && coupon.couponList.filter(d => {

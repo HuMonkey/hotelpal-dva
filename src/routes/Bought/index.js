@@ -26,14 +26,17 @@ class Bought extends Component {
   }
 
   async componentDidUpdate () {
-    const { common, history } = this.props;
+    const { common, history, location } = this.props;
     const { init } = this.state;
     if (!init && common.userInfo) {
       this.setState({
         init: true,
       })
       if (!common.userInfo.phone) {
-        history.replace('/login');
+        history.push({
+          pathname: '/login',
+          search: `?pathname=${encodeURIComponent(location.pathname)}&search=${encodeURIComponent(location.search)}`,
+        });
       }
     }
   }

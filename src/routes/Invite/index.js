@@ -9,14 +9,13 @@ import { configWechat, updateWechartShare, getToken } from '../../utils';
 import hbBg from '../../assets/invite-hb.png';
 import simleLogo from '../../assets/smile.svg';
 
-let init;
-
 class Invite extends Component {
   constructor(props) {
     super(props);
     this.state = {
       ruleShow: false,
       shareShow: false,
+      init: false,
     };
   }
 
@@ -25,7 +24,7 @@ class Invite extends Component {
 
     const dict = {
       title: '我邀请你成为新用户，注册得￥20',
-      link: `${location.origin}/?invitor=${getToken()}#/invitePage`,
+      link: `${location.origin}/#/invitePage?invitor=${getToken()}`,
       imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
       desc: `${common.userInfo.nickname}邀请你加入酒店邦成长营，一起获取知识！`,
     }
@@ -79,9 +78,12 @@ class Invite extends Component {
   }
 
   componentDidUpdate () {
+    const { init } = this.state;
     const { common } = this.props;
     if (!init && common.userInfo) {
-      init = true;
+      this.setState({
+        init: true,
+      })
       this.updateWechatShare();
     }
   }

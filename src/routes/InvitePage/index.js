@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import { Icon, Input, message } from 'antd';
 import styles from './index.less';
 import isMobilePhone from 'validator/lib/isMobilePhone';
@@ -72,8 +72,8 @@ class InvitePage extends Component {
   }
 
   componentDidMount () {
-    const { dispatch } = this.props;
-    const invitor = getParam('invitor');
+    const { dispatch, location } = this.props;
+    const invitor = getParam('invitor', location.search);
     // 获取邀请人用户信息
     dispatch({
       type: 'common/fetchUserInfo',
@@ -233,4 +233,4 @@ const mapStateToProps = (state) => {
   return { invite: state.invite, common: state.common };
 }
 
-export default connect(mapStateToProps)(InvitePage);
+export default connect(mapStateToProps)(withRouter(InvitePage));

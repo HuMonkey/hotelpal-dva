@@ -9,7 +9,7 @@
     .audioPlayer {
       width: 100%;
       background: white;
-      z-index: 99;
+      z-index: 9999;
     }
     &.fromHongbao {
       padding-top: 6.226666rem;
@@ -20,17 +20,18 @@
         position: fixed;
         left: 0;
         top: 0;
+        z-index: 999;
       }
     }
-    &.scrollDown {
-      padding-top: 9.93333rem;
-      .audioPlayer {
-        position: absolute;
-        left: 0;
-        top: -6.64rem;
-        z-index: 99;
-      }
-    }
+    // &.scrollDown {
+    //   padding-top: 9.93333rem;
+    //   .audioPlayer {
+    //     position: absolute;
+    //     left: 0;
+    //     top: -6.64rem;
+    //     z-index: 99;
+    //   }
+    // }
     .main {
       background: #fff;
       padding: 1.3333rem .6666rem 0;
@@ -394,7 +395,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    z-index: 101;
+    z-index: 1001;
     .cover {
       position: absolute;
       height: 100%;

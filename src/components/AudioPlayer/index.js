@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import ReactPlayer from 'react-player';
 import styles from './index.less';
 
@@ -103,7 +103,7 @@ class AudioPlayer extends Component {
   }
 
   onEnded () {
-    const { duration, goOn } = this.state;
+    const { duration, goOn, speedIndex } = this.state;
     const { dispatch, lid } = this.props;
     dispatch({
       type: 'lesson/recordListenPos',
@@ -116,7 +116,8 @@ class AudioPlayer extends Component {
     })
 
     if (goOn) {
-      this.nextLesson();
+      this.nextLesson(true, speedIndex);
+      return false;
     }
     this.refs.player.seekTo(0);
     this.setState({
@@ -127,19 +128,43 @@ class AudioPlayer extends Component {
   }
 
   previousLesson () {
-    const { isCourse, previous, courseId } = this.props;
+    const { isCourse, previous, courseId, history, playing } = this.props;
     if (!previous) {
       return false;
     }
-    location.href = `/${isCourse ? `?courseId=${courseId}` : ''}#/lesson/${isCourse ? 'pay' : 'free'}/${previous}`;
+    dispatch({
+      type: 'lesson/reset',
+      payload: {},
+      onResult () {}
+    })
+    history.push({
+      pathname: `/lesson/${isCourse ? 'pay' : 'free'}/${previous}`,
+      search: isCourse ? `?courseId=${courseId}` : '',
+      state: {
+        playing
+      }
+    })
   }
 
-  nextLesson () {
-    const { isCourse, next, courseId } = this.props;
+  nextLesson (goOn, speedIndex) {
+    const { isCourse, next, courseId, history, dispatch, playing } = this.props;
     if (!next) {
       return false;
     }
-    location.href = `/${isCourse ? `?courseId=${courseId}` : ''}#/lesson/${isCourse ? 'pay' : 'free'}/${next}`;
+    dispatch({
+      type: 'lesson/reset',
+      payload: {},
+      onResult () {}
+    })
+    history.push({
+      pathname: `/lesson/${isCourse ? 'pay' : 'free'}/${next}`,
+      search: isCourse ? `?courseId=${courseId}` : '',
+      state: {
+        goOn,
+        speedIndex,
+        playing,
+      }
+    })
   }
 
   setSpeed () {
@@ -156,20 +181,38 @@ class AudioPlayer extends Component {
   }
 
   componentDidMount() {
-    const { audioLen, listenLen } = this.props;
-    if (listenLen) {
+    const { audioLen, listenLen, historyState } = this.props;
+    const newState = {}
+    if (listenLen && audioLen - listenLen > 3) {
       this.refs.player.seekTo(listenLen);
-      this.setState({
-        played: listenLen / audioLen,
-        playedSeconds: listenLen
-      })
+      newState.played = listenLen / audioLen;
+      newState.playedSeconds = listenLen;
     }
+    if (historyState && historyState.goOn) {
+      newState.goOn = historyState.goOn;
+    }
+    if (historyState && historyState.playing) {
+      newState.playing = historyState.playing;
+    }
+    if (historyState && historyState.speedIndex) {
+      newState.speedIndex = historyState.speedIndex - 1;
+    }
+    this.setState(newState, () => {
+      if (historyState && (historyState.goOn || historyState.playing)) {
+        this.setPlaying();
+      }
+      if (historyState && historyState.speedIndex) {
+        setTimeout(() => {
+          this.setSpeed();
+        }, 50)
+      }
+    });
   }
 
   render() {
     const { played, duration, playedSeconds, goOn, playing, speedIndex } = this.state;
 
-    const { audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg } = this.props;
+    const { audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg, scrollDown } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -204,10 +247,13 @@ class AudioPlayer extends Component {
       <div className={styles.btn} onClick={this.setGoOn.bind(this)}>取消自动播放</div>
     </div> : <div></div>;
 
+    const scrollDownClass = scrollDown ? ' ' + styles.scrollDown : '';
+
     return (
-      <div className={styles.audioPlayer}>
+      <div className={styles.audioPlayer + scrollDownClass}>
+        {scrollDown && <div className={styles.blank}></div>}
         { 
-          !isCourse && <div>
+          !isCourse && !scrollDown && <div>
             <Link to="/jdbs"><div className={styles.goback}>
               <img src={banner} />
               <span>成长专栏</span>
@@ -258,8 +304,8 @@ class AudioPlayer extends Component {
               </div>
             </div>
           </div>
+          { countDownDom }
         </div>
-        { countDownDom }
         <ReactPlayer className={styles.player} key={'player'}
           ref={`player`}
           url={audioUrl}
@@ -275,4 +321,4 @@ class AudioPlayer extends Component {
   }
 }
 
-export default AudioPlayer;
+export default withRouter(AudioPlayer);

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import hongbaoPng from '../../assets/hongbao.png';
@@ -15,15 +15,16 @@ class Hongbao extends Component {
   }
 
   open () {
-    const { hongbao, dispatch } = this.props;
+    const { hongbao, dispatch, history, location } = this.props;
+    console.log(history, location);
     const { detail } = hongbao;
 
     if (!detail.redPacketRemained) {
       return false;
     }
 
-    const cid = getParam('courseId');
-    const lid = getParam('lessonId');
+    const cid = getParam('courseId', location.search);
+    const lid = getParam('lessonId', location.search);
     dispatch({
       type: 'hongbao/openRedPacket',
       payload: {
@@ -33,9 +34,12 @@ class Hongbao extends Component {
       },
       onResult (res) {
         if (res.data.code === 0) {
-          location.href = `/?courseId=${cid}&fromHongbao=1#/lesson/pay/${lid}`
+          history.push({
+            pathname: `/lesson/pay/${lid}`,
+            search: `?courseId=${cid}&fromHongbao=1`
+          })
         } else {
-          message.error('打开红包出错，请稍后再试~');
+          message.error(res.data.messages);
         }
       }
     })
@@ -93,4 +97,4 @@ const mapStateToProps = (state) => {
   return { hongbao: state.hongbao };
 }
 
-export default connect(mapStateToProps)(Hongbao);
+export default connect(mapStateToProps)(withRouter(Hongbao));

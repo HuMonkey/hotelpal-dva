@@ -129,34 +129,12 @@ const getHtmlContent = function (str) {
 /**
  * 获取url里的参数
  */
-const getParam = function (name) {
+const getParam = function (name, s) {
+  const search = s || window.location.search;
   const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-  const r = window.location.search.substr(1).match(reg);
+  const r = search.substr(1).match(reg);
   if (r != null) return (r[2]);
   return null;
-}
-
-const removeParam = function (key) {
-  const sourceURL = location.href.split('#')[0];
-  const hash = location.href.split('#')[1];
-  let rtn = sourceURL.split("?")[0],
-    param,
-    params_arr = [],
-    queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
-  if (queryString !== "") {
-    params_arr = queryString.split("&");
-    for (let i = params_arr.length - 1; i >= 0; i -= 1) {
-      param = params_arr[i].split("=")[0];
-      if (param === key) {
-        params_arr.splice(i, 1);
-      }
-    }
-    rtn = rtn + "?" + params_arr.join("&");
-  }
-  if (hash) {
-    rtn = rtn + "#" + hash;
-  }
-  return rtn;
 }
 
 const getToken = function () {
@@ -372,5 +350,5 @@ export {
   courseMemberCardUseful,
   liveMemberCardUseful,
   dispatchWechatShare,
-  strip
+  strip,
 }

@@ -1,7 +1,11 @@
 import * as lessonService from '../services/lesson';
 import * as courseService from '../services/course';
 
-import { dispatchWechatShare, getHtmlContent, getParam } from '../utils';
+import {
+  dispatchWechatShare,
+  getHtmlContent,
+  getParam
+} from '../utils';
 
 export default {
 
@@ -13,16 +17,22 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(async ({ pathname, search }) => {
+    setup({
+      dispatch,
+      history
+    }) { // eslint-disable-line
+      return history.listen(async ({
+        pathname,
+        search
+      }) => {
         const inLesson = pathname.indexOf('/lesson') > -1;
         const inHongbao = pathname.indexOf('/hongbao') > -1;
         if (!inLesson && !inHongbao) {
-            return false;
+          return false;
         }
         const lessonId = inLesson ? pathname.split('/')[3] : pathname.split('/')[2];
-        const courseId = getParam('courseId');
-        const fromHongbao = +getParam('fromHongbao');
+        const courseId = getParam('courseId', search);
+        const fromHongbao = +getParam('fromHongbao', search);
 
         let course;
         if (courseId) {
@@ -33,7 +43,7 @@ export default {
                 id: courseId,
               }
             },
-            onResult (res) {
+            onResult(res) {
               course = res;
             }
           })
@@ -47,7 +57,7 @@ export default {
               id: lessonId,
             }
           },
-          onResult (res) {
+          onResult(res) {
             detail = res;
           }
         });
@@ -56,14 +66,14 @@ export default {
         // 成长专栏、红包、未购买、正常
         let dict;
         if (inHongbao) {
-          const nonce = getParam('nonce');
+          const nonce = getParam('nonce', search);
           let desc = getHtmlContent(detail.content);
           if (desc.length > 30) {
             desc = desc.slice(0, 30) + '...';
           }
           dict = {
             title: course.userName + '：' + detail.title + '「红包分享」',
-            link: `http://${location.origin}/?courseId=${courseId}&lessonId=${detail.id}#/hb/${nonce}`,
+            link: `${location.origin}/#/hb/${nonce}?courseId=${courseId}&lessonId=${detail.id}`,
             imgUrl: course.headImg,
             desc
           }
@@ -83,7 +93,7 @@ export default {
           } else if (!course.purcharsed && !detail.freeListen && !fromHongbao) {
             dict = {
               title: course.userName + '：' + course.title,
-              link: `http://${location.origin}/?courseId=${courseId}#/lesson/pay/${lessonId}`,
+              link: `${location.origin}/#/lesson/pay/${lessonId}?courseId=${courseId}`,
               imgUrl: course.headImg,
               desc: course.subtitle,
             }
@@ -94,13 +104,13 @@ export default {
             }
             dict = {
               title: course.userName + '：' + detail.title,
-              link: `http://${location.origin}/?courseId=${courseId}#/lesson/pay/${lessonId}`,
+              link: `${location.origin}/#/lesson/pay/${lessonId}?courseId=${courseId}`,
               imgUrl: course.headImg,
               desc
             }
           }
         }
-        
+
         dispatchWechatShare(dict, dispatch);
 
       });
@@ -108,7 +118,13 @@ export default {
   },
 
   effects: {
-    *fetchLessonDetail({ payload, onResult }, { call, put }) {  // eslint-disable-line
+    * fetchLessonDetail({
+      payload,
+      onResult
+    }, {
+      call,
+      put
+    }) { // eslint-disable-line
       const res = yield call(lessonService.fetchLessonDetail, payload.data || {});
       if (res.data.code === 0) {
         const detail = res.data.data;
@@ -131,7 +147,13 @@ export default {
         onResult(null)
       }
     },
-    *fetchCourseDetail({ payload, onResult }, { call, put }) {  // eslint-disable-line
+    * fetchCourseDetail({
+      payload,
+      onResult
+    }, {
+      call,
+      put
+    }) { // eslint-disable-line
       const res = yield call(courseService.fetchCourseDetail, payload.data || {});
       if (res.data.code === 0) {
         const courseDetail = res.data.data;
@@ -146,15 +168,33 @@ export default {
         onResult && onResult(null);
       }
     },
-    *submitComment({ payload, onResult }, { call, put }) {  // eslint-disable-line
+    * submitComment({
+      payload,
+      onResult
+    }, {
+      call,
+      put
+    }) { // eslint-disable-line
       const res = yield call(lessonService.submitComment, payload.data || {});
       onResult && onResult(res);
     },
-    *addZan({ payload, onResult }, { call, put }) {  // eslint-disable-line
+    * addZan({
+      payload,
+      onResult
+    }, {
+      call,
+      put
+    }) { // eslint-disable-line
       const res = yield call(lessonService.addZan, payload.data || {});
       onResult && onResult(res);
     },
-    *recordListenPos({ payload, onResult }, { call, put }) {  // eslint-disable-line
+    * recordListenPos({
+      payload,
+      onResult
+    }, {
+      call,
+      put
+    }) { // eslint-disable-line
       const res = yield call(lessonService.recordListenPos, payload.data || {});
       onResult && onResult(res);
     },
@@ -162,7 +202,9 @@ export default {
 
   reducers: {
     save(state, action) {
-      return { ...state, ...action.payload };
+      return { ...state,
+        ...action.payload
+      };
     },
     reset(state, action) {
       return {

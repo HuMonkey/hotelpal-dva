@@ -56,7 +56,7 @@ class UselessCoupon extends Component {
               liveMemberUseless && <MemberCard type={'live'} data={liveVip} />
             }
             {
-              couponList.map((d, i) => {
+              couponList.reverse().map((d, i) => {
                 return <CouponItem key={i} data={d} />
               })
             }

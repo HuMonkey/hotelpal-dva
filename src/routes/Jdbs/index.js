@@ -130,7 +130,9 @@ class Jdbs extends Component {
           {
             courses.map((d, i) => {
               const audioLen = getAudioLength(d.audioLen);
-              return <li key={i} className={styles.item}>
+              const disableClass = !d.isPublish ? ' ' + styles.disable : '';
+              const finishedClass = d.listenLen && d.listenLen >= d.audioLen ? ' ' + styles.finished : '';
+              return <li key={i} className={styles.item + disableClass + finishedClass}>
                 <Link to={`/lesson/free/${d.id}`}>
                   <div className={styles.name}>
                     <div className={styles.arrow}></div> 
@@ -138,17 +140,24 @@ class Jdbs extends Component {
                     <span className={styles.vr}>|</span>
                     <span>{d.title}</span>
                   </div> 
-                  <div className={styles.infos}>
-                    <span>{d.publishTime}</span> 
-                    <span>{d.resourceSize}</span> 
-                    <span>{audioLen}</span> 
-                    {
-                      d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : <span/>
-                    }
-                    { 
-                      d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ parseInt(d.listenLen / d.audioLen * 100) }%</span> : <span/>
-                    }
-                  </div>
+                  {
+                    d.isPublish && <div className={styles.infos}>
+                      <span>{d.publishTime}</span> 
+                      <span>{d.resourceSize}</span> 
+                      <span>{audioLen}</span> 
+                      {
+                        d.listenLen && d.listenLen >= d.audioLen ? <span className={styles.over}>已播完</span> : <span/>
+                      }
+                      { 
+                        d.listenLen && d.listenLen < d.audioLen ? <span className={styles.ing}>已播{ Math.ceil(d.listenLen / d.audioLen * 100) }%</span> : <span/>
+                      }
+                    </div>
+                  }
+                  {
+                    !d.isPublish && <div className={styles.infos}>
+                      尚未发布
+                    </div>
+                  }
                   <div className={styles.arrowRight}></div>
                 </Link>
               </li>

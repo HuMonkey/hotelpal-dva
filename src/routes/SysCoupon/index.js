@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, withRouter } from 'dva/router';
 import { Icon, Input, message } from 'antd';
 import styles from './index.less';
 import isMobilePhone from 'validator/lib/isMobilePhone';
@@ -14,15 +14,16 @@ class SysCoupon extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      init: false,
       result: null, // 领取成功 got 来晚了 late 领取过 already
     };
   }
 
   // 领取优惠券
   getSysCoupon() {
-    const { dispatch } = this.props;
-    const nonce = getParam('nonce');
-    const sysCouponId = getParam('sysCouponId');
+    const { dispatch, location } = this.props;
+    const nonce = getParam('nonce', location.search);
+    const sysCouponId = getParam('sysCouponId', location.search);
 
     dispatch({
       type: 'common/getSysCoupon',
@@ -52,8 +53,8 @@ class SysCoupon extends Component {
   }
 
   async getSysCouponInfo() {
-    const { dispatch } = this.props;
-    const sysCouponId = getParam('sysCouponId');
+    const { dispatch, location } = this.props;
+    const sysCouponId = getParam('sysCouponId', location.search);
     await dispatch({
       type: 'common/getSysCouponInfo',
       payload: {
@@ -66,8 +67,21 @@ class SysCoupon extends Component {
     this.getSysCoupon();
   }
 
-  componentDidMount () {
-    this.getSysCouponInfo();
+  componentDidUpdate () {
+    const { init } = this.state;
+    const { common, history, location } = this.props;
+    if (!init && common.userInfo) {
+      this.setState({
+        init: true,
+      });
+      if (!common.userInfo.phone) {
+        history.replace({
+          pathname: '/login',
+          search: `?pathname=${encodeURIComponent(location.pathname)}&search=${encodeURIComponent(location.search)}`
+        })
+      }
+      this.getSysCouponInfo();
+    }
   }
 
   render() {
@@ -155,4 +169,4 @@ const mapStateToProps = (state) => {
   return { invite: state.invite, common: state.common };
 }
 
-export default connect(mapStateToProps)(SysCoupon);
+export default connect(mapStateToProps)(withRouter(SysCoupon));

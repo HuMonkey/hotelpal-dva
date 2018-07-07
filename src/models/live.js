@@ -1,7 +1,7 @@
 import moment from 'moment';
 import * as liveService from '../services/live';
 
-import { getToken, getParam } from '../utils';
+import { getToken } from '../utils';
 
 import { message } from 'antd';
 
@@ -131,6 +131,7 @@ export default {
                 onResult (res) {}
               });
             } else if (data.msgType === 'TYPE_SHOW_COUPON') {
+              message.success('显示优惠券！');
               dispatch({
                 type: 'switchHb',
                 payload: {
@@ -342,7 +343,7 @@ export default {
     saveAMsg(state, action) {
       const data = JSON.parse(action.payload.data && action.payload.data.trim());
       const assistantMsg = state.assistantMsg;
-      return {...state, assistantMsg: [...assistantMsg, data]};
+      return {...state, assistantMsg: [data, ...assistantMsg]};
     },
     deleteAMsg(state, action) {
       const data = JSON.parse(action.payload.data && action.payload.data.trim());

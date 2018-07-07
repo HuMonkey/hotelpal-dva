@@ -44,11 +44,11 @@ class Modify extends Component {
   }
 
   onSubmit () {
-    const { dispatch, history } = this.props;
+    const { dispatch, history, common } = this.props;
     const nickname = this.refs.nickname.value;
     const title = this.refs.title.value;
     const company = this.refs.company.value;
-    const avatar = this.refs.avatar.src;
+    const avatar = common.userInfo.headImg;
     if (!nickname) {
       message.error('昵称不能为空');
       return false;
@@ -91,9 +91,13 @@ class Modify extends Component {
     return (
       <div className={styles.normal}>
         <div className={styles.avater}>
-          <div className={styles.img + ' ' + styles.short}>
-            <img ref={'avatar'} src={userInfo.headImg} onClick={this.uploadClick.bind(this)} />
-          </div>
+          <div 
+            className={styles.img + ' ' + styles.short} 
+            onClick={this.uploadClick.bind(this)}
+            style={{
+              backgroundImage: `url(${userInfo.headImg})`
+            }} 
+          ></div>
         </div> 
         <input accept="image/*" type="file" className={styles.avaterUpload} ref={`imgFile`} onChange={this.onFileChange.bind(this)}/> 
         <div className={styles.wechatName}></div> 

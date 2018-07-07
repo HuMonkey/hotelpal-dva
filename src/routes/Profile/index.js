@@ -29,14 +29,17 @@ class Profile extends Component {
   }
 
   async componentDidUpdate () {
-    const { common, history } = this.props;
+    const { common, history, location } = this.props;
     const { init } = this.state;
     if (!init && common.userInfo) {
       this.setState({
         init: true,
       })
       if (!common.userInfo.phone) {
-        history.replace('/login');
+        history.replace({
+          pathname: '/login',
+          search: `?pathname=${location.pathname}&search=${location.search}`,
+        });
       }
     }
   }
@@ -76,13 +79,15 @@ class Profile extends Component {
           <img src={bg} />
         </div>
         <div className={styles.header}>
-          <div className={styles.avater}>
-            <div className={styles.img} style={{ backgroundImage: `url(${userInfo.headImg})` }}></div>
-          </div> 
-          <Link to={'/modify'}><div className={styles.name}>
-            {userInfo.nickname}
-            <div className={styles.arrowRight}></div>
-          </div> </Link>
+          <Link to={'/modify'}>
+            <div className={styles.avater}>
+              <div className={styles.img} style={{ backgroundImage: `url(${userInfo.headImg})` }}></div>
+            </div> 
+            <div className={styles.name}>
+              {userInfo.nickname}
+              <div className={styles.arrowRight}></div>
+            </div> 
+          </Link>
           <div className={styles.record}>
             <div className={styles.icon}></div> 
             <span>累计学习</span>

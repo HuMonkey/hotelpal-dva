@@ -9,15 +9,10 @@ import { Navs, PopupCourse, PopupLogin, PopupOrder,
 
 import { message } from 'antd';
 
-// import 'video.js/dist/video-js.css';
-// import videojs from 'video.js';
-// import 'videojs-contrib-hls';
-
 import hbBg from '../../assets/hb-bg.png';
 
 import { getHtmlContent, configWechat, updateWechartShare, formatNum } from '../../utils';
 
-let initFlag = false;
 let interval;
 
 class Live extends Component {
@@ -26,15 +21,13 @@ class Live extends Component {
     this.state = {
       hongbaoShow: false,
       page: 'detail', // detail or chat
-      // signup: 'init', // inviting init paid vip free
-      // state: 'ing', // before ing after
       popup: null, // detail, order, login
-      // playerInit: false,
       replying: false,
 
       enrollForShow: true,
 
       hbCountDown: moment(),
+      init: false,
     };
   }
 
@@ -62,7 +55,6 @@ class Live extends Component {
       hongbaoShow: false,
     });
   }
-  
 
   changePage (page) {
     this.setState({
@@ -77,7 +69,16 @@ class Live extends Component {
   }
 
   async openHongbao () {
-    const { dispatch, live } = this.props;
+    const { dispatch, live, common } = this.props;
+
+    const { userInfo } = common;
+
+    if (!userInfo.phone) {
+      this.setState({
+        popup: 'login'
+      })
+      return false;
+    }
 
     await dispatch({
       type: 'live/getCoupon',
@@ -122,7 +123,20 @@ class Live extends Component {
     });
   }
 
+  async closeLoginInHongbao () {
+    const { dispatch } = this.props;
+    this.setState({
+      popup: null,
+    });
+    await dispatch({
+      type: 'common/fetchUserInfo',
+      payload: {},
+    })
+    this.openHongbao();
+  }
+
   componentDidUpdate (prevProps) {
+    const { init } = this.state;
     const chats = this.props.live && this.props.live.chats;
     const prevChats = prevProps.live && prevProps.live.chats;
 
@@ -133,8 +147,10 @@ class Live extends Component {
     const { live } = this.props;
     const { liveDetail } = live;
 
-    if (!initFlag && liveDetail) {
-      initFlag = true;
+    if (!init && liveDetail) {
+      this.setState({
+        init: true,
+      })
       this.updateWechatShare();
     }
   }
@@ -246,7 +262,7 @@ class Live extends Component {
 
     const { relaCourse } = liveDetail;
 
-    const { page, hongbaoShow, popup, replying, hbCountDown } = this.state;
+    const { page, hongbaoShow, popup, replying } = this.state;
 
     const detailClass = page === 'detail' ? ' ' + styles.active : '';
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
@@ -317,7 +333,7 @@ class Live extends Component {
         {
           popup && <div>
             { popup === 'detail' && <PopupCourse userInfo={userInfo} course={relaCourse} onSubmit={this.onCourseSubmit.bind(this)} closePopup={this.closePopup.bind(this)} /> }
-            { popup === 'login' && <PopupLogin closePopup={this.closePopup.bind(this)} /> }
+            { popup === 'login' && <PopupLogin successCallback={this.closeLoginInHongbao.bind(this)} closePopup={this.closePopup.bind(this)} dispatch={dispatch} /> }
             { popup === 'order' && <PopupOrder paySuccessCallback={this.paySuccessCallback.bind(this)} dispatch={dispatch} coupon={coupon} course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
           </div>
         }

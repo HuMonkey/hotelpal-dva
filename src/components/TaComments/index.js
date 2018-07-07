@@ -51,7 +51,6 @@ class TaComments extends Component {
 
       function createMarkup() { 
         const msg = open ? d.msg || '' : getHtmlContent(d.msg || '');
-        console.log(msg);
         return { __html: msg }; 
       };
 

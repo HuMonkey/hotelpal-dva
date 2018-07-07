@@ -15,12 +15,12 @@ const liveStatus = {
 }
 
 let helpedTipsShow = false;
+let enrollForShow = true;
 
 class EnrollPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      enrollForShow: true,
       posterShow: false,
       loginPopupShow: false,
     };
@@ -106,7 +106,7 @@ class EnrollPanel extends Component {
   }
 
   async enroll () {
-    const { dispatch, live, userInfo, coupon, history } = this.props;
+    const { dispatch, live, userInfo, coupon } = this.props;
     if (!userInfo.phone) {
       this.setState({
         loginPopupShow: true,
@@ -200,25 +200,24 @@ class EnrollPanel extends Component {
 
   componentDidMount () {
     setTimeout(() => {
-      this.setState({
-        enrollForShow: false,
-      })
+      enrollForShow = false;
     }, 8000) // 8秒后隐藏提示
   }
 
-  loginCallback() {
+  async loginCallback() {
     const { dispatch } = this.props;
     this.setState({
       loginPopupShow: false,
     });
-    dispatch({
+    await dispatch({
       type: 'common/fetchUserInfo',
       payload: {},
-    })
+    });
+    this.enroll();
   }
 
   render() {
-    const { enrollForShow, posterShow, loginPopupShow } = this.state;
+    const { posterShow, loginPopupShow } = this.state;
     const { live, userInfo, invitor, coupon, dispatch } = this.props;
 
     const showInvitorTips = this.canEnrollFor() && enrollForShow;

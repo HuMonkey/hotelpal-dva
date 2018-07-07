@@ -18,7 +18,7 @@ export default {
           courseId = pathname.split('/')[2]
         }
         if (pathname.indexOf('/coursedetail') > -1) {
-          courseId = getParam('courseId');
+          courseId = getParam('courseId', search);
         }
         if (!courseId) {
           return false;

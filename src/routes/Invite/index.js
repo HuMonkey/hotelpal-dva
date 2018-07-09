@@ -4,7 +4,7 @@ import { Icon } from 'antd';
 import styles from './index.less';
 
 import { Navs, ShareTips } from '../../components';
-import { configWechat, updateWechartShare, getToken } from '../../utils';
+import { configWechat, updateWechatShare, getToken } from '../../utils';
 
 import hbBg from '../../assets/invite-hb.png';
 import simleLogo from '../../assets/smile.svg';
@@ -40,7 +40,7 @@ class Invite extends Component {
         if (res.data.code === 0) {
           const {appid, noncestr, sign, timestamp, url} = res.data.data;
           configWechat(appid, timestamp, noncestr, sign, () => {
-            updateWechartShare(dict);
+            updateWechatShare(dict);
           });
         }
       }

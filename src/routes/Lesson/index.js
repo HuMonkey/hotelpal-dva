@@ -411,7 +411,6 @@ class Lesson extends Component {
         <div className={styles.paid + fromHongbaoClass + isCourseClass} ref={`paid`}>
           <div className={styles.audioPlayer}>
             <AudioPlayer 
-              historyState={location.state}
               scrollDown={!isCourse && scrollDown}
               free={detail.freeListen} 
               fromHongbao={fromHongbao || detail.isGift} 

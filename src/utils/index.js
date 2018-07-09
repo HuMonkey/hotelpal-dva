@@ -22,8 +22,8 @@ const isLogin = function () {
 }
 
 const config = {
-  // host: `${location.origin}`, // 线上
-  host: `${location.origin}/test`, // 测试
+  host: `${location.origin}`, // 线上
+  // host: `${location.origin}/test`, // 测试
   appId: 'wxfe666ebbf0e42897'
 }
 
@@ -198,13 +198,15 @@ const configWechat = function (appId, timestamp, nonceStr, signature, callback) 
       'previewImage'
     ]
   });
-  wx.ready(callback)
+  wx.ready(() => {
+    callback && callback();
+  })
   wx.error(function (res) {
     message.error(JSON.stringify(res));
   })
 }
 
-const updateWechartShare = function (wxShareDict) {
+const updateWechatShare = function (wxShareDict) {
   wx.onMenuShareTimeline({
     title: wxShareDict.title, // 分享标题
     link: wxShareDict.link, // 分享链接，该链接域名需在JS安全域名中进行登记
@@ -300,7 +302,7 @@ const liveMemberCardUseful = function (liveVip) {
   return true;
 }
 
-const dispatchWechatShare = function (dict, dispatch) {
+const dispatchWechatShare = function (dict, dispatch, ifAudioAutoPlay) {
   dispatch({
     type: 'common/getWechatSign',
     payload: {
@@ -317,7 +319,19 @@ const dispatchWechatShare = function (dict, dispatch) {
           timestamp,
         } = res.data.data;
         configWechat(appid, timestamp, noncestr, sign, () => {
-          updateWechartShare(dict);
+          updateWechatShare(dict);
+          // 如果是 ios 手机并且需要自动播放
+          if (ua.iOS) {
+            let audioEl = document.getElementsByTagName('audio')[0];
+            if (audioEl.readyState !== 0) {
+              return false;
+            }
+            if (ifAudioAutoPlay) {
+              audioEl.play();
+            } else {
+              audioEl && audioEl.load();
+            }
+          }
         });
       }
     }
@@ -345,7 +359,7 @@ export {
   getAudioLength,
   throttle,
   configWechat,
-  updateWechartShare,
+  updateWechatShare,
   callWxPay,
   courseMemberCardUseful,
   liveMemberCardUseful,

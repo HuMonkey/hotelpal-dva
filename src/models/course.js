@@ -2,6 +2,8 @@ import * as courseService from '../services/course';
 
 import { dispatchWechatShare, getParam } from '../utils';
 
+import { message } from 'antd';
+
 export default {
 
   namespace: 'course',

@@ -6419,6 +6419,12 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-audio-player@^0.10.0:
+  version "0.10.0"
+  resolved "http://registry.npm.taobao.org/react-audio-player/download/react-audio-player-0.10.0.tgz#f08f3572028a5a56663abba6a7e8ce60ba80ded3"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-dev-utils@^2.0.1:
   version "2.0.1"
   resolved "http://registry.npm.taobao.org/react-dev-utils/download/react-dev-utils-2.0.1.tgz#5843504d89f038f046258a871fc26071775fc065"

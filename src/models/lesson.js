@@ -1,6 +1,8 @@
 import * as lessonService from '../services/lesson';
 import * as courseService from '../services/course';
 
+import { message } from 'antd';
+
 import {
   dispatchWechatShare,
   getHtmlContent,
@@ -23,7 +25,7 @@ export default {
     }) { // eslint-disable-line
       return history.listen(async ({
         pathname,
-        search
+        search,
       }) => {
         const inLesson = pathname.indexOf('/lesson') > -1;
         const inHongbao = pathname.indexOf('/hongbao') > -1;
@@ -90,7 +92,8 @@ export default {
               imgUrl: detail.coverImg,
               desc,
             }
-          } else if (!course.purcharsed && !detail.freeListen && !fromHongbao) {
+          } else if (!course.purchased && !detail.freeListen && !fromHongbao) {
+            message.info(1);
             dict = {
               title: course.userName + '：' + course.title,
               link: `${location.origin}/#/lesson/pay/${lessonId}?courseId=${courseId}`,
@@ -110,8 +113,9 @@ export default {
             }
           }
         }
-
-        dispatchWechatShare(dict, dispatch);
+        const historyState = history.location.state;
+        const ifAudioAutoPlay = historyState && (historyState.playing || historyState.goOn); 
+        dispatchWechatShare(dict, dispatch, ifAudioAutoPlay);
 
       });
     },

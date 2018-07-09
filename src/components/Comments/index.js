@@ -18,14 +18,14 @@ class Comments extends Component {
     });
     const commentsDom = comments.map((d, i) => {
       const isMineClass = d.self === 'Y' ? ' ' + styles.mine : '';
-      const name = `${d.user.nick} ${d.user.company || ''} ${d.user.title || ''}`;
+      // const name = `${d.user.nick} ${d.user.company || ''} ${d.user.title || ''}`;
 
-      function createMarkup() { return { __html: d.msg || '' }; };
+      function createMarkup() { return { __html: (d.user.nick + '：' + d.msg) || '' }; };
 
       return <div className={styles.item + isMineClass} key={i}>
         <div className={styles.avatar} style={{ backgroundImage: `url(${d.user.headImg || headerPng})` }}></div>
         <div className={styles.main}>
-          <div className={styles.name}>{name}</div>
+          {/* <div className={styles.name}>{name}</div> */}
           <div className={styles.talk}>
             <div className={styles.inner} dangerouslySetInnerHTML={createMarkup()}></div>
             <div className={styles.arrow}></div>

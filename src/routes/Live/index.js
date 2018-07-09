@@ -11,7 +11,7 @@ import { message } from 'antd';
 
 import hbBg from '../../assets/hb-bg.png';
 
-import { getHtmlContent, configWechat, updateWechartShare, formatNum } from '../../utils';
+import { getHtmlContent, configWechat, updateWechatShare, formatNum } from '../../utils';
 
 let interval;
 
@@ -32,11 +32,11 @@ class Live extends Component {
   }
 
   scrollToBottom () {
-    document.getElementById('root').scrollTop = 20000000;
+    document.body.scrollTop = 20000000;
   }
 
   scrollToTop () {
-    document.getElementById('root').scrollTop = 0;
+    document.body.scrollTop = 0;
   }
 
   showHongbao () {
@@ -136,11 +136,11 @@ class Live extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    const { init } = this.state;
+    const { init, page } = this.state;
     const chats = this.props.live && this.props.live.chats;
     const prevChats = prevProps.live && prevProps.live.chats;
 
-    if (((prevChats && prevChats.length)) !== (chats && chats.length)) {
+    if ((prevChats && prevChats.length) !== (chats && chats.length) && page === 'chat') {
       this.scrollToBottom();
     }
 
@@ -230,7 +230,7 @@ class Live extends Component {
         if (res.data.code === 0) {
           const {appid, noncestr, sign, timestamp, url} = res.data.data;
           configWechat(appid, timestamp, noncestr, sign, () => {
-            updateWechartShare(dict);
+            updateWechatShare(dict);
           });
         }
       }
@@ -316,7 +316,7 @@ class Live extends Component {
     </div>;
 
     return (
-      <div className={styles.normal + isChatPageClass + hasAssistClass} ref={`normal`}>
+      <div className={styles.normal + isChatPageClass + hasAssistClass} id={`normal`} ref={`normal`}>
         {
           replying && <div className={styles.replyBox}>
             <div className={styles.cover} onClick={() => this.setReply.call(this, false)}></div> 

@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import { Link, withRouter } from 'dva/router';
-import ReactPlayer from 'react-player';
+import ReactAudioPlayer from 'react-audio-player';
 import styles from './index.less';
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { message } from 'antd';
 
 import hongbaoGot from '../../assets/zshb_banner.png';
 import banner from '../../assets/jiudianbang-big.png';
+import { getParam } from '../../utils';
 
 import moment from 'moment';
 
@@ -27,6 +29,7 @@ class AudioPlayer extends Component {
       speedIndex: 0,
 
       init: false,
+      loading: true,
     };
   }
 
@@ -39,33 +42,77 @@ class AudioPlayer extends Component {
 
   setPlaying () {
     const {playing} = this.state;
+    if (playing) {
+      this.refs.player.audioEl.pause();
+    } else {
+      this.refs.player.audioEl.play();
+    }
     this.setState({
       playing: !playing,
     })
   }
 
-  onProgress (eg) {
-    const { playing, init } = this.state;
-    const { dispatch, lid } = this.props;
-    if (!init) {
-      this.setState({
-        init: true,
-      })
-    } else {
-      this.setState({
-        played: eg.played,
-        loaded: eg.loaded,
-        playedSeconds: eg.playedSeconds, 
-      });
-    }
+  onCanPlay(ev) {
+    const { init } = this.state;
+    const { audioLen, listenLen, history } = this.props;
 
-    // 每4s发一次
+    const search = history.location.search;
+    const goOn = getParam('goOn', search);
+    const playing = getParam('playing', search);
+    const speedIndex = getParam('speedIndex', search);
+    const courseId = getParam('courseId', search);
+
+    const audioEl = this.refs.player.audioEl;
+
+    const newState = {
+      loading: false,
+      init: true,
+    }
+    if (!init) {
+      // 设置时长
+      newState.duration = audioLen;
+      // 设置已听时长
+      if (listenLen && audioLen !== listenLen) {
+        audioEl.currentTime = listenLen;
+        newState.played = listenLen / audioLen;
+        newState.playedSeconds = listenLen;
+      }
+      // 设置连续听
+      if (goOn) {
+        newState.goOn = goOn;
+        newState.playing = playing;
+      }
+      // 设置听状态
+      if (playing) {
+        newState.playing = playing;
+      }
+      // 设置倍数
+      if (speedIndex) {
+        newState.speedIndex = speedIndex;
+        audioEl.playbackRate = speeds[speedIndex];
+      }
+      if (goOn || playing) {
+        audioEl.play();
+      }
+    }
+    this.setState(newState);
+  }
+
+  onListen(listenLen) {
+    const { playing } = this.state;
+    const { audioLen, dispatch, lid } = this.props;
+    this.setState({
+      played: listenLen / audioLen,
+      playedSeconds: Math.round(listenLen), 
+    });
+
+    // 每2s发一次
     const now = moment();
-    if (now.second() % 4 !== 0) {
+    if (now.second() % 2 !== 0) {
       return false;
     }
 
-    const pos = Math.ceil(eg.playedSeconds);
+    const pos = Math.round(listenLen);
     playing && dispatch({
       type: 'lesson/recordListenPos',
       payload: {
@@ -77,28 +124,34 @@ class AudioPlayer extends Component {
     })
   }
 
-  onDuration (duration) {
-    this.setState({ duration: duration })
-  }
-
   skip (offset) {
     const { duration, playedSeconds } = this.state;
-    this.refs.player.seekTo(playedSeconds + offset);
+    this.refs.player.audioEl.currentTime = playedSeconds + offset;
     this.setState({
       played: (playedSeconds + offset) / duration,
       playedSeconds: playedSeconds + offset,
+      loading: false,
     })
   }
 
   onError (ev) {
-    console.log('onError', ev);
+    message.error(ev);
   }
 
   onSliderChange (value) {
-    this.refs.player.seekTo(value / 100);
+    const { audioLen } = this.props;
+    this.refs.player.audioEl.currentTime = audioLen * value / 100;
     this.setState({
       played: value / 100,
-      playedSeconds: this.state.duration * value / 100,
+      playedSeconds: audioLen * value / 100,
+      loading: false,
+    })
+  }
+
+  onLoadedMetadata() {
+    const duration = this.refs.player.audioEl.duration;
+    this.setState({
+      duration
     })
   }
 
@@ -116,10 +169,10 @@ class AudioPlayer extends Component {
     })
 
     if (goOn) {
-      this.nextLesson(true, speedIndex);
+      this.nextLesson(true);
       return false;
     }
-    this.refs.player.seekTo(0);
+    this.refs.player.audioEl.currentTime = 0;
     this.setState({
       played: 0,
       playedSeconds: 0,
@@ -128,7 +181,8 @@ class AudioPlayer extends Component {
   }
 
   previousLesson () {
-    const { isCourse, previous, courseId, history, playing } = this.props;
+    const { playing, speedIndex } = this.state;
+    const { isCourse, previous, courseId, history, dispatch } = this.props;
     if (!previous) {
       return false;
     }
@@ -137,17 +191,19 @@ class AudioPlayer extends Component {
       payload: {},
       onResult () {}
     })
-    history.push({
-      pathname: `/lesson/${isCourse ? 'pay' : 'free'}/${previous}`,
-      search: isCourse ? `?courseId=${courseId}` : '',
-      state: {
-        playing
-      }
-    })
+    let search = isCourse ? `?courseId=${courseId}` : '';
+    if (speedIndex) {
+      search += '&speedIndex=' + speedIndex
+    }
+    if (playing) {
+      search += '&playing=1'
+    }
+    location.href = `/?t=${(new Date()).valueOf()}#/lesson/${isCourse ? 'pay' : 'free'}/${previous}${search}`;
   }
 
-  nextLesson (goOn, speedIndex) {
-    const { isCourse, next, courseId, history, dispatch, playing } = this.props;
+  nextLesson (goOn) {
+    const { playing, speedIndex } = this.state;
+    const { isCourse, next, courseId, history, dispatch } = this.props;
     if (!next) {
       return false;
     }
@@ -156,15 +212,17 @@ class AudioPlayer extends Component {
       payload: {},
       onResult () {}
     })
-    history.push({
-      pathname: `/lesson/${isCourse ? 'pay' : 'free'}/${next}`,
-      search: isCourse ? `?courseId=${courseId}` : '',
-      state: {
-        goOn,
-        speedIndex,
-        playing,
-      }
-    })
+    let search = isCourse ? `?courseId=${courseId}` : '';
+    if (goOn) {
+      search += '&goOn=1'
+    }
+    if (speedIndex) {
+      search += '&speedIndex=' + speedIndex
+    }
+    if (playing) {
+      search += '&playing=1'
+    }
+    location.href = `/?t=${(new Date()).valueOf()}#/lesson/${isCourse ? 'pay' : 'free'}/${next}${search}`;
   }
 
   setSpeed () {
@@ -173,46 +231,21 @@ class AudioPlayer extends Component {
     if (newSpeedIndex > 3) {
       newSpeedIndex = 0;
     }
-    const video = this.refs.player.getInternalPlayer();
-    video.playbackRate = speeds[newSpeedIndex];
+    const audio = this.refs.player.audioEl;
+    audio.playbackRate = speeds[newSpeedIndex];
     this.setState({
       speedIndex: newSpeedIndex,
     })
   }
 
-  componentDidMount() {
-    const { audioLen, listenLen, historyState } = this.props;
-    const newState = {}
-    if (listenLen && audioLen - listenLen > 3) {
-      this.refs.player.seekTo(listenLen);
-      newState.played = listenLen / audioLen;
-      newState.playedSeconds = listenLen;
-    }
-    if (historyState && historyState.goOn) {
-      newState.goOn = historyState.goOn;
-    }
-    if (historyState && historyState.playing) {
-      newState.playing = historyState.playing;
-    }
-    if (historyState && historyState.speedIndex) {
-      newState.speedIndex = historyState.speedIndex - 1;
-    }
-    this.setState(newState, () => {
-      if (historyState && (historyState.goOn || historyState.playing)) {
-        this.setPlaying();
-      }
-      if (historyState && historyState.speedIndex) {
-        setTimeout(() => {
-          this.setSpeed();
-        }, 50)
-      }
-    });
+  onReady() {
+    message.success('ready');
   }
 
   render() {
-    const { played, duration, playedSeconds, goOn, playing, speedIndex } = this.state;
+    const { played, duration, playedSeconds, goOn, playing, speedIndex, loading } = this.state;
 
-    const { audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg, scrollDown } = this.props;
+    const { audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg, scrollDown, historyState = {} } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -248,6 +281,7 @@ class AudioPlayer extends Component {
     </div> : <div></div>;
 
     const scrollDownClass = scrollDown ? ' ' + styles.scrollDown : '';
+    const loadingClass = loading ? ' ' + styles.loading : '';
 
     return (
       <div className={styles.audioPlayer + scrollDownClass}>
@@ -285,17 +319,17 @@ class AudioPlayer extends Component {
               </div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
-              <div className={styles.previous + previousEmpty} onClick={this.previousLesson.bind(this)}></div> 
+              <div className={styles.previous + previousEmpty} onClick={() => this.previousLesson.call(this)}></div> 
             </div>
             <div className={styles.cell}>
-              <div className={styles.playOrPause} ref={`playOrPause`} onClick={this.setPlaying.bind(this)}>
+              <div className={styles.playOrPause + loadingClass} ref={`playOrPause`} onClick={this.setPlaying.bind(this)}>
                 <div className={styles.inner + playClass}>
                   <div className={styles.borderSolid}></div>
                 </div>
               </div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
-              <div className={styles.next + nextEmpty} onClick={this.nextLesson.bind(this)}></div> 
+              <div className={styles.next + nextEmpty} onClick={() => this.nextLesson.call(this)}></div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
               <div className={styles.next15} onClick={() => this.skip.call(this, 15)}>
@@ -306,15 +340,18 @@ class AudioPlayer extends Component {
           </div>
           { countDownDom }
         </div>
-        <ReactPlayer className={styles.player} key={'player'}
-          ref={`player`}
-          url={audioUrl}
-          playing={playing}
-          playsinline={true}
-          onProgress={this.onProgress.bind(this)}
-          onDuration={this.onDuration.bind(this)}
+        <ReactAudioPlayer
+          src={audioUrl}
+          ref={'player'}
+          listenInterval={1000}
+          autoPlay={historyState.playing || historyState.goOn}
+          preload={'auto'}
+          onListen={this.onListen.bind(this)}
+          onCanPlay={this.onCanPlay.bind(this)}
+          onCanPlayThrough={this.onCanPlay.bind(this)}
           onError={this.onError.bind(this)}
           onEnded={this.onEnded.bind(this)}
+          onLoadedMetadata={this.onLoadedMetadata.bind(this)}
         />
       </div>
     )

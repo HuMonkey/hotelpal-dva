@@ -32,7 +32,7 @@ class PopupCourse extends Component {
                 <div className={styles.title}>{course.title}</div>
                 <div className={styles.infos}>
                   {
-                    course.tag.split(',').map((d, i) => {
+                    course.tag && course.tag.split(',').map((d, i) => {
                       return <div className={styles.tag} key={i}>{d}</div>
                     })
                   }
@@ -41,11 +41,11 @@ class PopupCourse extends Component {
               </div>
             </div>
             <div className={styles.main}>
-              <div className={styles.desc}>
+              {course.speaker && <div className={styles.desc}>
                 <div className={styles.label}>主讲人</div>
                 <div className={styles.speaker}>{course.speaker.nick}<span>{course.speaker.company} {course.speaker.title}</span></div>
                 <div className={styles.text} dangerouslySetInnerHTML={createMarkupSpeaker()}></div>
-              </div>
+              </div>}
               <div className={styles.desc}>
                 <div className={styles.label}>课程介绍</div>
                 <div className={styles.text} dangerouslySetInnerHTML={createMarkupIntroduce()}></div>

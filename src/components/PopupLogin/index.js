@@ -102,7 +102,7 @@ class PopupLogin extends Component {
   }
 
   render() {
-    const { closePopup } = this.props;
+    const { closePopup, goback } = this.props;
     const { disabled, btnText } = this.state;
 
     const disabledClass = disabled ? ' ' + styles.disabled : '';
@@ -110,7 +110,7 @@ class PopupLogin extends Component {
     return (
       <div className={styles.popupLogin}>
         <div className={styles.content}>
-          <Icon type="left" size={`large`} className={styles.back} />
+          { goback && <Icon type="left" size={`large`} className={styles.back} onClick={goback}/> }
           <Icon type="close" size={`large`} className={styles.close} onClick={closePopup} />
           <div>
             <div className={styles.title}>快捷登录</div>

@@ -323,7 +323,7 @@ const dispatchWechatShare = function (dict, dispatch, ifAudioAutoPlay) {
           // 如果是 ios 手机并且需要自动播放
           if (ua.iOS) {
             let audioEl = document.getElementsByTagName('audio')[0];
-            if (audioEl.readyState !== 0) {
+            if (!audioEl || audioEl.readyState !== 0) {
               return false;
             }
             if (ifAudioAutoPlay) {

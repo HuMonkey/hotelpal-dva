@@ -63,7 +63,6 @@ class IndexPage extends Component {
   
     const settings = {
       dots: true,
-      infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
       autoplay: true,
@@ -73,6 +72,7 @@ class IndexPage extends Component {
     };
   
     const { courseList, innerCourseList, bannerList } = index;
+    console.log(bannerList);
 
     const liveList = live.list || [];
 
@@ -82,11 +82,11 @@ class IndexPage extends Component {
         <Slider className={styles.slider} {...settings} ref={'slider'}>
           {
             bannerList.map((d, i) => {
-              return <img 
-                src={d.bannerImg} 
-                key={i} 
+              return <div
+                key={d.bannerOrder} 
                 onTouchEnd={(event) => this.onTouchEnd.call(this, event, d)} 
-                onTouchStart={this.onTouchStart.bind(this)}/>
+                onTouchStart={this.onTouchStart.bind(this)}
+              ><img src={d.bannerImg}/></div>
             })
           }
         </Slider>

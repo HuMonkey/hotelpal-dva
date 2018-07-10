@@ -21,7 +21,7 @@ class Live extends Component {
     this.state = {
       hongbaoShow: false,
       page: 'detail', // detail or chat
-      popup: null, // detail, order, login
+      popup: null, // detail, order, hblogin, orderlogin
       replying: false,
 
       enrollForShow: true,
@@ -75,7 +75,7 @@ class Live extends Component {
 
     if (!userInfo.phone) {
       this.setState({
-        popup: 'login'
+        popup: 'hblogin'
       })
       return false;
     }
@@ -133,6 +133,17 @@ class Live extends Component {
       payload: {},
     })
     this.openHongbao();
+  }
+
+  async closeLoginInOrder() {
+    const { dispatch } = this.props;
+    await dispatch({
+      type: 'common/fetchUserInfo',
+      payload: {},
+    })
+    this.setState({
+      popup: 'order',
+    });
   }
 
   componentDidUpdate (prevProps) {
@@ -199,7 +210,7 @@ class Live extends Component {
     // 没有手机号
     if (!common.userInfo.phone) {
       this.setState({
-        popup: 'login',
+        popup: 'orderlogin',
       });
       return false;
     }
@@ -247,6 +258,12 @@ class Live extends Component {
 
   paySuccessCallback () {
     this.closePopup();
+  }
+
+  gobackLoginInOrder() {
+    this.setState({
+      popup: 'detail',
+    })
   }
 
   render () {
@@ -333,7 +350,8 @@ class Live extends Component {
         {
           popup && <div>
             { popup === 'detail' && <PopupCourse userInfo={userInfo} course={relaCourse} onSubmit={this.onCourseSubmit.bind(this)} closePopup={this.closePopup.bind(this)} /> }
-            { popup === 'login' && <PopupLogin successCallback={this.closeLoginInHongbao.bind(this)} closePopup={this.closePopup.bind(this)} dispatch={dispatch} /> }
+            { popup === 'hblogin' && <PopupLogin successCallback={this.closeLoginInHongbao.bind(this)} closePopup={this.closePopup.bind(this)} dispatch={dispatch} /> }
+            { popup === 'orderlogin' && <PopupLogin successCallback={this.closeLoginInOrder.bind(this)} closePopup={this.closePopup.bind(this)} dispatch={dispatch} goback={this.gobackLoginInOrder.bind(this)} /> }
             { popup === 'order' && <PopupOrder paySuccessCallback={this.paySuccessCallback.bind(this)} dispatch={dispatch} coupon={coupon} course={relaCourse} closePopup={this.closePopup.bind(this)} /> }
           </div>
         }

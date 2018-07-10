@@ -209,11 +209,18 @@ class EnrollPanel extends Component {
     this.setState({
       loginPopupShow: false,
     });
+    message.success('注册成功~');
     await dispatch({
       type: 'common/fetchUserInfo',
       payload: {},
     });
     this.enroll();
+  }
+
+  closePopup() {
+    this.setState({
+      loginPopupShow: false,
+    });
   }
 
   render() {
@@ -313,7 +320,7 @@ class EnrollPanel extends Component {
 
     return (
       <div className={styles.enrollPanel}>
-        { loginPopupShow && <PopupLogin dispatch={dispatch} closePopup={this.loginCallback.bind(this)} /> }
+        { loginPopupShow && <PopupLogin successCallback={this.loginCallback.bind(this)} dispatch={dispatch} closePopup={this.closePopup.bind(this)} /> }
         <Popover placement="top" content={`报名即可帮助XXX获取免费报名资格`} visible={showInvitorTips}>
           <div className={styles.course}>
             <div className={styles.left}>

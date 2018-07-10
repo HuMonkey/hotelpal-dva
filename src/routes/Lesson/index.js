@@ -371,13 +371,14 @@ class Lesson extends Component {
       </div>
     });
 
-    const canHongbao = isCourse && !detail.freeListen && !detail.isGift && detail.redPacketRemained > 0;
+    const fromHongbao = getParam('fromHongbao', location.search);
+    const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
+
+    const canHongbao = isCourse && !fromHongbao && !detail.freeListen && !detail.isGift && detail.redPacketRemained > 0;
     const hongbaoClass = canHongbao ? ' ' + styles.hongbao : '';
 
     const nextLesson = lessonList && lessonList.filter(d => d.id === detail.nextLessonId)[0];
 
-    const fromHongbao = getParam('fromHongbao', location.search);
-    const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
     const isCourseClass = isCourse ? ' ' + styles.course : '';
 
     return (

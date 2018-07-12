@@ -60,6 +60,7 @@ class Course extends Component {
   closePopup () {
     this.setState({
       orderPopupShow: false,
+      loginPopupShow: false,
     })
   }
 
@@ -73,7 +74,6 @@ class Course extends Component {
 
   paySuccessCallback() {
     const { dispatch, course } = this.props;
-    message.info('我在回调里面！！');
     this.setState({
       orderPopupShow: false,
     });
@@ -152,7 +152,7 @@ class Course extends Component {
       <div className={styles.normal}>
         {freeChanceDom}
         { orderPopupShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={detail} paySuccessCallback={this.paySuccessCallback.bind(this)} closePopup={this.closePopup.bind(this)} /> }
-        { loginPopupShow && <PopupLogin dispatch={dispatch} closePopup={this.loginCallback.bind(this)} /> }
+        { loginPopupShow && <PopupLogin successCallback={this.loginCallback.bind(this)} dispatch={dispatch} closePopup={this.closePopup.bind(this)} /> }
         <div className={styles.header}>
           <img src={`${detail.bannerImg[0]}`} />
           <div className={styles.desc}>

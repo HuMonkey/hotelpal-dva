@@ -33,7 +33,7 @@ class Bought extends Component {
         init: true,
       })
       if (!common.userInfo.phone) {
-        history.push({
+        history.replace({
           pathname: '/login',
           search: `?pathname=${encodeURIComponent(location.pathname)}&search=${encodeURIComponent(location.search)}`,
         });

@@ -93,7 +93,6 @@ export default {
               desc,
             }
           } else if (!course.purchased && !detail.freeListen && !fromHongbao) {
-            message.info(1);
             dict = {
               title: course.userName + '：' + course.title,
               link: `${location.origin}/#/lesson/pay/${lessonId}?courseId=${courseId}`,

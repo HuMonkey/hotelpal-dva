@@ -257,6 +257,17 @@ class Live extends Component {
   }
 
   paySuccessCallback () {
+    const { live, dispatch } = this.props;
+    const { liveDetail } = live;
+    const { userInfo } = liveDetail;
+    const newUserInfo = Object.assign({}, userInfo, { relateCoursePurchased: 'Y' });
+    const newLiveDetail = Object.assign({}, liveDetail, { userInfo: newUserInfo });
+    dispatch({
+      type: 'live/save',
+      payload: {
+        liveDetail: newLiveDetail
+      }
+    })
     this.closePopup();
   }
 

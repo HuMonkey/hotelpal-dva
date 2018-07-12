@@ -36,7 +36,7 @@ class CouponItem extends Component {
     if (apply === 'ALL') {
       tips1 = '所有订阅课程';
     } else if (apply === 'PARTICULAR') {
-      tips1 = applyToCourseTitle;
+      tips1 = applyToCourseTitle.map(d => d).join('、');
     }
 
     if (applyToPrice > 0) {
@@ -60,7 +60,7 @@ class CouponItem extends Component {
           </div>
           { mode !== 'select' && <div className={styles.blank}></div> }
           <div className={styles.expire}>有效期至{expired}</div>
-          {/* <div className={styles.tips}>满足使用条件</div> */}
+          {/* { mode !== 'select' && <div className={styles.canuse}>满足使用条件</div> } */}
           { mode !== 'select' && !useless && <Link to={link}><div className={styles.btn}>去使用</div></Link> }
           { mode !== 'select' && useless && <img className={styles.expiredTag} src={uselessTag} /> }
           { 

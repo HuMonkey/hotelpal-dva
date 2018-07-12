@@ -71,8 +71,7 @@ class IndexPage extends Component {
       touchMove: false,
     };
   
-    const { courseList, innerCourseList, bannerList } = index;
-    console.log(bannerList);
+    const { courseList, innerCourseList, bannerList = [] } = index;
 
     const liveList = live.list || [];
 
@@ -185,7 +184,7 @@ class IndexPage extends Component {
                       <div className={styles.title}>{d.title}</div>
                       <div className={styles.who}>
                         <span>{d.userName}</span>
-                        <span className={styles.split}>·</span>
+                        <span className={styles.split}>&nbsp;·&nbsp;</span>
                         <span>{d.company + ' ' + d.userTitle}</span>
                       </div>
                       <div className={styles.slogan}>{d.subtitle}</div>

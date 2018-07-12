@@ -99,7 +99,7 @@ class SysCoupon extends Component {
         tips = '所有订阅专栏可用';
       }
       rp = <div className={styles.rp}>
-        <div className={styles.stitle}>{couponInfo.name}优惠券</div>
+        <div className={styles.stitle}>{couponInfo.name}</div>
         <div className={styles.price}><span>{couponInfo.value / 100}</span>元</div>
         <div className={styles.tips}>{tips}</div>
       </div>;

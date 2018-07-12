@@ -96,6 +96,7 @@ class EnrollPanel extends Component {
         onResult (res) {
           if (res.data.code === 0) {
             message.success('您已经成功帮好友解锁~');
+            helpedTipsShow = true;
             window.history.pushState(null, null, `/#/live/${live.id}`);
           } else {
             message.error('系统出了点问题，请稍后再试~');
@@ -148,6 +149,7 @@ class EnrollPanel extends Component {
     const data = {
       id: live.id
     }
+    const that = this;
     dispatch({
       type: 'live/createPayOrder',
       payload: {
@@ -173,7 +175,7 @@ class EnrollPanel extends Component {
                   }
                 },
                 onResult(res) {
-                  console.log(res);
+                  that.enrollFor();
                 }
               })
               await dispatch({
@@ -321,7 +323,7 @@ class EnrollPanel extends Component {
     return (
       <div className={styles.enrollPanel}>
         { loginPopupShow && <PopupLogin successCallback={this.loginCallback.bind(this)} dispatch={dispatch} closePopup={this.closePopup.bind(this)} /> }
-        <Popover placement="top" content={`报名即可帮助XXX获取免费报名资格`} visible={showInvitorTips}>
+        <Popover placement="top" content={`报名即可帮助好友获取免费报名资格`} visible={showInvitorTips}>
           <div className={styles.course}>
             <div className={styles.left}>
               <div className={styles.tag + statusClass}>

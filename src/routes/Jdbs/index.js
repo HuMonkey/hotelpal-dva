@@ -175,7 +175,7 @@ class Jdbs extends Component {
           { 
             unListenedCount ? <div className={styles.item + ' ' + styles.left} onClick={this.gotoFirstFree.bind(this)}>
               <div className={styles.icon}></div>
-              {unListenedCount}条未听
+              <div className={styles.text}>{unListenedCount}条未听</div>
             </div> : <div className={styles.item + ' ' + styles.left + ' ' + styles.empty}>全部听完</div>
           }
         </div>

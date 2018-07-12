@@ -103,7 +103,6 @@ export default {
             console.log(evt);
             const data = JSON.parse(evt.data);
             if (data.msgType === 'TYPE_USER_MESSAGE') {
-              message.info(evt.data);
               // 评论
               dispatch({
                 type: 'saveComment',

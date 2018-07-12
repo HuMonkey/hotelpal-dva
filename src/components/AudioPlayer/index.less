@@ -111,12 +111,12 @@
             font-size: 0.26666rem;
             overflow: hidden;
             .progress {
-                width: 6.2rem;
+                width: 6rem;
                 display: table;
                 float: left;
                 position: relative;
                 top: 0.16rem;
-                margin-right: 0.1rem;
+                margin-right: 0.4rem;
                 .current, .left {
                     height: 0.4rem;
                     width: 0.8rem;
@@ -130,7 +130,7 @@
                     position: relative;
                     display: table-cell;
                     vertical-align: middle;
-                    padding: 0 0.3rem;
+                    padding: 0 0.26666rem;
                     position: relative;
                     top: 0;
                     :global(.rc-slider-handle) {
@@ -143,7 +143,7 @@
                 }
             }
             .goOn, .speed {
-                margin-right: 0.1rem;
+                margin-right: 0.4rem;
                 margin-top: 0.1rem;
                 float: right;
                 width: 1.2rem;
@@ -158,6 +158,9 @@
                     color: @red;
                     background-image: url('../../assets/goon-red.svg');
                 }
+            }
+            .speed {
+                margin-right: 0;
             }
         }
         .bottom {

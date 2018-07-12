@@ -122,10 +122,7 @@ class PopupOrder extends Component {
 
     const price = (course.price || course.charge) / 100;
 
-    const today = moment();
-    const couponList = coupon.couponList && coupon.couponList.filter(d => {
-      return today < moment(d.validity);
-    })
+    const couponList = this.selectCoupon();
 
     const card = coupon.card;
     const cardCanUse = courseMemberCardUseful(card);
@@ -174,14 +171,37 @@ class PopupOrder extends Component {
     })
   }
 
+  selectCoupon() {
+    const { course, coupon } = this.props;
+    const today = moment();
+    const price = (course.price || course.charge) / 100;
+    return coupon.couponList && coupon.couponList.filter(d => {
+      // 是否过期
+      const expired = today > moment(d.validity);
+      // 如果是特定课程专用
+      let particular = true;
+      if (d.detail.apply === 'PARTICULAR') {
+        const courses = d.detail.applyToCourse.split(',');
+        if (courses.indexOf(course.id.toString()) === -1) {
+          particular = false;
+        }
+      }
+      // 如果是满多少才能用
+      let moreThanleast = true;
+      if (d.detail.applyToPrice) {
+        if (price < d.detail.applyToPrice) {
+          moreThanleast = false;
+        }
+      }
+      return !expired && particular && moreThanleast;
+    })
+  }
+
   render() {
     const { couponShow } = this.state;
     const { closePopup, course, coupon } = this.props;
 
-    const today = moment();
-    let couponList = coupon.couponList && coupon.couponList.filter(d => {
-      return today < moment(d.validity);
-    })
+    let couponList = this.selectCoupon();
 
     const card = coupon.card;
     let cardCanUse = courseMemberCardUseful(card);

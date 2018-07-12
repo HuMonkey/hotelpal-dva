@@ -227,12 +227,14 @@ class Lesson extends Component {
 
     const isCourse = location.pathname.split('/')[2] !== 'free';
     const isHongbao = location.pathname.indexOf('hongbao') > -1;
+    const fromHongbao = getParam('fromHongbao', location.search);
+    const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
 
     if (!detail || (isCourse && !courseDetail)) {
       return <div className={styles.normal} ref={`normal`}></div>
     }
 
-    if (courseDetail && !courseDetail.purchased && !detail.freeListen) {
+    if (courseDetail && !fromHongbao && !courseDetail.purchased && !detail.freeListen) {
       return (
         <div className={styles.normal} ref={`normal`}>
           {
@@ -370,9 +372,6 @@ class Lesson extends Component {
         </div>
       </div>
     });
-
-    const fromHongbao = getParam('fromHongbao', location.search);
-    const fromHongbaoClass = fromHongbao ? ' ' + styles.fromHongbao : '';
 
     const canHongbao = isCourse && !fromHongbao && !detail.freeListen && !detail.isGift && detail.redPacketRemained > 0;
     const hongbaoClass = canHongbao ? ' ' + styles.hongbao : '';

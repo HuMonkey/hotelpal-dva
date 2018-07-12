@@ -99,25 +99,29 @@ class Login extends Component {
 
   async jump() {
     const { history, location, dispatch } = this.props;
-    const pathname = decodeURIComponent(getParam('pathname', location.search));
-    const search = decodeURIComponent(getParam('search', location.search));
-
+    const pathname = decodeURIComponent(getParam('pathname', location.search) || '');
+    const search = decodeURIComponent(getParam('search', location.search) || '');
     await dispatch({
       type: 'common/fetchUserInfo',
       payload: {},
       onResult() {},
     })
-
-    history.push({
-      pathname, search
-    });
+    if (!pathname) {
+      history.push({
+        pathname: '/'
+      })
+    } else {
+      history.push({
+        pathname, search
+      });
+    }
   }
 
   async submitVerify () {
     const phone = this.refs.phone.value;
     const code = this.refs.verify.value;
 
-    const { dispatch } = this.props;
+    const { dispatch, location } = this.props;
     let result;
     await dispatch({
       type: 'common/verifyPhone',
@@ -132,8 +136,8 @@ class Login extends Component {
     });
     if (result.data.code === 0) {
       // 邀请注册
-      if (getParam('invited') == 1) {
-        const nonce = getParam('nonce')
+      if (getParam('invited', location.search) == 1) {
+        const nonce = getParam('nonce', location.search)
         await dispatch({
           type: 'common/newInvitedUser',
           payload: {

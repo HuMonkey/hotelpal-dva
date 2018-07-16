@@ -20,6 +20,7 @@
     .main {
       width: 100%;
       padding-left: 1.03333rem;
+      padding-right: 0.8rem;
       margin-bottom: 0.26666rem;
       text-align: left;
       .name {
@@ -31,26 +32,28 @@
         word-break: break-all;
         color: @black2;
         font-size: 0.32rem;
-        margin-top: 0.13333rem;
+        // margin-top: 0.13333rem;
         position: relative;
         display: inline-block;
         .inner {
           width: 100%;
           height: 100%;
           border-radius: 4px;
-          box-shadow: -3px 3px 7px rgba(0,0,0,.07);
           background: white;
           position: relative;
-          padding: 0.26666rem;
+          padding: 0.18rem 0.26666rem;
         }
         .arrow {
           left: -6px;
-          top: 8px;
-          width: 0; 
-          height: 0; 
-          border-top: 16px solid white; 
-          border-left: 10px solid transparent;
+          top: 0.14rem;
           position: absolute;
+          width:0px;
+          height:0px;
+          border-bottom: 10px solid transparent;  
+          border-top: 10px solid transparent; 
+          border-right: 10px solid white; 
+          font-size: 0px;
+          line-height: 0px;
         }
       }
     }
@@ -61,6 +64,7 @@
       }
       .main {
         padding-left: 0;
+        padding-left: 0.8rem;
         padding-right: 1.03333rem;
         text-align: right;
         .name {
@@ -74,10 +78,9 @@
           }
           .arrow {
             left: auto;
-            right: -6px;
-            border-top: 16px solid @red; 
-            border-right: 10px solid transparent;
-            border-left: none;
+            right: -0.14rem;
+            border-right: none; 
+            border-left: 10px solid @red; 
           }
         }
       }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import styles from './index.less';
 
-import { CourseContent } from '../../components';
+import { CourseContent, Navs } from '../../components';
 
 class CourseDetail extends Component {
   constructor (props) {
@@ -19,6 +19,7 @@ class CourseDetail extends Component {
 
     return (
       <div className={styles.normal}>
+        <Navs/>
         <CourseContent course={detail} isDetail={true}></CourseContent>
       </div>
     );

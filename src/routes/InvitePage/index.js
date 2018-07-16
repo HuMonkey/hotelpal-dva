@@ -7,7 +7,7 @@ import isMobilePhone from 'validator/lib/isMobilePhone';
 
 import moneyIcon from '../../assets/invite-money.svg';
 import couponEmpty from '../../assets/coupon-empty.png';
-import { BackBtn } from '../../components';
+import { BackBtn, Navs } from '../../components';
 import { getParam } from '../../utils';
 
 class InvitePage extends Component {
@@ -218,6 +218,7 @@ class InvitePage extends Component {
       </div>;
 
     return <div className={styles.normal}>
+      <Navs />
       { result === 'got' && gotDom }
       { result === 'old' && oldDom }
       { result === 'new' && newDom }

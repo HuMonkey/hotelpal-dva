@@ -7,6 +7,7 @@ import hongbaoPng from '../../assets/hongbao.png';
 import { getParam } from '../../utils';
 
 import { message } from 'antd';
+import { Navs } from '../../components';
 
 class Hongbao extends Component {
   constructor (props) {
@@ -58,6 +59,7 @@ class Hongbao extends Component {
 
     return (
       <div className={styles.normal}>
+        <Navs />
         {
           detail.redPacketRemained !== 0 && <div>
             <div className={styles.aavater}>

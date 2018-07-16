@@ -1,27 +1,50 @@
 import React, {Component} from 'react';
-import { Link } from 'dva/router';
 import styles from './index.less';
 
 import moment from 'moment';
-import { formatNum } from '../../utils';
-
-import 'video.js/dist/video-js.css';
-import videojs from 'video.js';
-import 'videojs-contrib-hls';
+import ReactHLS from 'react-hls';
+import { formatNum, ua } from '../../utils';
+import { message } from 'antd';
 
 import defaultPPT from '../../assets/live-banner-default.png';
 
 class LivePlayer extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      beginShow: false,
+    };
   }
 
   componentDidMount() {
-    // videojs('my-video');
+    // loadScript('//g.alicdn.com/de/prismplayer/2.7.1/aliplayer-min.js', () => {
+    //   const options = {
+    //     id: 'J_prismPlayer',
+    //     width: '100%',
+    //     autoplay: false,
+    //     isLive: true,
+    //     playsinline: true,
+    //     source: '//lv.hotelpal.cn/app/stream.m3u8',
+    //     useH5Prism: true,
+    //     extraInfo: {
+    //       liveRetry: 1, 
+    //     }
+    //   }
+    //   new Aliplayer(options, function () {
+    //     console.log('播放器创建好了。')
+    //   });
+    // })
+  }
+
+  autoPlay() {
+    document.getElementById('myvideo').play();
+    this.setState({
+      beginShow: true,
+    })
   }
 
   render() {
+    const { beginShow } = this.state;
     const { live, now, PPTImg, userInfo, watchingPeopleNum } = this.props;
 
     const openTime = moment(live.openTime);
@@ -58,24 +81,34 @@ class LivePlayer extends Component {
         <div className={styles.people}><span>累计{live.totalPeople}人收看</span></div>
       </div>
     } else if (status === 'ONGOING') {
+      function createMarkupVideo() { 
+        return { 
+          __html: `
+            <video 
+              webkit-playsinline="true"
+              x-webkit-airplay="true"
+              preload="auto"
+              x5-video-player-type="h5"
+              x5-video-player-fullscreen="true"
+              x5-playsinline="true"
+              playsinline="true"
+              src="//lv.hotelpal.cn/app/stream.m3u8"
+              id="myvideo"
+            >
+              <p>你的浏览器不支持 <code>video</code> 标签.</p>
+            </video>
+          ` 
+      }; 
+    };
+
       if (userInfo.enrolled === 'Y' || userInfo.liveVip === 'Y') {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
             <img src={PPTImg || defaultPPT} />
           </div>
-          <video 
-            ref={`player`} 
-            id="my-video" 
-            className="video-js vjs-default-skin" 
-            controls 
-            width="100%" 
-            height="100%"
-            preload="load" 
-            playsInline="true"
-            autoPlay="autoplay"
-          >
-            <source src="//lv.hotelpal.cn/app/stream.m3u8" type='application/x-mpegURL' />
-          </video>
+          {/* <ReactHLS url={'//lv.hotelpal.cn/app/stream.m3u8'} /> */}
+          <div className={styles.video} key="video" dangerouslySetInnerHTML={createMarkupVideo()}></div>
+          { !ua.iOS && !beginShow && <div className={styles.btn} onClick={this.autoPlay.bind(this)}>进入直播</div>  }
           <div className={styles.people}><span>{watchingPeopleNum}人正在收看</span></div>
         </div>
       } else {

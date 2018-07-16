@@ -16,6 +16,7 @@ export default {
   state: {
     detail: null,
     courseDetail: null,
+    nextDetail: null,
   },
 
   subscriptions: {
@@ -74,7 +75,7 @@ export default {
             desc = desc.slice(0, 30) + '...';
           }
           dict = {
-            title: course.userName + '：' + detail.title + '「红包分享」',
+            title: '「红包分享」' + course.userName + '：' + detail.title,
             link: `${location.origin}/#/hb/${nonce}?courseId=${courseId}&lessonId=${detail.id}`,
             imgUrl: course.headImg,
             desc
@@ -148,6 +149,25 @@ export default {
           },
         });
         onResult(null)
+      }
+    },
+    * fetchNextLessonDetail({
+      payload,
+      onResult
+    }, {
+      call,
+      put
+    }) { // eslint-disable-line
+      const res = yield call(lessonService.fetchLessonDetail, payload.data || {});
+      if (res.data.code === 0) {
+        const detail = res.data.data;
+        yield put({
+          type: 'save',
+          payload: {
+            nextDetail: detail
+          },
+        });
+        onResult(res.data.data)
       }
     },
     * fetchCourseDetail({

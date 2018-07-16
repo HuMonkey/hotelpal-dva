@@ -35,7 +35,7 @@ class UselessCoupon extends Component {
 
     const today = moment();
     const couponList = coupon.couponList && coupon.couponList.filter(d => {
-      return today > moment(d.validity);
+      return today > moment(d.validity) || d.used === 'Y';
     })
 
     const courseMemberUseless = card.exists === 'Y' && (!card.leftTimes || today > moment(card.validity))
@@ -56,7 +56,7 @@ class UselessCoupon extends Component {
               liveMemberUseless && <MemberCard type={'live'} data={liveVip} />
             }
             {
-              couponList.reverse().map((d, i) => {
+              couponList.map((d, i) => {
                 return <CouponItem key={i} data={d} />
               })
             }

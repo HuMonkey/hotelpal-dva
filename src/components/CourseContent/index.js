@@ -16,6 +16,12 @@ class CourseContent extends Component {
     })
   }
 
+  close () {
+    this.setState({
+      overflow: true,
+    })
+  }
+
   render() {
     const { overflow } = this.state;
     const { course, isDetail } = this.props;
@@ -43,7 +49,7 @@ class CourseContent extends Component {
       <div className={styles.label}>主讲人</div>
       <div className={styles.name}>
         <span className={styles.userName}>{ course.userName }</span>
-        <span className={styles.userTitle}>{ course.company + '·' + course.userTitle }</span>
+        <span className={styles.userTitle}>{ course.company}<span className={styles.point}>·</span>{course.userTitle }</span>
       </div>
       <div className={styles.intro} dangerouslySetInnerHTML={createMarkupTeacher()}></div>
       <div className={styles.hr}></div>
@@ -56,6 +62,7 @@ class CourseContent extends Component {
           <div className={styles.label}>课程介绍</div>
           <div className={styles.intro + overflowClass} dangerouslySetInnerHTML={createMarkupIntroduce()}></div>
           {!isDetail && overflow && <div className={styles.open} onClick={this.open.bind(this)}>{'查看完整介绍'}</div>}
+          {!isDetail && !overflow && <div className={styles.open} onClick={this.close.bind(this)}>{'收起完整介绍'}</div>}
           <div className={styles.hr}></div>
         </div>
         <div className={styles.block + ' ' + styles.who}>

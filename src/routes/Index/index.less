@@ -109,20 +109,14 @@
               float: left;
               background-size: cover;
               background-repeat: no-repeat;
-              &::before {
-                content: '·';
-                line-height: 0.48rem;
-                margin: 0 0.1rem 0 0.2rem;
-                font-weight: bold;
-              }
               &.ONGOING {
-                background-image: url('../../assets/kuang-red.svg');
+                background-image: url('../../assets/tag-ing.svg');
               }
               &.ENROLLING {
-                background-image: url('../../assets/kuang-orange.svg');
+                background-image: url('../../assets/tag-before.svg');
               }
               &.ENDED {
-                background-image: url('../../assets/kuang-grey.svg');
+                background-image: url('../../assets/tag-end.svg');
               }
             }
             .time {
@@ -145,13 +139,17 @@
           position: relative;
           margin-top: 0.4rem;
           line-height: 1;
-          .right {
+          .rightIng, .rightEnd {
             position: absolute;
             right: 0;
             top: 0;
-            width: 0.8rem;
-            color: @red;
-            font-size: 0.8rem;
+            width: 0.853333rem;
+            height: 0.853333rem;
+            background-image: url(../../assets/live-play-ing.svg);
+            background-size: 100% 100%;
+          }
+          .rightEnd {
+            background-image: url(../../assets/live-play-end.svg);
           }
           .arrowRight {
             position: absolute;
@@ -177,12 +175,10 @@
           }
         }
       }
-      a:last-child {
-        .item {
-          border-bottom: none;
-          margin-bottom: 0;
-          padding: 0;
-        }
+      .item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding: 0;
       }
     }
   }
@@ -292,6 +288,7 @@
               margin-top: .54rem;
               color: @black1;
               font-size: .32rem;
+              height: .32rem;
             }
             .bottom {
               margin-top: .18rem;

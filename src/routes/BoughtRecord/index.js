@@ -4,6 +4,7 @@ import { Link } from 'dva/router';
 import styles from './index.less';
 
 import { dispatchWechatShare } from '../../utils/';
+import { Navs } from '../../components';
 
 class BoughtRecord extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class BoughtRecord extends Component {
   
     return (
       <div className={styles.normal}>
+        <Navs />
         {
           boughtList && boughtList.map((d, i) => {
             return <Link key={i} to={`/course/${d.id}`}>

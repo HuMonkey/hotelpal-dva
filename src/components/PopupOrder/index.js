@@ -4,6 +4,7 @@ import styles from './index.less';
 
 import { Icon, message } from 'antd';
 import moment from 'moment';
+import NP from 'number-precision'
 
 import PopupCoupon from '../PopupCoupon/';
 import { courseMemberCardUseful, strip } from '../../utils';
@@ -54,6 +55,7 @@ class PopupOrder extends Component {
       const data = {
         id: course.id
       }
+      console.log(1);
       if (couponSelected && couponSelected !== '不使用') {
         data.couponId = couponSelected.id;
       }
@@ -137,10 +139,12 @@ class PopupOrder extends Component {
     } else if (couponList.length > 0) {
       // 优先用面额最大的优惠券
       const couponMoneys = couponList.map(d => d.value);
-      maxDiscount = Math.max(...couponMoneys) / 100 || 0;
-      couponSelected = couponList.find(d => d.value === maxDiscount * 100);
+      maxDiscount = Math.max(...couponMoneys) || 0;
+      couponSelected = couponList.find(d => {
+        return d.value === maxDiscount
+      });
+      maxDiscount = maxDiscount / 100;
     }
-    console.log(222, couponSelected);
     this.setState({
       couponSelected, maxDiscount
     })
@@ -177,7 +181,8 @@ class PopupOrder extends Component {
     const price = (course.price || course.charge) / 100;
     return coupon.couponList && coupon.couponList.filter(d => {
       // 是否过期
-      const expired = today > moment(d.validity);
+      const expired = d.validityType !== 'FIXED_DAYS' && today > moment(d.validity);
+      const used = d.used === 'Y';
       // 如果是特定课程专用
       let particular = true;
       if (d.detail.apply === 'PARTICULAR') {
@@ -189,11 +194,18 @@ class PopupOrder extends Component {
       // 如果是满多少才能用
       let moreThanleast = true;
       if (d.detail.applyToPrice) {
-        if (price < d.detail.applyToPrice) {
+        if (price < d.detail.applyToPrice / 100) {
           moreThanleast = false;
         }
       }
-      return !expired && particular && moreThanleast;
+      // 如果是注册红包，判断是否满99
+      let regUserful = true;
+      if (d.type === 'COURSE_REG_INVITE' || d.type === 'COURSE_REG') {
+        if (price < 99) {
+          regUserful = false;
+        }
+      }
+      return !expired && particular && moreThanleast && regUserful && !used;
     })
   }
 
@@ -216,11 +228,14 @@ class PopupOrder extends Component {
 
     const { couponSelected, maxDiscount } = this.state;
 
-    const total = price - maxDiscount > 0 ? strip(price - maxDiscount) : 0;
+    const total = price - maxDiscount > 0 ? NP.minus(price || 0, maxDiscount || 0) : 0;
 
     return (
       <div className={styles.PopupOrder}>
-        { couponShow && <PopupCoupon selectCallback={this.select.bind(this)} coupon={coupon} couponSelected={couponSelected} closePopup={this.closeCoupon.bind(this)}/>}
+        { couponShow && <PopupCoupon selectCallback={this.select.bind(this)} coupon={{
+          ...coupon,
+          couponList
+        }} couponSelected={couponSelected} closePopup={this.closeCoupon.bind(this)}/>}
         { 
           !couponShow && <div className={styles.content}>
             {/* <Icon type="left" size={`large`} className={styles.back} onClick={closePopup}/> */}

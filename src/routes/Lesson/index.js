@@ -6,7 +6,7 @@ import styles from './index.less';
 import { message } from 'antd';
 import $ from 'jquery';
 
-import { AudioPlayer, ShareTips, PopupOrder } from '../../components';
+import { AudioPlayer, ShareTips, PopupOrder, Navs } from '../../components';
 import { formatNum, getAudioLength, formatTime, getParam, strip, throttle } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
@@ -44,10 +44,16 @@ class Lesson extends Component {
   }
 
   onScroll() {
+    const { location } = this.props;
+    const fromHongbao = getParam('fromHongbao', location.search);
+
     const scrollDown = this.state.scrollDown;
     const width = document.body.offsetWidth;
     const scrollTop = this.refs.normal.scrollTop;
-    if (scrollTop >= width / 10 * (1.173333 + 5.46666)) {
+
+    const headerHeight = fromHongbao ? width / 10 * 3.34 : width / 10 * (1.173333 + 5.46666)
+
+    if (scrollTop >= headerHeight) {
       if (scrollDown === true) {
         return false;
       }
@@ -74,6 +80,12 @@ class Lesson extends Component {
   openAll () {
     this.setState({
       showAll: true,
+    })
+  }
+
+  closeAll () {
+    this.setState({
+      showAll: false,
     })
   }
 
@@ -223,7 +235,7 @@ class Lesson extends Component {
       return <div className={styles.normal} ref={`normal`}></div>
     }
 
-    const { detail, courseDetail } = lesson;
+    const { detail, courseDetail, nextDetail } = lesson;
 
     const isCourse = location.pathname.split('/')[2] !== 'free';
     const isHongbao = location.pathname.indexOf('hongbao') > -1;
@@ -237,6 +249,7 @@ class Lesson extends Component {
     if (courseDetail && !fromHongbao && !courseDetail.purchased && !detail.freeListen) {
       return (
         <div className={styles.normal} ref={`normal`}>
+          <Navs/>
           {
             orderShow && <PopupOrder 
               paySuccessCallback={this.paySuccessCallback.bind(this)} 
@@ -376,7 +389,8 @@ class Lesson extends Component {
     const canHongbao = isCourse && !fromHongbao && !detail.freeListen && !detail.isGift && detail.redPacketRemained > 0;
     const hongbaoClass = canHongbao ? ' ' + styles.hongbao : '';
 
-    const nextLesson = lessonList && lessonList.filter(d => d.id === detail.nextLessonId)[0];
+    const nextLesson = isCourse ? lessonList && lessonList.filter(d => d.id === detail.nextLessonId)[0]
+      : detail.nextLessonId;
 
     const isCourseClass = isCourse ? ' ' + styles.course : '';
 
@@ -411,13 +425,14 @@ class Lesson extends Component {
         <div className={styles.paid + fromHongbaoClass + isCourseClass} ref={`paid`}>
           <div className={styles.audioPlayer}>
             <AudioPlayer 
-              scrollDown={!isCourse && scrollDown}
+              scrollDown={(!isCourse || fromHongbao) && scrollDown}
               free={detail.freeListen} 
               fromHongbao={fromHongbao || detail.isGift} 
               dispatch={dispatch} 
               lid={detail.id} 
-              nextLesson={nextLesson && nextLesson.title} 
+              nextLesson={nextLesson} 
               courseId={courseDetail && courseDetail.id} 
+              nextDetail={nextDetail}
               isCourse={isCourse} 
               audioUrl={detail.audio} 
               previous={detail.previousLessonId} 
@@ -429,6 +444,8 @@ class Lesson extends Component {
             </AudioPlayer>
           </div>
           <div className={styles.main} ref={`main`}>
+            {!isCourse && scrollDown && <div className={styles.interCourseBlank}></div>}
+            {fromHongbao && scrollDown && <div className={styles.fromHongbaoBlank}></div>}
             <div className={styles.courseTitle}>{isCourse && (formatNum(detail.lessonOrder))}{isCourse && <span>&nbsp;|&nbsp;</span>}{detail.title}</div>
             <div className={styles.infos}>
               <div className={styles.time}>{detail.publishTime} 发布</div>
@@ -454,6 +471,7 @@ class Lesson extends Component {
               >
               </div>
               { !showAll && <div className={styles.open} onClick={this.openAll.bind(this)}>查看完整介绍</div> }
+              { showAll && <div className={styles.open} onClick={this.closeAll.bind(this)}>收起完整介绍</div> }
               {
                 isCourse && <div>
                   <div className={styles.hr}></div>
@@ -492,6 +510,7 @@ class Lesson extends Component {
                   </div>
                 </div>
               }
+              <div className={styles.discussBlank}></div>
               <div className={styles.discuss}>
                 {
                   eliteCommentDom.length > 0 && <div className={styles.good}>

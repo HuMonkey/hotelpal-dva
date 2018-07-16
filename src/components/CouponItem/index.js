@@ -16,12 +16,12 @@ class CouponItem extends Component {
   render() {
     const { mode, selected, border, data } = this.props;
 
-    const { validity, value, detail, name } = data;
+    const { validity, value, detail, name, type, used } = data;
 
     const expired = moment(validity).format('YYYY-MM-DD');
 
     const today = moment();
-    const useless = today > moment(validity);
+    const useless = today > moment(validity) || used === 'Y';
 
     if (mode === 'select') {
       // TODO
@@ -32,15 +32,21 @@ class CouponItem extends Component {
 
     let tips1 = '', tips2 = '';
     const { apply, applyToCourseTitle, applyToPrice } = detail;
-    const detailType = detail.type;
     if (apply === 'ALL') {
       tips1 = '所有订阅课程';
     } else if (apply === 'PARTICULAR') {
       tips1 = applyToCourseTitle.map(d => d).join('、');
+    } else if (type === 'COURSE_REG_INVITE' || type === 'COURSE_REG') {
+      tips1 = '所有订阅课程';
     }
 
     if (applyToPrice > 0) {
       tips2 = `满${applyToPrice}`
+    }
+
+    // 邀请注册红包
+    if (type === 'COURSE_REG_INVITE' || type === 'COURSE_REG') {
+      tips2 = `满${99}`
     }
 
     // 跳转链接
@@ -50,7 +56,7 @@ class CouponItem extends Component {
       <div className={styles.CouponItem + borderClassName + uselessClassName}>
         <div className={styles.bg}>
           <div className={styles.money}>￥<span>{value / 100}</span></div>
-          <div className={styles.desc}>{name || '没名字的红包'}</div>
+          <div className={styles.desc}>{name}</div>
         </div>
         <div className={styles.right}>
           <div className={styles.top}>

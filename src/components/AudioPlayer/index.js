@@ -191,7 +191,7 @@ class AudioPlayer extends Component {
       payload: {},
       onResult () {}
     })
-    let search = isCourse ? `?courseId=${courseId}` : '';
+    let search = isCourse ? `?courseId=${courseId}` : '?';
     if (speedIndex) {
       search += '&speedIndex=' + speedIndex
     }
@@ -212,16 +212,17 @@ class AudioPlayer extends Component {
       payload: {},
       onResult () {}
     })
-    let search = isCourse ? `?courseId=${courseId}` : '';
+    let search = isCourse ? [`courseId=${courseId}`] : [''];
     if (goOn) {
-      search += '&goOn=1'
+      search.push('goOn=1')
     }
     if (speedIndex) {
-      search += '&speedIndex=' + speedIndex
+      search.push('speedIndex=' + speedIndex)
     }
     if (playing) {
-      search += '&playing=1'
+      search.push('playing=1')
     }
+    search = `?${search.join('&')}`
     location.href = `/?t=${(new Date()).valueOf()}#/lesson/${isCourse ? 'pay' : 'free'}/${next}${search}`;
   }
 
@@ -242,10 +243,26 @@ class AudioPlayer extends Component {
     message.success('ready');
   }
 
+  componentDidMount() {
+    const { nextLesson, dispatch } = this.props;
+    if (isNaN(+nextLesson) || !nextLesson) {
+      return false;
+    }
+    dispatch({
+      type: 'lesson/fetchNextLessonDetail',
+      payload: {
+        data: {
+          id: +nextLesson,
+        }
+      },
+      onResult(res) {}
+    });
+  }
+
   render() {
     const { played, duration, playedSeconds, goOn, playing, speedIndex, loading } = this.state;
 
-    const { audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg, scrollDown, historyState = {} } = this.props;
+    const { nextDetail, audioUrl, previous, next, nextLesson, fromHongbao, free, isCourse, coverImg, scrollDown, historyState = {} } = this.props;
 
     let playMinute = Math.floor(playedSeconds / 60);
     playMinute = playMinute < 10 ? '0' + playMinute : playMinute;
@@ -276,7 +293,7 @@ class AudioPlayer extends Component {
     }
     const countDownDom = next && duration && leftDuration < 16 && goOn && playing ? <div className={styles.countDown}>
       <div className={styles.tips}>{ leftDuration }s后将自动为你播放</div>
-      <div className={styles.lessonTitle}>{ nextLesson || '下一节课' }</div>
+      <div className={styles.lessonTitle}>{ (nextLesson && nextLesson.title) || (nextDetail && nextDetail.title) }</div>
       <div className={styles.btn} onClick={this.setGoOn.bind(this)}>取消自动播放</div>
     </div> : <div></div>;
 
@@ -285,7 +302,6 @@ class AudioPlayer extends Component {
 
     return (
       <div className={styles.audioPlayer + scrollDownClass}>
-        {scrollDown && <div className={styles.blank}></div>}
         { 
           !isCourse && !scrollDown && <div>
             <Link to="/jdbs"><div className={styles.goback}>
@@ -299,7 +315,7 @@ class AudioPlayer extends Component {
           </div>
         }
         <div className={styles.wrapper}>
-          { fromHongbao && !free ? <img src={hongbaoGot} className={styles.hongbaoGot} /> : null }
+          { fromHongbao && !scrollDown && !free ? <img src={hongbaoGot} className={styles.hongbaoGot} /> : null }
           <div className={styles.top}>
             <div className={styles.progress}>
               <div className={styles.current}>{playMinute}:{playSecond}</div> 

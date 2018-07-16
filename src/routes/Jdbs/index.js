@@ -5,6 +5,7 @@ import styles from './index.less';
 
 import banner from '../../assets/jdbs-banner.png';
 import { getAudioLength, throttle, dispatchWechatShare, isIphoneX } from '../../utils';
+import { Navs } from '../../components';
 
 class Jdbs extends Component {
   constructor (props) {
@@ -116,6 +117,7 @@ class Jdbs extends Component {
   
     return (
       <div className={styles.normal + iphoneXClass} ref={`jdbs`}>
+        <Navs />
         <div className={styles.header}>
           <img src={banner} />
         </div>

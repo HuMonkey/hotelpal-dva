@@ -29,7 +29,7 @@ export default {
           payload: {
             data: {
               start: 0,
-              n: 4,
+              n: 10,
               order: 'desc',
             }
           },

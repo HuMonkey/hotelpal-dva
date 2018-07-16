@@ -6,7 +6,7 @@ import styles from './index.less';
 import cross from '../../assets/cross.png';
 import { message } from 'antd';
 import { formatNum, getAudioLength, courseMemberCardUseful } from '../../utils';
-import { CourseContent, BackBtn, PopupOrder, PopupLogin } from '../../components';
+import { CourseContent, BackBtn, PopupOrder, PopupLogin, Navs } from '../../components';
 
 class Course extends Component {
   constructor (props) {
@@ -150,11 +150,11 @@ class Course extends Component {
 
     return (
       <div className={styles.normal}>
+        <Navs />
         {freeChanceDom}
         { orderPopupShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={detail} paySuccessCallback={this.paySuccessCallback.bind(this)} closePopup={this.closePopup.bind(this)} /> }
         { loginPopupShow && <PopupLogin successCallback={this.loginCallback.bind(this)} dispatch={dispatch} closePopup={this.closePopup.bind(this)} /> }
-        <div className={styles.header}>
-          <img src={`${detail.bannerImg[0]}`} />
+        <div className={styles.header} style={{ backgroundImage: `url(${detail.bannerImg[0]})` }}>
           <div className={styles.desc}>
             <div className={styles.title}>{detail.userName}</div> 
             <div className={styles.subTitle}>{detail.company} {detail.userTitle}</div>

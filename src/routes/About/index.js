@@ -5,6 +5,7 @@ import styles from './index.less';
 import logo from '../../assets/jiudianbang-big.png';
 import kefu from '../../assets/kefu.jpg';
 import {dispatchWechatShare} from '../../utils';
+import { Navs } from '../../components';
 
 class About extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class About extends Component {
   render() {
     return (
       <div className={styles.normal}>
+        <Navs/>
         <div className={styles.logo}>
           <div className={styles.version}>1.0</div> 
           <img src={logo} />

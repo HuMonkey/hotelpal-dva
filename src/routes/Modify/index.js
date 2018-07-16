@@ -5,6 +5,7 @@ import styles from './index.less';
 
 import { message } from 'antd';
 import { dispatchWechatShare } from '../../utils';
+import { Navs } from '../../components';
 
 class Modify extends Component {
   constructor (props) {
@@ -90,6 +91,7 @@ class Modify extends Component {
 
     return (
       <div className={styles.normal}>
+        <Navs />
         <div className={styles.avater}>
           <div 
             className={styles.img + ' ' + styles.short} 

@@ -14,22 +14,21 @@ class TaComments extends Component {
     };
   }
 
-  switchTa (open) {
+  switchTa () {
+    const { open } = this.state;
     this.setState({
-      open
+      open: !open,
     })
   }
 
   render() {
-
+    
     const { open } = this.state;
     const { comments } = this.props;
 
     const taClass = open ? ' ' + styles.open : '';
 
-    const taComments = open ? comments.slice(0).sort((a, b) => {
-      return a.updateTime - b.updateTime
-    }) : comments.slice(0, 1);
+    const taComments = open ? comments.slice(0) : comments.slice(0, 1);
     const taDom = taComments.map((d, i) => {
       let hasPic = false;
       const pubTime = moment(d.updateTime).format('YYYY-MM-DD hh:mm:ss');
@@ -58,7 +57,7 @@ class TaComments extends Component {
         <div className={styles.left}>
           <div className={styles.title}>
             <div className={styles.name}>
-              <div className={styles.icon}><div className={styles.tri}></div></div>
+              <div className={styles.icon}></div>
               { open && <div className={styles.text}>助教</div>}
               { !open && <div className={styles.text}>助教：<span dangerouslySetInnerHTML={createMarkup()}></span></div>}
             </div>  
@@ -75,9 +74,9 @@ class TaComments extends Component {
         <div>
           {taDom}
         </div>
-        <div className={styles.more}>
-          { open && <Icon onClick={() => this.switchTa.call(this, false)} type="up" /> }
-          { !open && <Icon className={styles.openBtn} onClick={() => this.switchTa.call(this, true)} type="down" /> }
+        <div className={styles.more} onClick={() => this.switchTa.call(this)}>
+          { open && <Icon type="up" /> }
+          { !open && <Icon className={styles.openBtn} type="down" /> }
         </div>
       </div>
     )

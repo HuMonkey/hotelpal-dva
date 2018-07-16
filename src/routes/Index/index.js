@@ -102,34 +102,35 @@ class IndexPage extends Component {
                 const openTime = moment(d.openTime);
                 const openTimeStr = openTime.format('MM-DD');
                 const openTimeWeekStr = openTime.format('dddd');
-                const openTimeHourStr = openTime.format('hh:mm');
+                const openTimeHourStr = openTime.format('HH:mm');
 
                 const count = (d.vipEnrolledTimes || 0) 
                   + (d.purchasedTimes || 0) 
                   + (d.freeEnrolledTimes || 0);
 
-                return <Link key={i} to={`/live/${d.id}`}>
-                  <div className={styles.item}>
-                    <div className={styles.top}>
-                      <div className={styles.left}>
-                        <div className={styles.tag + ' ' + styles[d.status]}>
-                          {liveStatus[d.status]}
-                          {/* <div className={styles.tri}></div> */}
-                        </div>
-                        <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
+                return <div className={styles.item} key={i} onClick={() => {
+                  location.href = `/?t=${(new Date()).valueOf()}#/live/${d.id}`
+                }}>
+                  <div className={styles.top}>
+                    <div className={styles.left}>
+                      <div className={styles.tag + ' ' + styles[d.status]}>
+                        {/* {liveStatus[d.status]} */}
+                        {/* <div className={styles.tri}></div> */}
                       </div>
-                      { d.status === 'ENROLLING' && <div className={styles.right}>已有{count}人报名</div> }
-                      { d.status === 'ONGOING' && <div className={styles.right}>{d.present}人正在收看</div> }
-                      { d.status === 'ENDED' && <div className={styles.right}>累计{d.totalPeople}人收看</div> }
+                      <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
                     </div>
-                    <div className={styles.detail}>
-                      <div className={styles.title}>{d.title}</div>
-                      <div className={styles.infos}>{d.speakerTitle}&nbsp;{d.speakerNick}&nbsp;{d.subTitle}</div>
-                      { d.status !== 'ONGOING' && <div className={styles.arrowRight}></div> }
-                      { d.status === 'ONGOING' && <Icon className={styles.right} type="play-circle" /> }
-                    </div>
+                    { d.status === 'ENROLLING' && <div className={styles.right}>已有{count}人报名</div> }
+                    { d.status === 'ONGOING' && <div className={styles.right}>{d.present}人正在收看</div> }
+                    { d.status === 'ENDED' && <div className={styles.right}>累计{d.totalPeople}人收看</div> }
                   </div>
-                </Link>
+                  <div className={styles.detail}>
+                    <div className={styles.title}>{d.title}</div>
+                    <div className={styles.infos}>{d.speakerTitle}&nbsp;{d.speakerNick}&nbsp;{d.subTitle}</div>
+                    { d.status === 'ENROLLING' && <div className={styles.arrowRight}></div> }
+                    { d.status === 'ONGOING' && <div className={styles.rightIng}></div> }
+                    { d.status === 'ENDED' && <div className={styles.rightEnd}></div> }
+                  </div>
+                </div>
               })
             }
           </div>

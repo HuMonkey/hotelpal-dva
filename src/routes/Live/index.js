@@ -8,10 +8,13 @@ import { Navs, PopupCourse, PopupLogin, PopupOrder,
   IntroPanel, EnrollPanel, TaComments, Comments, LivePlayer } from '../../components';
 
 import { message } from 'antd';
+message.config({
+  duration: 8,
+});
 
 import hbBg from '../../assets/hb-bg.png';
 
-import { getHtmlContent, configWechat, updateWechatShare, formatNum } from '../../utils';
+import { getHtmlContent, configWechat, updateWechatShare, formatNum, ua } from '../../utils';
 
 let interval;
 
@@ -132,7 +135,7 @@ class Live extends Component {
       type: 'common/fetchUserInfo',
       payload: {},
     })
-    this.openHongbao();
+    // this.openHongbao();
   }
 
   async closeLoginInOrder() {
@@ -242,6 +245,8 @@ class Live extends Component {
           const {appid, noncestr, sign, timestamp, url} = res.data.data;
           configWechat(appid, timestamp, noncestr, sign, () => {
             updateWechatShare(dict);
+            const videoEl = document.getElementsByTagName('video')[0];
+            videoEl && videoEl.play();
           });
         }
       }
@@ -324,6 +329,9 @@ class Live extends Component {
         //   hbCountDownStr = '99:59:59';
         // }
       }
+      if (couponInfo.validityType === 'FIXED_DAYS') {
+        couponExpired = false;
+      }
     }
     let couponClassName = '';
     if (couponInfo && couponInfo.acquired === 'Y') {
@@ -332,9 +340,10 @@ class Live extends Component {
     const couponDom = !couponExpired && couponInfo && <div className={styles.hongbao} onClick={this.showHongbao.bind(this)}>
       <div className={styles.inner}>
         <div className={styles.square}>
+          {couponInfo.validityType === 'FIXED_DAYS' && <div className={styles.blank}></div>}
           <div className={styles.money}>￥<span>{couponInfo.value / 100}</span></div>
           <div className={styles.btn + couponClassName}>{ couponInfo.acquired === 'Y' ? '已领' : '抢' }</div>
-          <div className={styles.time}>{hbCountDownStr}</div>
+          { couponInfo.validityType !== 'FIXED_DAYS' && <div className={styles.time}>{hbCountDownStr}</div> }
         </div>
         <div className={styles.bubble1}></div>
         <div className={styles.bubble2}></div>

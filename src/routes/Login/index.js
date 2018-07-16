@@ -8,6 +8,7 @@ import { message } from 'antd';
 
 import logo from '../../assets/jiudianbang-big.png';
 import { getParam, dispatchWechatShare } from '../../utils';
+import { Navs } from '../../components';
 
 class Login extends Component {
   constructor(props) {
@@ -231,6 +232,7 @@ class Login extends Component {
 
     return (
       <div className={styles.normal}>
+        <Navs/>
         { 
           step === 1 && <div className={styles.step + ' ' + styles.first}>
             <div className={styles.logo}>

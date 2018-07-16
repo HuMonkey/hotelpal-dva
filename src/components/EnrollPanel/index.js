@@ -327,8 +327,8 @@ class EnrollPanel extends Component {
           <div className={styles.course}>
             <div className={styles.left}>
               <div className={styles.tag + statusClass}>
-                {liveStatus[status]}
-                <div className={styles.tri}></div>
+                {/* {liveStatus[status]} */}
+                {/* <div className={styles.tri}></div> */}
               </div>
               {
                 status === 'ENROLLING' && <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>

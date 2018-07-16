@@ -7,7 +7,7 @@ import isMobilePhone from 'validator/lib/isMobilePhone';
 
 import moneyIcon from '../../assets/invite-money.svg';
 import couponEmpty from '../../assets/coupon-empty.png';
-import { BackBtn } from '../../components';
+import { BackBtn, Navs } from '../../components';
 import { getParam } from '../../utils';
 
 class SysCoupon extends Component {
@@ -151,6 +151,7 @@ class SysCoupon extends Component {
     </div>;
 
     return <div className={styles.normal}>
+      <Navs/>
       <div className={styles.main}>
         {/* { !result && initDom } */}
         { result === 'got' && gotDom }

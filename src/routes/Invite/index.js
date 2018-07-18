@@ -154,7 +154,7 @@ class Invite extends Component {
         {
           ruleShow && <div className={styles.rules}>
             <div className={styles.main}>
-              <Icon type="close-circle-o" className={styles.close}  onClick={() => {
+              <div className={styles.close} onClick={() => {
                 this.switchRule.call(this, false);
               }}/>
               <div className={styles.stitle}>活动规则</div>

@@ -114,11 +114,13 @@ class Profile extends Component {
               购买记录
             <div className={styles.arrowRight}></div>
           </div></Link>
+          <div className={styles.hr}><div className={styles.inner}></div></div>
           <Link to={`/coupon`}><div className={styles.row + ' ' + styles.coupon}>
             <div className={styles.icon + ' ' + styles.couponIcon}></div>
               特权与优惠券
             <div className={styles.arrowRight + couponEmptyClass}><span>{couponNum}张可用</span></div>
           </div></Link>
+          <div className={styles.hr}><div className={styles.inner}></div></div>
           <Link to={`/invite`}><div className={styles.row + ' ' + styles.invite}>
             <div className={styles.icon + ' ' + styles.inviteIcon}></div>
               邀请好友得￥20

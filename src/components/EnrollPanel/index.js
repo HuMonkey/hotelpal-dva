@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
-import { message, Popover } from 'antd';
+import { message, Popover, Icon } from 'antd';
 import moment from 'moment';
 import { getToken, liveMemberCardUseful } from '../../utils';
 import PopupLogin from '../PopupLogin';
@@ -386,6 +386,9 @@ class EnrollPanel extends Component {
             {
               posterShow && <div className={styles.poster}>
                 <div className={styles.main}>
+                  <div className={styles.close} onClick={this.closePoster.bind(this)}>
+                    <Icon type="close" />
+                  </div>
                   <div className={styles.header}>
                     <div className={styles.numbers}>
                       <div className={styles.vl}></div>
@@ -402,7 +405,6 @@ class EnrollPanel extends Component {
                   </div>
                   <div className={styles.btn}>长按保存图片</div>
                 </div>
-                <div className={styles.close} onClick={this.closePoster.bind(this)}></div>
               </div>
             }
           </div>

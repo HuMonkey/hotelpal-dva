@@ -511,28 +511,28 @@ class Lesson extends Component {
                 </div>
               }
               <div className={styles.discussBlank}></div>
-              <div className={styles.discuss}>
-                {
-                  eliteCommentDom.length > 0 && <div className={styles.good}>
-                    <div className={styles.title}>精选讨论</div>
-                    <div className={styles.comments}>
-                      { eliteCommentDom }
-                    </div>
-                  </div> 
-                }
-                <div className={styles.all}>
-                  <div className={styles.title}>全部讨论</div>
-                  {
-                    commentDom.length > 0 ? <div className={styles.comments}>
-                      {commentDom}
-                    </div> : <div className={styles.noComments}>
-                      尚无讨论，说说你的看法吧！
-                    </div>
-                  }
-                </div>
-              </div> 
             </div>
           </div>
+          <div className={styles.discuss}>
+            {
+              eliteCommentDom.length > 0 && <div className={styles.good}>
+                <div className={styles.title}>精选讨论</div>
+                <div className={styles.comments}>
+                  { eliteCommentDom }
+                </div>
+              </div> 
+            }
+            <div className={styles.all}>
+              <div className={styles.title}>全部讨论</div>
+              {
+                commentDom.length > 0 ? <div className={styles.comments}>
+                  {commentDom}
+                </div> : <div className={styles.noComments}>
+                  尚无讨论，说说你的看法吧！
+                </div>
+              }
+            </div>
+          </div> 
         </div>
       </div>
     );

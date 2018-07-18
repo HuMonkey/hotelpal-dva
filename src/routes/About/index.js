@@ -43,7 +43,7 @@ class About extends Component {
       <div className={styles.normal}>
         <Navs/>
         <div className={styles.logo}>
-          <div className={styles.version}>1.0</div> 
+          <div className={styles.version}>2.0</div> 
           <img src={logo} />
         </div> 
         <div className={styles.slogon}>酒店邦成长营 与你一起成长</div> 

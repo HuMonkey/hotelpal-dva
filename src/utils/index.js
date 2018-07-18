@@ -22,8 +22,8 @@ const isLogin = function () {
 }
 
 const config = {
-  // host: `${location.origin}`, // 线上
-  host: `${location.origin}/test`, // 测试
+  host: `${location.origin}`, // 线上
+  // host: `${location.origin}/test`, // 测试
   appId: 'wxfe666ebbf0e42897'
 }
 
@@ -290,7 +290,7 @@ const courseMemberCardUseful = function (card) {
 }
 
 const liveMemberCardUseful = function (liveVip) {
-  if (liveVip.exists === 'N') {
+  if (!liveVip || liveVip.exists === 'N') {
     return false;
   } else {
     // 过期

@@ -7,6 +7,7 @@ import { formatNum, ua } from '../../utils';
 import { message } from 'antd';
 
 import defaultPPT from '../../assets/live-banner-default.png';
+import liveAnimationSvg from '../../assets/live-play-animation.svg';
 
 class LivePlayer extends Component {
   constructor(props) {
@@ -78,7 +79,7 @@ class LivePlayer extends Component {
       dom = <div className={styles.player + ' ' + styles.bg}>
         <div className={styles.split}></div>
         <div className={styles.tips}>公开课已结束，下次早点来哦~</div>
-        <div className={styles.people}><span>累计{live.totalPeople}人收看</span></div>
+        <div className={styles.people}><span><img src={liveAnimationSvg} />累计{live.totalPeople}人收看</span></div>
       </div>
     } else if (status === 'ONGOING') {
       function createMarkupVideo() { 
@@ -109,7 +110,7 @@ class LivePlayer extends Component {
           {/* <ReactHLS url={'//lv.hotelpal.cn/app/stream.m3u8'} /> */}
           <div className={styles.video} key="video" dangerouslySetInnerHTML={createMarkupVideo()}></div>
           { !ua.iOS && !beginShow && <div className={styles.btn} onClick={this.autoPlay.bind(this)}>进入直播</div>  }
-          <div className={styles.people}><span>{watchingPeopleNum}人正在收看</span></div>
+          <div className={styles.people}><span><img src={liveAnimationSvg} />{watchingPeopleNum}人正在收看</span></div>
         </div>
       } else {
         dom = <div className={styles.player + ' ' + styles.bg}>

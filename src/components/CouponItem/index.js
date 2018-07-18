@@ -56,15 +56,15 @@ class CouponItem extends Component {
       <div className={styles.CouponItem + borderClassName + uselessClassName}>
         <div className={styles.bg}>
           <div className={styles.money}>￥<span>{value / 100}</span></div>
-          <div className={styles.desc}>{name}</div>
+          {/* <div className={styles.desc}>{name}</div> */}
         </div>
         <div className={styles.right}>
           <div className={styles.top}>
             <div className={styles.tag}>订阅专栏</div>
             {/* {detailType === 'COURSE' && <div className={styles.tag}>订阅专栏</div>} */}
-            {tips1}{tips2}{(tips1 || tips2) && '可用'}
+            <span>{name}</span>
           </div>
-          { mode !== 'select' && <div className={styles.blank}></div> }
+          <div className={styles.tips}>{tips1}{tips2}{(tips1 || tips2) && '可用'}</div>
           <div className={styles.expire}>有效期至{expired}</div>
           {/* { mode !== 'select' && <div className={styles.canuse}>满足使用条件</div> } */}
           { mode !== 'select' && !useless && <Link to={link}><div className={styles.btn}>去使用</div></Link> }

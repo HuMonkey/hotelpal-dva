@@ -243,7 +243,7 @@ class PopupOrder extends Component {
             <div>
               <div className={styles.title}>订单确认</div>
               <div className={styles.box}>
-                <div className={styles.avatar} style={{ backgroundImage: `url(${course.bannerImg})` }}></div>
+                <div className={styles.avatar} style={{ backgroundImage: `url(${course.headImg})` }}></div>
                 <div className={styles.infos}>
                   <div className={styles.stitle}>{course.title}</div>
                   <div className={styles.speaker}>{speaker.nick} {speaker.company} {speaker.title}</div>

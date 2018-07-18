@@ -247,17 +247,15 @@
             .state {
               width: 0.82rem;
               height: 0.426666rem;
-              border-radius: 2px;
-              padding-left: 0.1rem;
-              display: flex;
-              justify-content: center;
-              align-items: center;
+              border-top-right-radius: 2px;
+              border-bottom-right-radius: 2px;
+              text-align: center;
+              line-height: 0.426666rem;
               color: white;
               position: absolute;
               top: 0.13333rem;
-              left: -0.13333rem;
+              left: 0;
               font-size: 0.26666rem;
-              transform: scale(0.92);
             }
             .state.isnew {
               background: #f04a4c;
@@ -283,6 +281,9 @@
               margin-top: .186666rem;
               font-size: .373333rem;
               color: @black2;
+              .split {
+                font-size: 0.283333rem;
+              }
             }
             .slogan {
               margin-top: .54rem;

@@ -7,7 +7,7 @@ import { message } from 'antd';
 import $ from 'jquery';
 
 import { AudioPlayer, ShareTips, PopupOrder, Navs } from '../../components';
-import { formatNum, getAudioLength, formatTime, getParam, strip, throttle } from '../../utils';
+import { formatNum, getAudioLength, formatTime, getParam, strip, throttle, wechatScroll } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
 const likedTemp = [];
@@ -44,14 +44,32 @@ class Lesson extends Component {
   }
 
   onScroll() {
-    const { location } = this.props;
+    const { location, dispatch, lesson } = this.props;
     const fromHongbao = getParam('fromHongbao', location.search);
 
     const scrollDown = this.state.scrollDown;
     const width = document.body.offsetWidth;
+    const height = document.body.offsetHeight;
     const scrollTop = this.refs.normal.scrollTop;
 
     const headerHeight = fromHongbao ? width / 10 * 3.34 : width / 10 * (1.173333 + 5.46666)
+
+    // 到底了
+    if (scrollTop + height >= this.refs.paid.offsetHeight && lesson.hasMore) {
+      dispatch({
+        type: 'lesson/fetchComments',
+        payload: {
+          data: {
+            start: lesson.commentsStart,
+            limit: 10,
+            lid: lesson.detail.id,
+          }
+        },
+        onResult() {
+          // wechatScroll();
+        }
+      });
+    }
 
     if (scrollTop >= headerHeight) {
       if (scrollDown === true) {
@@ -235,7 +253,7 @@ class Lesson extends Component {
       return <div className={styles.normal} ref={`normal`}></div>
     }
 
-    const { detail, courseDetail, nextDetail } = lesson;
+    const { detail, courseDetail, nextDetail, commentList, replyToCommentList } = lesson;
 
     const isCourse = location.pathname.split('/')[2] !== 'free';
     const isHongbao = location.pathname.indexOf('hongbao') > -1;
@@ -306,8 +324,6 @@ class Lesson extends Component {
       }, 500);
     }
 
-    const commentList = detail.commentList.commentList || [];
-    const replyToCommentList = detail.commentList.replyToCommentList || [];
     const commentDom = commentList.map((d, i) => {
       let reply;
       for (let j = 0; j < replyToCommentList.length; j++) {

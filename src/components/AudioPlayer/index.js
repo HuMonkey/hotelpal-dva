@@ -10,6 +10,7 @@ import { message } from 'antd';
 import hongbaoGot from '../../assets/zshb_banner.png';
 import banner from '../../assets/jiudianbang-big.png';
 import { getParam } from '../../utils';
+import Navs from '../Navs';
 
 import moment from 'moment';
 
@@ -302,6 +303,7 @@ class AudioPlayer extends Component {
 
     return (
       <div className={styles.audioPlayer + scrollDownClass}>
+        <Navs/>
         { 
           !isCourse && !scrollDown && <div>
             <Link to="/jdbs"><div className={styles.goback}>

@@ -1,7 +1,9 @@
 import request from './request';
 import moment from 'moment';
 
-import { message } from 'antd';
+import {
+  message
+} from 'antd';
 
 /**
  * 判断userAgent的一些方法
@@ -342,27 +344,84 @@ const strip = function (num, precision = 12) {
   return +parseFloat(num.toPrecision(precision));
 }
 
-const loadScript = function (url, callback){
+const loadScript = function (url, callback) {
 
   var script = document.createElement("script")
   script.type = "text/javascript";
 
-  if (script.readyState){  //IE
-      script.onreadystatechange = function(){
-          if (script.readyState == "loaded" ||
-                  script.readyState == "complete"){
-              script.onreadystatechange = null;
-              callback();
-          }
-      };
-  } else {  //Others
-      script.onload = function(){
-          callback();
-      };
+  if (script.readyState) { //IE
+    script.onreadystatechange = function () {
+      if (script.readyState == "loaded" ||
+        script.readyState == "complete") {
+        script.onreadystatechange = null;
+        callback();
+      }
+    };
+  } else { //Others
+    script.onload = function () {
+      callback();
+    };
   }
 
   script.src = url;
   document.getElementsByTagName("head")[0].appendChild(script);
+}
+
+const wechatScroll = function () {
+  return false;
+  var startX = 0,
+    startY = 0;
+  //touchstart事件
+  function touchSatrtFunc(evt) {
+    try {
+      //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
+
+      var touch = evt.touches[0]; //获取第一个触点
+      var x = Number(touch.pageX); //页面触点X坐标
+      var y = Number(touch.pageY); //页面触点Y坐标
+      //记录触点初始位置
+      startX = x;
+      startY = y;
+
+    } catch (e) {
+      alert('touchSatrtFunc：' + e.message);
+    }
+  }
+  document.removeEventListener('touchstart', touchSatrtFunc, false);
+  document.addEventListener('touchstart', touchSatrtFunc, false);
+  var _ss = document.getElementById('root');
+  _ss.ontouchmove = null;
+  _ss.ontouchmove = function (ev) {
+    var _point = ev.touches[0],
+      _top = _ss.scrollTop;
+    // 什么时候到底部
+    var _bottomFaVal = _ss.scrollHeight - _ss.offsetHeight;
+    // 到达顶端
+    if (_top === 0) {
+      // 阻止向下滑动
+      if (_point.clientY > startY) {
+        ev.preventDefault();
+      } else {
+        // 阻止冒泡
+        // 正常执行
+        ev.stopPropagation();
+      }
+    } else if (_top === _bottomFaVal) {
+      // 到达底部
+      // 阻止向上滑动
+      if (_point.clientY < startY) {
+        ev.preventDefault();
+      } else {
+        // 阻止冒泡
+        // 正常执行
+        ev.stopPropagation();
+      }
+    } else if (_top > 0 && _top < _bottomFaVal) {
+      ev.stopPropagation();
+    } else {
+      ev.preventDefault();
+    }
+  };
 }
 
 export {
@@ -389,4 +448,5 @@ export {
   dispatchWechatShare,
   strip,
   loadScript,
+  wechatScroll,
 }

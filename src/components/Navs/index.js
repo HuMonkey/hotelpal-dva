@@ -24,7 +24,7 @@ class Navs extends Component {
   render() {
     const { erweima } = this.state;
     return (
-      <div className={styles.navs}>
+      <div className={'navs'}>
         <div className={styles.back} onClick={this.goback.bind(this)}></div>
         <div className={styles.home}><Link to={''}>首页</Link></div>
         <div className={styles.gzh} onClick={() => {

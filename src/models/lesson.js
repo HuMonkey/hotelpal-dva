@@ -17,6 +17,10 @@ export default {
     detail: null,
     courseDetail: null,
     nextDetail: null,
+    commentsStart: 10,
+    hasMore: true,
+    commentList: [],
+    replyToCommentList: [],
   },
 
   subscriptions: {
@@ -132,10 +136,14 @@ export default {
       const res = yield call(lessonService.fetchLessonDetail, payload.data || {});
       if (res.data.code === 0) {
         const detail = res.data.data;
+        const commentList = detail.commentList.commentList;
+        const replyToCommentList = detail.commentList.replyToCommentList;
+        const start = commentList.length;
+        const hasMore = detail.commentList.hasMore;
         yield put({
           type: 'save',
           payload: {
-            detail: detail
+            detail, commentsStart: start, hasMore, commentList, replyToCommentList
           },
         });
         onResult(res.data.data)
@@ -201,6 +209,22 @@ export default {
       const res = yield call(lessonService.submitComment, payload.data || {});
       onResult && onResult(res);
     },
+    * fetchComments({
+      payload,
+      onResult
+    }, {
+      call,
+      put
+    }) { // eslint-disable-line
+      const res = yield call(lessonService.fetchComments, payload.data || {});
+      yield put({
+        type: 'saveComments',
+        payload: {
+          data: res.data.data
+        },
+      });
+      onResult && onResult();
+    },
     * addZan({
       payload,
       onResult
@@ -227,6 +251,19 @@ export default {
     save(state, action) {
       return { ...state,
         ...action.payload
+      };
+    },
+    saveComments(state, action) {
+      const commentList = state.commentList.slice(0).concat(action.payload.data.commentList || []);
+      const replyToCommentList = state.replyToCommentList.slice(0).concat(action.payload.data.replyToCommentList || []);
+      const hasMore = action.payload.data.hasMore;
+      const commentsStart = commentList.length;
+      return { 
+        ...state, 
+        commentList,
+        replyToCommentList,
+        hasMore,
+        commentsStart
       };
     },
     reset(state, action) {

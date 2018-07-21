@@ -1,7 +1,7 @@
 import dva from 'dva';
 import './index.less';
 
-import {getToken} from './utils';
+import {getToken, wechatScroll} from './utils';
 
 // 1. Initialize
 const app = dva();
@@ -29,3 +29,5 @@ app.router(require('./router'));
 
 // 5. Start
 app.start('#root');
+
+wechatScroll();

@@ -20,7 +20,7 @@ class Comments extends Component {
       const isMineClass = d.self === 'Y' ? ' ' + styles.mine : '';
       // const name = `${d.user.nick} ${d.user.company || ''} ${d.user.title || ''}`;
 
-      function createMarkup() { return { __html: (d.user.nick + '：' + d.msg + d.msg + d.msg) || '' }; };
+      function createMarkup() { return { __html: (d.user.nick + '：' + d.msg) || '' }; };
 
       return <div className={styles.item + isMineClass} key={i}>
         <div className={styles.avatar} style={{ backgroundImage: `url(${d.user.headImg || headerPng})` }}></div>

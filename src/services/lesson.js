@@ -14,11 +14,18 @@ export function submitComment(data) {
   }
   return request(url);
 }
+
 export function addZan(data) {
   const jdbtk = getToken();
   return request(config.host + '/hotelpal/user/addZan?commentId=' + data.cid + '&lessonId=' + data.lid + '&token=' + jdbtk);
 }
+
 export function recordListenPos(data) {
   const jdbtk = getToken();
   return request(config.host + '/hotelpal/user/recordListenPos?lessonId=' + data.lid + '&recordPos=' + data.pos + '&token=' + jdbtk);
+}
+
+export function fetchComments(data) {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/user/getCommentList?lessonId=' + data.lid + '&start=' + data.start + '&limit=' + data.limit + '&token=' + jdbtk);
 }

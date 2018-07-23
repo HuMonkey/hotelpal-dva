@@ -6,6 +6,7 @@ import styles from './index.less';
 import tickPng from '../../assets/coupon-tick.svg';
 import tickedPng from '../../assets/coupon-ticked.svg';
 import uselessTag from '../../assets/coupon-useless-tag.svg';
+import usedTag from '../../assets/coupon-used.svg';
 
 class CouponItem extends Component {
   constructor(props) {
@@ -59,7 +60,7 @@ class CouponItem extends Component {
           {/* <div className={styles.desc}>{name}</div> */}
         </div>
         <div className={styles.right}>
-          <div className={styles.top}>
+          <div className={styles.top} title={name}>
             <div className={styles.tag}>订阅专栏</div>
             {/* {detailType === 'COURSE' && <div className={styles.tag}>订阅专栏</div>} */}
             <span>{name}</span>
@@ -68,7 +69,7 @@ class CouponItem extends Component {
           <div className={styles.expire}>有效期至{expired}</div>
           {/* { mode !== 'select' && <div className={styles.canuse}>满足使用条件</div> } */}
           { mode !== 'select' && !useless && <Link to={link}><div className={styles.btn}>去使用</div></Link> }
-          { mode !== 'select' && useless && <img className={styles.expiredTag} src={uselessTag} /> }
+          { mode !== 'select' && useless && <img className={styles.expiredTag} src={data.used === 'Y' ? usedTag : uselessTag} /> }
           { 
             mode === 'select' && <div className={styles.check}>
               { selected && <img src={tickedPng} /> }

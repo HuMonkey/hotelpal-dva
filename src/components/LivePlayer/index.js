@@ -3,7 +3,7 @@ import styles from './index.less';
 
 import moment from 'moment';
 import ReactHLS from 'react-hls';
-import { formatNum, ua } from '../../utils';
+import { formatNum, ua, liveMemberCardUseful } from '../../utils';
 import { message } from 'antd';
 
 import defaultPPT from '../../assets/live-banner-default.png';
@@ -46,7 +46,7 @@ class LivePlayer extends Component {
 
   render() {
     const { beginShow } = this.state;
-    const { live, now, PPTImg, userInfo, watchingPeopleNum } = this.props;
+    const { live, now, PPTImg, userInfo, watchingPeopleNum, coupon } = this.props;
 
     const openTime = moment(live.openTime);
     const diffTime = openTime - now;
@@ -83,26 +83,25 @@ class LivePlayer extends Component {
       </div>
     } else if (status === 'ONGOING') {
       function createMarkupVideo() { 
-        return { 
-          __html: `
-            <video 
-              webkit-playsinline="true"
-              x-webkit-airplay="true"
-              preload="auto"
-              x5-video-player-type="h5"
-              x5-video-player-fullscreen="true"
-              x5-playsinline="true"
-              playsinline="true"
-              src="//lv.hotelpal.cn/app/stream.m3u8"
-              id="myvideo"
-            >
-              <p>你的浏览器不支持 <code>video</code> 标签.</p>
-            </video>
-          ` 
-      }; 
-    };
+          return { 
+            __html: `
+              <video 
+                webkit-playsinline="true"
+                x-webkit-airplay="true"
+                preload="auto"
+                ${ua.iOS ? `x5-video-player-type="h5" x5-video-player-fullscreen="true"` : ''}
+                x5-playsinline="true"
+                playsinline="true"
+                src="//lv.hotelpal.cn/app/stream.m3u8"
+                id="myvideo"
+              >
+                <p>你的浏览器不支持 <code>video</code> 标签.</p>
+              </video>
+            ` 
+        }; 
+      };
 
-      if (userInfo.enrolled === 'Y' || userInfo.liveVip === 'Y') {
+      if (userInfo.enrolled === 'Y' || (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip))) {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
             <img src={PPTImg || defaultPPT} />

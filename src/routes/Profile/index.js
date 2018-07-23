@@ -59,7 +59,7 @@ class Profile extends Component {
     if (coupon.card) {
       const today = moment();
       const couponList = coupon.couponList && coupon.couponList.filter(d => {
-        return today < moment(d.validity);
+        return d.used === 'N' && today < moment(d.validity);
       });
       const { card, liveVip } = coupon;
       couponNum = couponList.length;
@@ -123,7 +123,7 @@ class Profile extends Component {
           <div className={styles.hr}><div className={styles.inner}></div></div>
           <Link to={`/invite`}><div className={styles.row + ' ' + styles.invite}>
             <div className={styles.icon + ' ' + styles.inviteIcon}></div>
-              邀请好友得￥20
+              邀请好友得￥40
             <div className={styles.arrowRight}></div>
           </div></Link>
           <Link to={`/about`}><div className={styles.row + ' ' + styles.about}>

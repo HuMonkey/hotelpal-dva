@@ -3,7 +3,7 @@ import { Link } from 'dva/router';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import styles from './index.less';
 
-import { Icon, Input } from 'antd';
+import { Icon, Input, message } from 'antd';
 
 class PopupLogin extends Component {
   constructor(props) {
@@ -95,6 +95,7 @@ class PopupLogin extends Component {
       }
     });
     if (result.data.code === 0) {
+      message.success('注册成功~');
       successCallback();
     } else {
       message.error(result.data.messages || '绑定手机出错，请检查验证码是否正确');

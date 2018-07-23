@@ -114,7 +114,7 @@ class SysCoupon extends Component {
     const ucan = <div>
       <div className={styles.label}>您可以</div>
       <Link to='/invite'><div className={styles.sbtn}>
-        推荐好友得20元
+        推荐好友得40元
         <img src={moneyIcon} className={styles.money} />
         <Icon className={styles.icon} type="right" />
       </div></Link>

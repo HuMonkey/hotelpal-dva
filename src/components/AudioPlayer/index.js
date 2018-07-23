@@ -333,7 +333,6 @@ class AudioPlayer extends Component {
             <div className={styles.cell + ' ' + styles.small}>
               <div className={styles.previous15} onClick={() => this.skip.call(this, -15)}>
                 <div className={styles.bg}></div>
-                15
               </div> 
             </div>
             <div className={styles.cell + ' ' + styles.small}>
@@ -352,7 +351,6 @@ class AudioPlayer extends Component {
             <div className={styles.cell + ' ' + styles.small}>
               <div className={styles.next15} onClick={() => this.skip.call(this, 15)}>
                 <div className={styles.bg}></div>
-                15
               </div>
             </div>
           </div>

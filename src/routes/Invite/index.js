@@ -23,7 +23,7 @@ class Invite extends Component {
     const { dispatch, common } = this.props;
 
     const dict = {
-      title: '我邀请你成为新用户，注册得￥20',
+      title: '我邀请你成为新用户，注册得￥40',
       link: `${location.origin}/#/invitePage?invitor=${getToken()}`,
       imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
       desc: `${common.userInfo.nickname}邀请你加入酒店邦成长营，一起获取知识！`,
@@ -132,7 +132,7 @@ class Invite extends Component {
         }} type="invite" />}
         <img src={hbBg} className={styles.bg} />
         <div className={styles.title}>送好友<span>20</span>元优惠券</div>
-        <div className={styles.stitle}>每三个好友注册后你也能获得20元优惠券</div>
+        <div className={styles.stitle}>每三个好友注册后你也能获得40元优惠券</div>
         <div className={styles.goto} onClick={() => {
           this.switchRule.call(this, true);
         }}>活动规则<Icon className={styles.icon} type="right" /></div>
@@ -169,7 +169,7 @@ class Invite extends Component {
                 </div>
                 <div className={styles.row}>
                   <div className={styles.index}>3</div>
-                  3位新用户注册成功后，邀请人即获得一张20元优惠券，购买订阅专栏和在线实战营可用，有效期30天；
+                  3位新用户注册成功后，邀请人即获得价值40元的优惠券，购买订阅专栏和在线实战营可用，有效期30天；
                 </div>
                 <div className={styles.row}>
                   <div className={styles.index}>4</div>

@@ -116,7 +116,7 @@ class Jdbs extends Component {
     const iphoneXClass = isIphoneX() ? ' ' + styles.iphonex : '';
   
     return (
-      <div className={styles.normal + iphoneXClass} ref={`jdbs`}>
+      <div className={styles.normal} ref={`jdbs`}>
         <Navs />
         <div className={styles.header}>
           <img src={banner} />

@@ -74,6 +74,9 @@
             width: 100%;
             line-height: 0.48rem;
             margin-bottom: 0.26666rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             span {
                 font-size: 0.4rem;
                 color: @black2;
@@ -92,7 +95,13 @@
             }
         }
         .tips {
+            width: 3.8rem;
             height: 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
         .blank {
             width: 100%;

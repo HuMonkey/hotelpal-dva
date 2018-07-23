@@ -97,7 +97,7 @@ export default {
           }; 
           websocket.onclose = function(evt) { 
             console.log(evt);
-            message.error('socket 断开了');
+            // message.error('socket 断开了');
           }; 
           websocket.onmessage = async function(evt) {
             console.log(evt);
@@ -119,18 +119,8 @@ export default {
                 }
               })
             } else if (data.msgType === 'TYPE_LIVE_START') {
-              // 隐藏红包
-              dispatch({
-                type: 'fetchLiveDetail',
-                payload: {
-                  data: {
-                    id: liveId
-                  }
-                },
-                onResult (res) {}
-              });
+              window.location.reload();
             } else if (data.msgType === 'TYPE_SHOW_COUPON') {
-              message.success('显示优惠券！');
               dispatch({
                 type: 'switchHb',
                 payload: {
@@ -279,7 +269,7 @@ export default {
       if (res.data.code === 0) {
         onResult && onResult(res);
       } else {
-        onResult && onResult(null);
+        onResult && onResult(res);
       }
     },
     *enrollFor({ payload, onResult }, { call, put }) {  // eslint-disable-line

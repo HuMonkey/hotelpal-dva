@@ -35,11 +35,11 @@ class Live extends Component {
   }
 
   scrollToBottom () {
-    document.body.scrollTop = 20000000;
+    document.getElementById('root').scrollTop = 20000000;
   }
 
   scrollToTop () {
-    document.body.scrollTop = 0;
+    document.getElementById('root').scrollTop = 0;
   }
 
   showHongbao () {
@@ -384,6 +384,7 @@ class Live extends Component {
               countDownInter={countDownInter} 
               PPTImg={PPTImg} 
               userInfo={userInfo}
+              coupon={coupon}
               watchingPeopleNum={watchingPeopleNum}
             />
           }

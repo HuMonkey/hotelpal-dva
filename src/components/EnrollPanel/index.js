@@ -23,6 +23,7 @@ class EnrollPanel extends Component {
     this.state = {
       posterShow: false,
       loginPopupShow: false,
+      init: false,
     };
   }
 
@@ -127,10 +128,12 @@ class EnrollPanel extends Component {
             id: live.id
           }
         },
-        onResult (res) {}
+        onResult (res) {
+          if (res.data.code === 0) {
+            message.success('您已成功报名~');
+          }
+        }
       });
-
-      message.success('您已成功报名~');
 
       await dispatch({
         type: 'live/fetchLiveDetail',
@@ -201,9 +204,22 @@ class EnrollPanel extends Component {
   }
 
   componentDidMount () {
+    
     setTimeout(() => {
       enrollForShow = false;
     }, 8000) // 8秒后隐藏提示
+  }
+
+  componentDidUpdate() {
+    // 如果是 vip 自动报名
+    const { init } = this.state;
+    const { userInfo, coupon } = this.props;
+    if (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip) && !init) {
+      this.enroll();
+      this.setState({
+        init: true,
+      })
+    }
   }
 
   async loginCallback() {
@@ -211,7 +227,6 @@ class EnrollPanel extends Component {
     this.setState({
       loginPopupShow: false,
     });
-    message.success('注册成功~');
     await dispatch({
       type: 'common/fetchUserInfo',
       payload: {},

@@ -6,11 +6,12 @@ import styles from './index.less';
 import { message } from 'antd';
 import $ from 'jquery';
 
-import { AudioPlayer, ShareTips, PopupOrder, Navs } from '../../components';
+import { AudioPlayer, ShareTips, PopupOrder, PopupLogin, Navs } from '../../components';
 import { formatNum, getAudioLength, formatTime, getParam, strip, throttle, wechatScroll } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
 const likedTemp = [];
+let loading = false;
 
 class Lesson extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class Lesson extends Component {
       replyComment: null,
 
       orderShow: false,
+      loginShow: false,
       scrollDown: false,
     };
   }
@@ -50,12 +52,13 @@ class Lesson extends Component {
     const scrollDown = this.state.scrollDown;
     const width = document.body.offsetWidth;
     const height = document.body.offsetHeight;
-    const scrollTop = this.refs.normal.scrollTop;
+    const scrollTop = document.getElementById('root').scrollTop;
 
-    const headerHeight = fromHongbao ? width / 10 * 3.34 : width / 10 * (1.173333 + 5.46666)
+    const headerHeight = fromHongbao ? width / 10 * 3.34 : width / 10 * (1.173333 + 5.46666);
 
     // 到底了
-    if (scrollTop + height >= this.refs.paid.offsetHeight && lesson.hasMore) {
+    if (this.refs.paid && (scrollTop + height >= this.refs.paid.offsetHeight) && lesson.hasMore && !loading) {
+      loading = true;
       dispatch({
         type: 'lesson/fetchComments',
         payload: {
@@ -66,7 +69,7 @@ class Lesson extends Component {
           }
         },
         onResult() {
-          // wechatScroll();
+          loading = false
         }
       });
     }
@@ -210,21 +213,59 @@ class Lesson extends Component {
     this.refs.normal.scrollTop = 20000000;
   }
 
-  showPopup () {
+  buyCourse () {
+    const {common} = this.props;
+    if (!common.userInfo.phone) {
+      this.setState({
+        loginShow: true,
+      })
+      return false;
+    }
     this.setState({
       orderShow: true,
     })
   }
 
-  closePopup () {
+  loginCallback() {
+    const { dispatch } = this.props;
+    this.setState({
+      loginShow: false,
+      orderShow: true,
+    });
+    dispatch({
+      type: 'common/fetchUserInfo',
+      payload: {},
+    })
+  }
+
+  showPopupOrder() {
+    this.setState({
+      loginShow: false,
+      orderShow: true,
+    })
+  }
+
+  showPopupLogin() {
+    this.setState({
+      loginShow: true,
+    })
+  }
+
+  closePopupOrder () {
     this.setState({
       orderShow: false,
     })
   }
 
+  closePopupLogin() {
+    this.setState({
+      loginShow: false,
+    })
+  }
+
   async paySuccessCallback () {
     const { dispatch, lesson } = this.props;
-    this.closePopup();
+    this.closePopupOrder();
     dispatch({
       type: 'lesson/fetchLessonDetail',
       payload: {
@@ -245,8 +286,12 @@ class Lesson extends Component {
     })
   }
 
+  componentDidMount() {
+    document.getElementById('root').onscroll = throttle(this.onScroll.bind(this), 20);
+  }
+
   render () {
-    const { orderShow, scrollDown } = this.state;
+    const { orderShow, loginShow, scrollDown } = this.state;
     const { lesson, dispatch, coupon, history, location } = this.props;
 
     if (!lesson) {
@@ -274,7 +319,14 @@ class Lesson extends Component {
               dispatch={dispatch} 
               coupon={coupon} 
               course={courseDetail} 
-              closePopup={this.closePopup.bind(this)}  
+              closePopup={this.closePopupOrder.bind(this)}  
+            />
+          }
+          {
+            loginShow && <PopupLogin 
+              successCallback={this.loginCallback.bind(this)} 
+              dispatch={dispatch} 
+              closePopup={this.closePopupLogin.bind(this)}  
             />
           }
           <div className={styles.notPaid}>
@@ -295,7 +347,7 @@ class Lesson extends Component {
                 <div className={styles.who}>{courseDetail.company}{courseDetail.userTitle}</div> 
                 <div className={styles.course}>{courseDetail.title}</div> 
                 <div className={styles.desc}>{courseDetail.subtitle}</div> 
-                <div className={styles.btn} onClick={this.showPopup.bind(this)}>购买课程  获取知识</div>
+                <div className={styles.btn} onClick={this.buyCourse.bind(this)}>购买课程  获取知识</div>
               </div>
             </div> 
             <Link to='/login/force'><div className={styles.log}>你已经购买？<span>绑定其他账号</span></div></Link>
@@ -334,9 +386,7 @@ class Lesson extends Component {
       }
       const likedClass = d.liked || likedTemp.indexOf(d.id) > -1 ? ' ' + styles.liked : '';
       return <div className={styles.item} key={i}>
-        <div className={styles.avatar}>
-          <img src={d.userHeadImg} />
-        </div> 
+        <div className={styles.avatar} style={{ backgroundImage: `url(${d.userHeadImg})` }}></div> 
         <div className={styles.name}>
           {d.userName}  
           { (d.userCompany || d.userTitle) && <span>{d.userCompany} {d.userTitle}</span> }
@@ -374,9 +424,7 @@ class Lesson extends Component {
       }
       const likedClass = d.liked || likedTemp.indexOf(d.id) > -1 ? ' ' + styles.liked : '';
       return <div className={styles.item} key={i}>
-        <div className={styles.avatar}>
-          <img src={d.userHeadImg} />
-        </div> 
+        <div className={styles.avatar} style={{ backgroundImage: `url(${d.userHeadImg})` }}>  </div> 
         <div className={styles.name}>
           {d.userName}  
           { (d.userCompany || d.userTitle) && <span>{d.userCompany} {d.userTitle}</span> }
@@ -411,7 +459,7 @@ class Lesson extends Component {
     const isCourseClass = isCourse ? ' ' + styles.course : '';
 
     return (
-      <div className={styles.normal} ref={`normal`} onScroll={throttle(this.onScroll.bind(this), 50)}>
+      <div className={styles.normal} ref={`normal`}>
         { 
           isHongbao && <ShareTips type="hongbao" clickCallBack={this.hideHongbaoTips.bind(this)} />
         }
@@ -495,9 +543,7 @@ class Lesson extends Component {
                     <div className={styles.back}>
                       <Link to={`/course/${courseDetail.id}`}>
                         <div className={styles.box}>
-                          <div className={styles.img}>
-                            <img src={courseDetail.bannerImg && courseDetail.bannerImg[0]} />
-                          </div> 
+                          <div className={styles.img} style={{ backgroundImage: `url(${courseDetail.headImg})` }}></div> 
                           <div className={styles.title}>{courseDetail.title}</div> 
                           <div className={styles.desc}>{courseDetail.userName} · {courseDetail.company} {courseDetail.userTitle}</div> 
                           <div className={styles.arrow}></div>

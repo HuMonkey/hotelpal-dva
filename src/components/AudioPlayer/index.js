@@ -71,7 +71,7 @@ class AudioPlayer extends Component {
     }
     if (!init) {
       // 设置时长
-      newState.duration = audioLen;
+      newState.duration = audioEl.duration;
       // 设置已听时长
       if (listenLen && audioLen !== listenLen) {
         audioEl.currentTime = listenLen;
@@ -300,17 +300,18 @@ class AudioPlayer extends Component {
 
     const scrollDownClass = scrollDown ? ' ' + styles.scrollDown : '';
     const loadingClass = loading ? ' ' + styles.loading : '';
+    const wwwClass = !fromHongbao && isCourse ? ' ' + styles.www : '';
 
     return (
-      <div className={styles.audioPlayer + scrollDownClass}>
+      <div className={styles.audioPlayer + scrollDownClass + wwwClass}>
         <Navs/>
         { 
           !isCourse && !scrollDown && <div>
-            <Link to="/jdbs"><div className={styles.goback}>
+            {/* <Link to="/jdbs"><div className={styles.goback}>
               <img src={banner} />
               <span>成长专栏</span>
               <div className={styles.arrowRight}></div>
-            </div></Link>
+            </div></Link> */}
             <div className={styles.banner}>
               <img src={coverImg} />
             </div> 

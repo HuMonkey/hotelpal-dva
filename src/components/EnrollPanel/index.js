@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Link, withRouter } from 'dva/router';
+import { withRouter } from 'dva/router';
 import styles from './index.less';
 
 import { message, Popover, Icon } from 'antd';
@@ -96,7 +96,7 @@ class EnrollPanel extends Component {
         },
         onResult (res) {
           if (res.data.code === 0) {
-            message.success('您已经成功帮好友解锁~');
+            message.success('你已成功帮你的好友助力+1');
             helpedTipsShow = true;
             window.history.pushState(null, null, `/#/live/${live.id}`);
           } else {
@@ -213,8 +213,8 @@ class EnrollPanel extends Component {
   componentDidUpdate() {
     // 如果是 vip 自动报名
     const { init } = this.state;
-    const { userInfo, coupon } = this.props;
-    if (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip) && !init) {
+    const { userInfo, coupon, live } = this.props;
+    if ( live.status === 'ONGOING' && userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip) && !init) {
       this.enroll();
       this.setState({
         init: true,
@@ -247,10 +247,10 @@ class EnrollPanel extends Component {
     const showInvitorTips = this.canEnrollFor() && enrollForShow;
     
     if (!helpedTipsShow && userInfo.enrolled === 'Y' && invitor) {
-      message.error('你已经报名，不能帮好友解锁~');
+      message.error('你已报名本次课程，不能再为好友助力喽～');
       helpedTipsShow = true;
     } else if (!helpedTipsShow && userInfo.enrolledFor && invitor) {
-      message.error('你已经帮助过别人了~');
+      message.error('你已帮好友助力过喽～');
       helpedTipsShow = true;
     }
 
@@ -294,7 +294,7 @@ class EnrollPanel extends Component {
     if (signup === 'init') {
       invitingDom = <div className={styles.item}>
         <div className={styles.left}>
-          <div className={styles.inner}>邀请{live.inviteRequire}个好友可以免费</div>
+          <div className={styles.inner}>邀请{live.inviteRequire}个好友可免费学习</div>
         </div>
         <div className={styles.right} onClick={this.liveInviting.bind(this)}>我要免费报名</div>
       </div>;
@@ -338,7 +338,7 @@ class EnrollPanel extends Component {
     return (
       <div className={styles.enrollPanel}>
         { loginPopupShow && <PopupLogin successCallback={this.loginCallback.bind(this)} dispatch={dispatch} closePopup={this.closePopup.bind(this)} /> }
-        <Popover placement="top" content={`报名即可帮助好友获取免费报名资格`} visible={showInvitorTips}>
+        <Popover placement="top" content={`点击「我要免费报名」帮你的好友助力`} visible={showInvitorTips}>
           <div className={styles.course}>
             <div className={styles.left}>
               <div className={styles.tag + statusClass}>
@@ -365,7 +365,7 @@ class EnrollPanel extends Component {
               (signup === 'inviting' || signup === 'init') && <div className={styles.signups}>
                 <div className={styles.item}>
                   <div className={styles.left}>
-                    <div className={styles.inner}>直播价&nbsp;￥{live.price / 100}</div>
+                    <div className={styles.inner}>本次直播课&nbsp;￥{live.price / 100}</div>
                   </div>
                   <div className={styles.right} onClick={this.enroll.bind(this)}>我要付费报名</div>
                 </div>
@@ -391,7 +391,7 @@ class EnrollPanel extends Component {
                   <div className={styles.left}>
                     <div className={styles.inner}>
                       {/* <span className={styles.price}>￥{live.price / 100}</span> */}
-                      本次公开课可以免费报名
+                      本次直播课免费报名参与
                     </div>
                   </div>
                   <div className={styles.right} onClick={this.enroll.bind(this)}>报名</div>
@@ -411,14 +411,14 @@ class EnrollPanel extends Component {
                       <div className={styles.item}>2</div>
                       <div className={styles.item}>3</div>
                     </div>
-                    <div className={styles.row}>将专属邀请卡分享给好友</div>
-                    <div className={styles.row}>{live.inviteRequire}个好友点击报名（免费/付费均可）</div>
-                    <div className={styles.row}>可享受免费报名！</div>
+                    <div className={styles.row}>将海报分享你的酒店好友</div>
+                    <div className={styles.row}>获2个好友扫码进入直播间，点击免费报名</div>
+                    <div className={styles.row}>你即可获得免费听课特权</div>
                   </div>
                   <div className={styles.image}>
                     <img src={userInfo.invitePoster} />
                   </div>
-                  <div className={styles.btn}>长按保存图片</div>
+                  <div className={styles.btn}>长按上方海报</div>
                 </div>
               </div>
             }

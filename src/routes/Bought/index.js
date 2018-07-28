@@ -76,7 +76,7 @@ class Bought extends Component {
                     {
                       list.map((dd, ii) => {
                         const dateStr = getTimeStr(dd.updateDate);
-                        return <td key={ii}>
+                        return <td key={ii} style={{ verticalAlign: 'top' }}>
                           <Link to={`/course/${dd.id}`}>
                             <div className={styles.item}>
                               <div className={styles.img} style={{backgroundImage: `url('${dd.bannerImg[0]}')`, }}></div> 

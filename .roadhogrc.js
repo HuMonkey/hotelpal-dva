@@ -4,7 +4,8 @@ const { name, version } = require('./package.json');
 
 export default {
   "entry": "src/index.js",
-  "publicPath": `/`,
+  "publicPath": `//static.hotelpal.cn/${version}/`,
+  // "publicPath": `/`,
   "env": {
     "development": {
       "extraBabelPlugins": [
@@ -22,7 +23,7 @@ export default {
   },
   "proxy": {
     "/test": {
-      "target": "http://t.hotelpal.cn/",
+      "target": "http://v2.hotelpal.cn/",
       "changeOrigin": true,
       "pathRewrite": { "^/test": "" }
     }

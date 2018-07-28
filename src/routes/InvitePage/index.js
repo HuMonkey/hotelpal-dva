@@ -54,7 +54,7 @@ class InvitePage extends Component {
   componentDidUpdate () {
     const { common } = this.props;
     const { init } = this.state;
-    if (init) {
+    if (init || !common.userInfo) {
       return false;
     }
     const oldUser = common.userInfo && common.userInfo.phone;
@@ -81,7 +81,15 @@ class InvitePage extends Component {
         token: invitor
       },
       onResult() {}
-    })
+    });
+
+    document.getElementsByTagName('html')[0].style.height = 'auto';
+    document.getElementsByTagName('body')[0].style.height = 'auto';
+  }
+
+  componentWillUnmount() {
+    document.getElementsByTagName('html')[0].style.height = '100%';
+    document.getElementsByTagName('body')[0].style.height = '100%';
   }
 
   onChange (key, value) {

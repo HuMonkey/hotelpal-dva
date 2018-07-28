@@ -155,10 +155,15 @@ class Course extends Component {
         { orderPopupShow && <PopupOrder dispatch={dispatch} coupon={coupon} course={detail} paySuccessCallback={this.paySuccessCallback.bind(this)} closePopup={this.closePopup.bind(this)} /> }
         { loginPopupShow && <PopupLogin successCallback={this.loginCallback.bind(this)} dispatch={dispatch} closePopup={this.closePopup.bind(this)} /> }
         <div className={styles.header} style={{ backgroundImage: `url(${detail.bannerImg[0]})` }}>
-          <div className={styles.desc}>
-            <div className={styles.title}>{detail.userName}</div> 
-            <div className={styles.subTitle}>{detail.company} {detail.userTitle}</div>
-          </div>
+          {
+            detail.purchased ? <div className={styles.desc}>
+              <div className={styles.title}>{detail.userName}</div> 
+              <div className={styles.subTitle}>{detail.company} {detail.userTitle}</div>
+            </div> : <div className={styles.desc}>
+              <div className={styles.title}>{detail.title}</div> 
+              <div className={styles.subTitle}>{detail.subtitle}</div>
+            </div>
+          }
           { detail.status === 0 && <div className={styles.coming}>预告</div> }
         </div>
         { 

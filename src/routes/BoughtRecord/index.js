@@ -25,11 +25,13 @@ class BoughtRecord extends Component {
 
   render () {
     const { bought } = this.props;
-    if (!bought) {
+    if (!bought || !bought.boughtList) {
       return <div></div>
     }
   
-    const { boughtList } = bought;
+    const boughtList = bought.boughtList.sort((a, b) => {
+      return new Date(b.purchaseDate) > new Date(a.purchaseDate);
+    });
   
     return (
       <div className={styles.normal}>

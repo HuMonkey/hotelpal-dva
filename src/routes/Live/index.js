@@ -223,14 +223,20 @@ class Live extends Component {
   }
 
   async updateWechatShare () {
-    const { dispatch, live } = this.props;
+    const { dispatch, live, common } = this.props;
     const { liveDetail } = live;
 
+    moment.locale('zh-cn');
+    const openTime = moment(liveDetail.openTime);
+    const openMonth = openTime.month();
+    const openDate = openTime.date();
+    const openTimeHourStr = openTime.format('HH:mm');
+
     const dict = {
-      title: liveDetail.title,
+      title: `${common.userInfo.nickname}|邀请你参加【酒店邦成长营直播课】`,
       link: location.href,
       imgUrl: liveDetail.bannerImg || 'http://hotelpal.cn/static/jiudianbang-big.png',
-      desc: getHtmlContent(liveDetail.introduce),
+      desc: `${openMonth + 1}月${openDate}日${openTimeHourStr}${liveDetail.speakerTitle}${liveDetail.speakerNick}，${liveDetail.title}`,
     }
 
     await dispatch({
@@ -245,6 +251,7 @@ class Live extends Component {
           const {appid, noncestr, sign, timestamp, url} = res.data.data;
           configWechat(appid, timestamp, noncestr, sign, () => {
             updateWechatShare(dict);
+            document.title = '成长营直播间';
             const videoEl = document.getElementsByTagName('video')[0];
             videoEl && videoEl.play();
           });
@@ -301,7 +308,7 @@ class Live extends Component {
     const chatClass = page === 'chat' ? ' ' + styles.active : '';
 
     const hongbaoDom = couponInfo && <div className={styles.hb}>
-      <div className={styles.main} style={{ backgroundImage: `url(${hbBg})` }}>
+      <div className={styles.main} style={{ backgroundImage: `url(${liveDetail.relaCourseCouponImg || hbBg})` }}>
         <div className={styles.price}>￥<span>{couponInfo.value / 100}</span></div>
         <div className={styles.btn} onClick={this.openHongbao.bind(this)}>抢</div>
       </div>

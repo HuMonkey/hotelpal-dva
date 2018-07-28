@@ -10,6 +10,16 @@ class CourseDetail extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    document.getElementsByTagName('html')[0].style.height = 'auto';
+    document.getElementsByTagName('body')[0].style.height = 'auto';
+  }
+
+  componentWillUnmount() {
+    document.getElementsByTagName('html')[0].style.height = '100%';
+    document.getElementsByTagName('body')[0].style.height = '100%';
+  }
+
   render () {
     const { course } = this.props;
     if (!course.detail) {

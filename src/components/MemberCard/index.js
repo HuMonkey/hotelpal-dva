@@ -73,7 +73,7 @@ class MemberCard extends Component {
       <div className={styles.memberCard + vipClassName + uselessClass}>
         { topDom }
         <div className={styles.bottom}>
-          <span className={styles.item}><div className={styles.logo}></div>所有订阅专栏可用</span>
+          <span className={styles.item}><div className={styles.logo}></div>{type === 'live' ? '所有直播公开课可用' : '所有订阅专栏可用'}</span>
           <span className={styles.item}><div className={styles.logo}></div>有效期至{expire}</span>
         </div>
       </div>

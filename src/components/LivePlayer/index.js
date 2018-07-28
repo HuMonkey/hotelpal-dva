@@ -1,13 +1,67 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import styles from './index.less';
 
 import moment from 'moment';
 import ReactHLS from 'react-hls';
-import { formatNum, ua, liveMemberCardUseful } from '../../utils';
+import { formatNum, ua, liveMemberCardUseful, loadScript } from '../../utils';
 import { message } from 'antd';
 
 import defaultPPT from '../../assets/live-banner-default.png';
 import liveAnimationSvg from '../../assets/live-play-animation.svg';
+
+class H5Video extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  // componentDidMount() {
+  //   loadScript('//g.alicdn.com/de/prismplayer/2.7.1/aliplayer-min.js', function() {
+  //     const player = new Aliplayer({
+  //       "id": "myvideo",
+  //       "source": "//lv.hotelpal.cn/app/stream.m3u8",
+  //       "width": "1px",
+  //       "height": "1px",
+  //       "autoplay": true,
+  //       "isLive": true,
+  //       "rePlay": false,
+  //       "playsinline": true,
+  //       "preload": true,
+  //       "controlBarVisibility": "hover",
+  //       "useH5Prism": true
+  //     }, function (player) {
+  //         console.log("播放器创建了。");
+  //       }
+  //     );
+  //   })
+  // }
+  render() {
+    function createMarkupVideo() { 
+      return {
+        __html: !ua.android ? `<video 
+            preload="auto" 
+            autoplay
+            webkit-playsinline="true" 
+            playsinline="true" 
+            src="//lv.hotelpal.cn/app/stream.m3u8"
+            id="myvideo"
+          >
+            <p>你的浏览器不支持 <code>video</code> 标签.</p>
+          </video>` : `<video 
+            preload="auto" 
+            autoplay
+            x5-playsinline
+            src="//lv.hotelpal.cn/app/stream.m3u8"
+            id="myvideo"
+          >
+            <p>你的浏览器不支持 <code>video</code> 标签.</p>
+          </video>
+        ` 
+      }; 
+    };
+    // return <div id="myvideo"></div>
+    return <div className={styles.video} key="video" dangerouslySetInnerHTML={createMarkupVideo()}></div>
+  }
+}
 
 class LivePlayer extends Component {
   constructor(props) {
@@ -17,28 +71,11 @@ class LivePlayer extends Component {
     };
   }
 
-  componentDidMount() {
-    // loadScript('//g.alicdn.com/de/prismplayer/2.7.1/aliplayer-min.js', () => {
-    //   const options = {
-    //     id: 'J_prismPlayer',
-    //     width: '100%',
-    //     autoplay: false,
-    //     isLive: true,
-    //     playsinline: true,
-    //     source: '//lv.hotelpal.cn/app/stream.m3u8',
-    //     useH5Prism: true,
-    //     extraInfo: {
-    //       liveRetry: 1, 
-    //     }
-    //   }
-    //   new Aliplayer(options, function () {
-    //     console.log('播放器创建好了。')
-    //   });
-    // })
-  }
+  componentDidMount() {}
 
   autoPlay() {
-    document.getElementById('myvideo').play();
+    // document.querySelector('#myvideo video').play();
+    document.querySelector('#myvideo').play();
     this.setState({
       beginShow: true,
     })
@@ -78,37 +115,22 @@ class LivePlayer extends Component {
     } else if (status === 'ENDED') {
       dom = <div className={styles.player + ' ' + styles.bg}>
         <div className={styles.split}></div>
-        <div className={styles.tips}>公开课已结束，下次早点来哦~</div>
+        <div className={styles.tips}>直播课已结束，下次早点来哦~</div>
         <div className={styles.people}><span><img src={liveAnimationSvg} />累计{live.totalPeople}人收看</span></div>
       </div>
     } else if (status === 'ONGOING') {
-      function createMarkupVideo() { 
-          return { 
-            __html: `
-              <video 
-                webkit-playsinline="true"
-                x-webkit-airplay="true"
-                preload="auto"
-                ${ua.iOS ? `x5-video-player-type="h5" x5-video-player-fullscreen="true"` : ''}
-                x5-playsinline="true"
-                playsinline="true"
-                src="//lv.hotelpal.cn/app/stream.m3u8"
-                id="myvideo"
-              >
-                <p>你的浏览器不支持 <code>video</code> 标签.</p>
-              </video>
-            ` 
-        }; 
-      };
-
       if (userInfo.enrolled === 'Y' || (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip))) {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
             <img src={PPTImg || defaultPPT} />
           </div>
-          {/* <ReactHLS url={'//lv.hotelpal.cn/app/stream.m3u8'} /> */}
-          <div className={styles.video} key="video" dangerouslySetInnerHTML={createMarkupVideo()}></div>
-          { !ua.iOS && !beginShow && <div className={styles.btn} onClick={this.autoPlay.bind(this)}>进入直播</div>  }
+          <H5Video />
+          { 
+            ua.android && !beginShow && <div className={styles.btn} onClick={this.autoPlay.bind(this)}>
+              <div className={styles.playBtn}></div>
+              点击进入直播
+            </div>  
+          }
           <div className={styles.people}><span><img src={liveAnimationSvg} />{watchingPeopleNum}人正在收看</span></div>
         </div>
       } else {

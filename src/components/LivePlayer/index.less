@@ -16,10 +16,20 @@
       top: 50%;
       transform: translate(-50%, -50%);
       z-index: 3;
-      width: 4rem;
-      height: 2rem;
-      background: red;
-      color: white;
+      width: 3.2rem;
+      height: 2.6666rem;
+      background: #ffffff;
+      color: @black2;
+      border-radius: 0.13333rem;
+      padding: 0.4rem 0;
+      .playBtn {
+        width: 1.28rem;
+        height: 1.28rem;
+        background-image: url(../../assets/live-play-icon.svg);
+        background-size: 100% 100%;
+        margin: auto;
+        margin-bottom: 0.26666rem;
+      }
     }
     &.bg {
       background-image: url('../../assets/live-banner.png');
@@ -42,11 +52,16 @@
         height: 100%;
       }
     }
-    video {
-      position: relative;
+    :global(#myvideo) {
+      position: absolute;
       z-index: -1;
       // display: none;
       opacity: 0;
+      display: none;
+      object-fit: fill;
+      video {
+        object-fit: fill;
+      }
     }
     .split {
       background: -webkit-linear-gradient(left, rgba(255,255,255,0), rgba(255,255,255,0.8), rgba(255,255,255,0));

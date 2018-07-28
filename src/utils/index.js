@@ -367,64 +367,6 @@ const loadScript = function (url, callback) {
   document.getElementsByTagName("head")[0].appendChild(script);
 }
 
-const wechatScroll = function () {
-  return false;
-  var startX = 0,
-    startY = 0;
-  //touchstart事件
-  function touchSatrtFunc(evt) {
-    try {
-      //evt.preventDefault(); //阻止触摸时浏览器的缩放、滚动条滚动等
-
-      var touch = evt.touches[0]; //获取第一个触点
-      var x = Number(touch.pageX); //页面触点X坐标
-      var y = Number(touch.pageY); //页面触点Y坐标
-      //记录触点初始位置
-      startX = x;
-      startY = y;
-
-    } catch (e) {
-      alert('touchSatrtFunc：' + e.message);
-    }
-  }
-  document.removeEventListener('touchstart', touchSatrtFunc, false);
-  document.addEventListener('touchstart', touchSatrtFunc, false);
-  const _ss = document.querySelector('#root');
-  const touchMoveFunc = function (ev) {
-    var _point = ev.touches[0],
-      _top = _ss.scrollTop;
-    // 什么时候到底部
-    var _bottomFaVal = _ss.scrollHeight - _ss.offsetHeight;
-    // 到达顶端
-    if (_top < 4) {
-      // 阻止向下滑动
-      if (_point.clientY > startY) {
-        ev.preventDefault();
-      } else {
-        // 阻止冒泡
-        // 正常执行
-        ev.stopPropagation();
-      }
-    } else if (_top > _bottomFaVal - 4) {
-      // 到达底部
-      // 阻止向上滑动
-      if (_point.clientY < startY) {
-        ev.preventDefault();
-      } else {
-        // 阻止冒泡
-        // 正常执行
-        ev.stopPropagation();
-      }
-    } else if (_top > 0 && _top < _bottomFaVal) {
-      ev.stopPropagation();
-    } else {
-      ev.preventDefault();
-    }
-  }
-  _ss.removeEventListener('touchmove', touchMoveFunc, false);
-  _ss.addEventListener('touchmove', touchMoveFunc, false);
-}
-
 export {
   ua,
   isIphoneX,
@@ -449,5 +391,4 @@ export {
   dispatchWechatShare,
   strip,
   loadScript,
-  wechatScroll,
 }

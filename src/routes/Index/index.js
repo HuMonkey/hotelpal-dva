@@ -89,7 +89,7 @@ class IndexPage extends Component {
             })
           }
         </Slider>
-        { true && <div className={styles.open}>
+        { liveList && liveList.length > 0 && <div className={styles.open}>
           <div className={styles.header}>
             <div className={styles.inner}>
               <div className={styles.item}>公开课&nbsp;|&nbsp;直播</div>
@@ -125,7 +125,7 @@ class IndexPage extends Component {
                   </div>
                   <div className={styles.detail}>
                     <div className={styles.title}>{d.title}</div>
-                    <div className={styles.infos}>{d.speakerTitle}&nbsp;{d.speakerNick}&nbsp;{d.subTitle}</div>
+                    <div className={styles.infos}>{d.speakerTitle}&nbsp;{d.speakerNick}&nbsp;|&nbsp;{d.subTitle}</div>
                     { d.status === 'ENROLLING' && <div className={styles.arrowRight}></div> }
                     { d.status === 'ONGOING' && <div className={styles.rightIng}></div> }
                     { d.status === 'ENDED' && <div className={styles.rightEnd}></div> }

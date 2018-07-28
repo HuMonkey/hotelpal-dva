@@ -62,3 +62,27 @@ TypeError: Cannot read property 'emit' of null
     at emitOne (events.js:116:13)
     at Socket.emit (events.js:211:7)
     at TCP._handle.close [as _onclose] (net.js:557:12)
+
+From: whistle
+Date: 2018-7-23 23:10:41
+TypeError: Cannot read property 'emit' of null
+    at Socket.socketCloseListener (_http_client.js:350:7)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at TCP._handle.close [as _onclose] (net.js:557:12)
+
+From: whistle
+Date: 2018-7-26 19:53:18
+TypeError: Cannot read property 'emit' of null
+    at Socket.socketCloseListener (_http_client.js:350:7)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at TCP._handle.close [as _onclose] (net.js:557:12)
+
+From: whistle
+Date: 2018-7-28 22:10:38
+TypeError: Cannot read property 'emit' of null
+    at Socket.socketCloseListener (_http_client.js:350:7)
+    at emitOne (events.js:116:13)
+    at Socket.emit (events.js:211:7)
+    at TCP._handle.close [as _onclose] (net.js:557:12)

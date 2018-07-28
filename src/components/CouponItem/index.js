@@ -42,7 +42,7 @@ class CouponItem extends Component {
     }
 
     if (applyToPrice > 0) {
-      tips2 = `满${applyToPrice}`
+      tips2 = `满${applyToPrice / 100}`
     }
 
     // 邀请注册红包

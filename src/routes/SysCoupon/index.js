@@ -75,6 +75,7 @@ class SysCoupon extends Component {
         init: true,
       });
       if (!common.userInfo.phone) {
+        message.error('请先注册再领取优惠券哦~')
         history.replace({
           pathname: '/login',
           search: `?pathname=${encodeURIComponent(location.pathname)}&search=${encodeURIComponent(location.search)}`

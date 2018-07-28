@@ -19,14 +19,14 @@ class ErweimaModal extends Component {
         <div className={styles.main}>
           <div className={styles.header}>
             <div className={styles.big}>关注酒店邦成长营</div>
-            <div className={styles.small}>接收课程提醒&nbsp;<span>随时回看</span></div>
+            <div className={styles.small}>接收课程提醒&nbsp;随时回听回看</div>
           </div>
           <div className={styles.down}>
             <img src={kefuPng} />
             <div className={styles.btn}>长按识别二维码</div>
           </div>
         </div>
-        <Icon className={styles.close} type="close-circle-o" onClick={onClose} />
+        <div className={styles.close} onClick={onClose}></div>
       </div>
     )
   }

@@ -23,10 +23,10 @@ class Invite extends Component {
     const { dispatch, common } = this.props;
 
     const dict = {
-      title: '我邀请你成为新用户，注册得￥40',
+      title: `${common.userInfo.nickname}邀请你加入酒店邦成长营，一起收获知识！`,
       link: `${location.origin}/#/invitePage?invitor=${getToken()}`,
       imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
-      desc: `${common.userInfo.nickname}邀请你加入酒店邦成长营，一起获取知识！`,
+      desc: `点击注册成为酒店邦成长营用户，获得价值20元学习券`,
     }
 
     await dispatch({
@@ -92,7 +92,15 @@ class Invite extends Component {
     const { ruleShow, shareShow } = this.state;
     const { invite } = this.props;
 
-    const { totalCoupon, inviteList } = invite;
+    const { totalCoupon } = invite;
+    const inviteList = invite.inviteList && invite.inviteList.slice(0) || [];
+
+    if (inviteList.length > 0) {
+      const userList = inviteList[0].userList;
+      if (userList && userList.length === 3) {
+        inviteList.unshift({});
+      }
+    }
 
     const inviteDom = inviteList && inviteList.map((d, ii) => {
       const { batch, couponCollected, userList } = d;

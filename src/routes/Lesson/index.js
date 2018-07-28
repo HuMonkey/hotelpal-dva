@@ -7,7 +7,7 @@ import { message } from 'antd';
 import $ from 'jquery';
 
 import { AudioPlayer, ShareTips, PopupOrder, PopupLogin, Navs } from '../../components';
-import { formatNum, getAudioLength, formatTime, getParam, strip, throttle, wechatScroll } from '../../utils';
+import { formatNum, getAudioLength, formatTime, getParam, strip, throttle } from '../../utils';
 import hongbao4 from '../../assets/hongbao4.png';
 
 const likedTemp = [];
@@ -54,7 +54,7 @@ class Lesson extends Component {
     const height = document.body.offsetHeight;
     const scrollTop = document.getElementById('root').scrollTop;
 
-    const headerHeight = fromHongbao ? width / 10 * 3.34 : width / 10 * (1.173333 + 5.46666);
+    const headerHeight = fromHongbao ? width / 10 * 2.54 : width / 10 * (4.66666);
 
     // 到底了
     if (this.refs.paid && (scrollTop + height >= this.refs.paid.offsetHeight) && lesson.hasMore && !loading) {

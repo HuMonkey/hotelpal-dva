@@ -233,7 +233,7 @@ class Live extends Component {
     const openTimeHourStr = openTime.format('HH:mm');
 
     const dict = {
-      title: `${common.userInfo.nickname}|邀请你参加【酒店邦成长营直播课】`,
+      title: `${common.userInfo.nickname} | 邀请你参加【酒店邦成长营直播课】`,
       link: location.href,
       imgUrl: liveDetail.bannerImg || 'http://hotelpal.cn/static/jiudianbang-big.png',
       desc: `${openMonth + 1}月${openDate}日${openTimeHourStr}${liveDetail.speakerTitle}${liveDetail.speakerNick}，${liveDetail.title}`,
@@ -411,7 +411,11 @@ class Live extends Component {
               <IntroPanel title={'公开课介绍'} html={liveDetail.introduce} />
             </div>
             <div className={styles.know}>
-              <IntroPanel title={'公开课须知'} html={`公开课没有回放，付费用户请按时收看，错过不予退款。`} />
+              <IntroPanel title={'公开课须知'} html={`
+                <p>1、每周定期会有直播课，请持续关注；</p>
+                <p>2、课程内容是直播形式，不支持回放，请在订阅后按时收听；</p>
+                <p>3、本次直播课虚拟内容服务，付费用户订阅成功，概不退款，请你理解。</p>
+              `} />
             </div>
           </div>
         }

@@ -512,7 +512,7 @@ class Lesson extends Component {
             {fromHongbao && scrollDown && <div className={styles.fromHongbaoBlank}></div>}
             <div className={styles.courseTitle}>{isCourse && (formatNum(detail.lessonOrder))}{isCourse && <span>&nbsp;|&nbsp;</span>}{detail.title}</div>
             <div className={styles.infos}>
-              <div className={styles.time}>{detail.publishTime} 发布</div>
+              { isCourse && <div className={styles.time}>{detail.publishTime} 发布</div> }
               <div className={styles.other}>
                 <span>
                   <div className={styles.icon + ' ' + styles.time}></div>

@@ -17,7 +17,6 @@ class Hongbao extends Component {
 
   open () {
     const { hongbao, dispatch, history, location } = this.props;
-    console.log(history, location);
     const { detail } = hongbao;
 
     if (!detail.redPacketRemained) {

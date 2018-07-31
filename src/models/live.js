@@ -90,7 +90,7 @@ export default {
           }, 1000);
 
           // ws
-          const wsUri = `ws://v2.hotelpal.cn:8080/hotelpal/live/chat/${liveId}/${getToken()}`;
+          const wsUri = `ws://hotelpal.cn:8080/hotelpal/live/chat/${liveId}/${getToken()}`;
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
             console.log(evt) 

@@ -176,15 +176,17 @@ class Lesson extends Component {
       },
       onResult (res) {
         if (res.data.code === 0) {
-          dispatch({
-            type: 'lesson/fetchLessonDetail',
-            payload: {
-              data: {
-                id: lid,
-              }
-            },
-            onResult() {}
-          });
+          // dispatch({
+          //   type: 'lesson/fetchLessonDetail',
+          //   payload: {
+          //     data: {
+          //       id: lid,
+          //       zan: true,
+          //     }
+          //   },
+          //   onResult() {}
+          // });
+          // TODO
         }
       }
     })
@@ -362,7 +364,7 @@ class Lesson extends Component {
 
     const overflow = showAll ? '' : ' ' + styles.overflow;
 
-    const lessonList = courseDetail && courseDetail.lessonList;
+    const lessonList = courseDetail && courseDetail.lessonList.filter(d => d.isPublish === 1);
     const lessonsNum = lessonList ? lessonList.length : 0;
     let swiperWidth, swiperLeft;
     if (isCourse && lessonList) {
@@ -512,7 +514,7 @@ class Lesson extends Component {
             {fromHongbao && scrollDown && <div className={styles.fromHongbaoBlank}></div>}
             <div className={styles.courseTitle}>{isCourse && (formatNum(detail.lessonOrder))}{isCourse && <span>&nbsp;|&nbsp;</span>}{detail.title}</div>
             <div className={styles.infos}>
-              { isCourse && <div className={styles.time}>{detail.publishTime} 发布</div> }
+              <div className={styles.time}>{detail.publishTime} 发布</div>
               <div className={styles.other}>
                 <span>
                   <div className={styles.icon + ' ' + styles.time}></div>
@@ -554,7 +556,7 @@ class Lesson extends Component {
                     <div className={styles.lessons} ref={`lessons`}>
                       <div className={styles.swiper} style={{ width: swiperWidth + 'rem' }}>
                         {
-                          courseDetail.lessonList && courseDetail.lessonList.map((d, i) => {
+                          courseDetail.lessonList && courseDetail.lessonList.filter(d => d.isPublish === 1).map((d, i) => {
                             let currentClass = d.id === detail.id ? ' ' + styles.current : '';
                             return <div key={i} className={styles.item + currentClass} onClick={() => {
                               this.scrollTop.call(this);

@@ -140,6 +140,7 @@ export default {
         const replyToCommentList = detail.commentList.replyToCommentList;
         const start = commentList.length;
         const hasMore = detail.commentList.hasMore;
+
         yield put({
           type: 'save',
           payload: {
@@ -233,6 +234,13 @@ export default {
       put
     }) { // eslint-disable-line
       const res = yield call(lessonService.addZan, payload.data || {});
+      const cid = payload.data.cid;
+      yield put({
+        type: 'updateZan',
+        payload: {
+          data: cid
+        },
+      });
       onResult && onResult(res);
     },
     * recordListenPos({
@@ -265,6 +273,15 @@ export default {
         hasMore,
         commentsStart
       };
+    },
+    updateZan(state, action) {
+      const commentList = state.commentList.slice(0);
+      const comment = commentList.find(d => d.id === action.payload.data);
+      comment.liked = true;
+      comment.zanCount++;
+      return {
+        ...state, commentList
+      }
     },
     reset(state, action) {
       return {

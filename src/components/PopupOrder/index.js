@@ -55,7 +55,6 @@ class PopupOrder extends Component {
       const data = {
         id: course.id
       }
-      console.log(1);
       if (couponSelected && couponSelected !== '不使用') {
         data.couponId = couponSelected.id;
       }

@@ -39,7 +39,7 @@ export default {
         });
         const dict = {
           title: course.userName + '：' + course.title,
-          link: location.href,
+          link: `${location.origin}/#/course/${courseId}`,
           imgUrl: course.headImg,
           desc: course.subtitle,
         }

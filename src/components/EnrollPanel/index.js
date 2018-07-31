@@ -412,7 +412,7 @@ class EnrollPanel extends Component {
                       <div className={styles.item}>3</div>
                     </div>
                     <div className={styles.row}>将海报分享你的酒店好友</div>
-                    <div className={styles.row}>2个好友扫码进入直播间，点击免费报名</div>
+                    <div className={styles.row}>2个好友扫码并点击免费报名</div>
                     <div className={styles.row}>你即可获得免费听课特权</div>
                   </div>
                   <div className={styles.image}>

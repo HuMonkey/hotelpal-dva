@@ -14,27 +14,8 @@ class H5Video extends PureComponent {
     super(props);
     this.state = {};
   }
-  // componentDidMount() {
-  //   loadScript('//g.alicdn.com/de/prismplayer/2.7.1/aliplayer-min.js', function() {
-  //     const player = new Aliplayer({
-  //       "id": "myvideo",
-  //       "source": "//lv.hotelpal.cn/app/stream.m3u8",
-  //       "width": "1px",
-  //       "height": "1px",
-  //       "autoplay": true,
-  //       "isLive": true,
-  //       "rePlay": false,
-  //       "playsinline": true,
-  //       "preload": true,
-  //       "controlBarVisibility": "hover",
-  //       "useH5Prism": true
-  //     }, function (player) {
-  //         console.log("播放器创建了。");
-  //       }
-  //     );
-  //   })
-  // }
   render() {
+    const { url } = this.props;
     function createMarkupVideo() { 
       return {
         __html: !ua.android ? `<video 
@@ -42,7 +23,7 @@ class H5Video extends PureComponent {
             autoplay
             webkit-playsinline="true" 
             playsinline="true" 
-            src="//lv.hotelpal.cn/app/stream.m3u8"
+            src="//${url}.m3u8"
             id="myvideo"
           >
             <p>你的浏览器不支持 <code>video</code> 标签.</p>
@@ -50,7 +31,7 @@ class H5Video extends PureComponent {
             preload="auto" 
             autoplay
             x5-playsinline
-            src="//lv.hotelpal.cn/app/stream.m3u8"
+            src="//${url}.m3u8"
             id="myvideo"
           >
             <p>你的浏览器不支持 <code>video</code> 标签.</p>
@@ -124,7 +105,7 @@ class LivePlayer extends Component {
           <div className={styles.ppt}>
             <img src={PPTImg || defaultPPT} />
           </div>
-          <H5Video />
+          <H5Video url={live.liveAudio}/>
           { 
             ua.android && !beginShow && <div className={styles.btn} onClick={this.autoPlay.bind(this)}>
               <div className={styles.playBtn}></div>

@@ -34,23 +34,30 @@ class CourseContent extends Component {
   
     const overflowClass = !isDetail && overflow ? ' ' + styles.overflow : '';
 
-    const teacherDom = isDetail ? <div className={styles.teacher}>
-      <div className={styles.avatar}>
-        <img src={course.headImg} />
-      </div>
-      <div className={styles.desc}>
-        <div className={styles.slabel}>主讲人</div>
-        <div className={styles.user}>
-          <span className={styles.userName}>{ course.userName }</span>
-          <span className={styles.split}>&nbsp;·&nbsp;</span>
-          <span className={styles.userTitle}>{ course.company + ' ' + course.userTitle }</span>
+    const teacherDom = isDetail ? <div>
+      <div className={styles.teacher}>
+        <div className={styles.avatar}>
+          <img src={course.headImg} />
         </div>
+        <div className={styles.desc}>
+          <div className={styles.slabel}>主讲人</div>
+          <div className={styles.user}>
+            <span className={styles.userName}>{ course.userName }</span>
+            <span className={styles.split}>&nbsp;·&nbsp;</span>
+            <span className={styles.userTitle}>{ course.company + ' ' + course.userTitle }</span>
+          </div>
+        </div>
+      </div>
+      <div className={styles.block} style={{ paddingTop: 0, }}>
+        <div className={styles.intro} dangerouslySetInnerHTML={createMarkupTeacher()}></div>
+        <div className={styles.hr}></div>
       </div>
     </div> : <div className={styles.block}>
       <div className={styles.label}>主讲人</div>
       <div className={styles.name}>
         <span className={styles.userName}>{ course.userName }</span>
-        <span className={styles.userTitle}>{ course.company}<span className={styles.split}>&nbsp;·&nbsp;</span>{course.userTitle }</span>
+        <span className={styles.split}>&nbsp;·&nbsp;</span>
+        <span className={styles.userTitle}>{ course.company}&nbsp;{course.userTitle }</span>
       </div>
       <div className={styles.intro} dangerouslySetInnerHTML={createMarkupTeacher()}></div>
       <div className={styles.hr}></div>

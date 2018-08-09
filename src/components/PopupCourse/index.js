@@ -21,8 +21,6 @@ class PopupCourse extends Component {
     function createMarkupGain() { return { __html: courseContent.gain || '暂无' }; };
     function createMarkupSubscribe() { return { __html: courseContent.subscribe || '暂无' }; };
 
-    const purchaseClass = userInfo.relateCoursePurchased === 'Y' ? ' ' + styles.purchased : '';
-
     return (
       <div className={styles.popupCourse}>
         <div className={styles.content}>
@@ -42,7 +40,7 @@ class PopupCourse extends Component {
                 </div>
               </div>
             </div>
-            <div className={styles.main + purchaseClass}>
+            <div className={styles.main}>
               {course.speaker && <div className={styles.desc}>
                 <div className={styles.label}>主讲人</div>
                 <div className={styles.speaker}>{course.speaker.nick}<span>{course.speaker.company} {course.speaker.title}</span></div>
@@ -66,6 +64,7 @@ class PopupCourse extends Component {
               </div>
             </div>
             { userInfo.relateCoursePurchased !== 'Y' && <div className={styles.buy} onClick={onSubmit}>立即订阅：{course.price / 100} / {course.lessonNum} 课时</div> }
+            { userInfo.relateCoursePurchased === 'Y' && <div className={styles.buy + ' ' + styles.already}>已购买</div> }
           </div>
         </div>
       </div>

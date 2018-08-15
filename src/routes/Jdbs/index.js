@@ -97,7 +97,7 @@ class Jdbs extends Component {
     if (!notListenLesson) {
       return false;
     }
-    location.href = `/#/lesson/free/${notListenLesson.id}`;
+    location.href = `/lesson/free/${notListenLesson.id}`;
   }
 
   render () {
@@ -135,7 +135,7 @@ class Jdbs extends Component {
               const disableClass = !d.isPublish ? ' ' + styles.disable : '';
               const finishedClass = d.listenLen && d.listenLen >= d.audioLen ? ' ' + styles.finished : '';
               return <li key={i} className={styles.item + disableClass + finishedClass} onClick={() => {
-                location.href = `/?t=${(new Date()).valueOf()}#/lesson/free/${d.id}`
+                location.href = `/lesson/free/${d.id}`
               }}>
                   <div className={styles.name}>
                     <div className={styles.arrow}></div> 

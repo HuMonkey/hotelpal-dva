@@ -188,7 +188,7 @@ class Course extends Component {
                   if (!d.isPublish) {
                     return false;
                   }
-                  location.href = `/?t=${(new Date()).valueOf()}#/lesson/pay/${d.id}?courseId=${detail.id}`;
+                  location.href = `/lesson/pay/${d.id}?courseId=${detail.id}`;
                 }}>
                   <div className={styles.up}>
                     <span className={styles.ltitle}><div className={freeListenClass}>{formatNum(d.lessonOrder)}&nbsp;|&nbsp;{d.title}</div></span> 

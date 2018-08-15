@@ -24,7 +24,7 @@ class Invite extends Component {
 
     const dict = {
       title: `${common.userInfo.nickname} | 邀请你加入酒店邦成长营，一起收获知识！`,
-      link: `${location.origin}/#/invitePage?invitor=${getToken()}`,
+      link: `${location.origin}/invitePage?invitor=${getToken()}`,
       imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
       desc: `点击注册成为酒店邦成长营用户，获得价值20元学习券`,
     }

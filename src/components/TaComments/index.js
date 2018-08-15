@@ -24,7 +24,7 @@ class TaComments extends Component {
   render() {
     
     const { open } = this.state;
-    const { comments } = this.props;
+    const comments = this.props.comments;
 
     const taClass = open ? ' ' + styles.open : '';
 
@@ -50,10 +50,13 @@ class TaComments extends Component {
 
       function createMarkup() { 
         const msg = open ? d.msg || '' : getHtmlContent(d.msg || '');
+        if (!msg || hasPic) {
+          return { __html: '[图片]' }
+        }
         return { __html: msg }; 
       };
 
-      return <div key={i} className={styles.item + hasPicClass}>
+      return <div key={i} className={styles.item}>
         <div className={styles.left}>
           <div className={styles.title}>
             <div className={styles.name}>
@@ -65,7 +68,7 @@ class TaComments extends Component {
           </div>  
           { open && <div className={styles.comment} dangerouslySetInnerHTML={createMarkup()}></div>}
         </div>
-        { hasPic && <div className={styles.right} style={{ backgroundImage: `url(${pic})` }}></div> }
+        {/* { hasPic && <div className={styles.right} style={{ backgroundImage: `url(${pic})` }}></div> } */}
       </div>
     });
 

@@ -1,5 +1,5 @@
 import * as commonService from '../services/common';
-import { getParam, setCookie, getCookie, config } from '../utils/';
+import { getParam, setCookie, getCookie, config, removeParam } from '../utils/';
 
 import { message } from 'antd';
 
@@ -35,8 +35,8 @@ export default {
                     const origin = encodeURIComponent(location.origin);
                     const search = encodeURIComponent(location.search);
                     const hash = encodeURIComponent(location.hash);
-                    const redirect = `http://hotelpal.cn/test.html?origin=${origin}&search=${search}&hash=${hash}`
-                    // const redirect = `http://hotelpal.cn`
+                    // const redirect = `http://hotelpal.cn/test.html?origin=${origin}&search=${search}&hash=${hash}`
+                    const redirect = location.href;
                     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
                         + config.appId + '&redirect_uri='
                         + encodeURIComponent(redirect)
@@ -50,7 +50,7 @@ export default {
                         onResult(res) {
                             if (res.data.code === 0) {
                                 setCookie('jdbtk', res.data.data.token, '12d');
-                                window.history.pushState(null, null, location.pathname + location.hash);
+                                window.history.replaceState(null, null, removeParam('code'));
                                 // fetchUserInfo();
                                 location.reload();
                             } else {

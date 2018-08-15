@@ -24,8 +24,8 @@ const isLogin = function () {
 }
 
 const config = {
-  // host: `${location.origin}`, // 线上
-  host: `${location.origin}/test`, // 测试
+  host: `${location.origin}`, // 线上
+  // host: `${location.origin}/test`, // 测试
   appId: 'wxfe666ebbf0e42897'
 }
 
@@ -125,7 +125,11 @@ const getHtmlContent = function (str) {
   if (!str) {
     return '';
   }
-  return str.replace(/<style(.|\n)*\/style>/g, "").replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ");
+  return str
+    .replace(/<xml(.|\n)*\/xml>/g, "")
+    .replace(/<style(.|\n)*\/style>/g, "")
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ");
 }
 
 /**
@@ -204,7 +208,7 @@ const configWechat = function (appId, timestamp, nonceStr, signature, callback) 
     callback && callback();
   })
   wx.error(function (res) {
-    message.error(JSON.stringify(res));
+    // message.error(JSON.stringify(res));
   })
 }
 
@@ -367,6 +371,29 @@ const loadScript = function (url, callback) {
   document.getElementsByTagName("head")[0].appendChild(script);
 }
 
+const removeParam = function (key) {
+  var sourceURL = location.href.split('#')[0];
+  var hash = location.href.split('#')[1];
+  var rtn = sourceURL.split("?")[0],
+    param,
+    params_arr = [],
+    queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+  if (queryString !== "") {
+    params_arr = queryString.split("&");
+    for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+      param = params_arr[i].split("=")[0];
+      if (param === key) {
+        params_arr.splice(i, 1);
+      }
+    }
+    rtn = rtn + "?" + params_arr.join("&");
+  }
+  if (hash) {
+    rtn = rtn + "#" + hash;
+  }
+  return rtn;
+}
+
 export {
   ua,
   isIphoneX,
@@ -391,4 +418,5 @@ export {
   dispatchWechatShare,
   strip,
   loadScript,
+  removeParam,
 }

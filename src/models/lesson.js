@@ -80,7 +80,7 @@ export default {
           }
           dict = {
             title: '「红包分享」' + course.userName + '：' + detail.title,
-            link: `${location.origin}/#/hb/${nonce}?courseId=${courseId}&lessonId=${detail.id}`,
+            link: `${location.origin}/hb/${nonce}?courseId=${courseId}&lessonId=${detail.id}`,
             imgUrl: course.headImg,
             desc
           }
@@ -97,10 +97,10 @@ export default {
               imgUrl: detail.coverImg,
               desc,
             }
-          } else if (!course.purchased && !detail.freeListen && !fromHongbao) {
+          } else if (!course.purchased && (!detail.freeListen) && !fromHongbao) {
             dict = {
               title: course.userName + '：' + course.title,
-              link: `${location.origin}/#/lesson/pay/${lessonId}?courseId=${courseId}`,
+              link: `${location.origin}/lesson/pay/${lessonId}?courseId=${courseId}`,
               imgUrl: course.headImg,
               desc: course.subtitle,
             }
@@ -111,7 +111,7 @@ export default {
             }
             dict = {
               title: course.userName + '：' + detail.title,
-              link: `${location.origin}/#/lesson/pay/${lessonId}?courseId=${courseId}`,
+              link: `${location.origin}/lesson/pay/${lessonId}?courseId=${courseId}`,
               imgUrl: course.headImg,
               desc
             }
@@ -148,7 +148,7 @@ export default {
           },
         });
         onResult(res.data.data)
-      } else if (res.data.code === 40301) {
+      } else if (res.data.code === 40301 || res.data.code === 4) {
         yield put({
           type: 'save',
           payload: {

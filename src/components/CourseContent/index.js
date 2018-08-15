@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import { Link } from 'dva/router';
 import styles from './index.less';
+import Lightbox from 'react-images';
+import $ from 'zepto-modules';
 
 class CourseContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       overflow: true,
+      previewing: false,
     };
   }
 
@@ -21,9 +23,22 @@ class CourseContent extends Component {
       overflow: true,
     })
   }
+  
+  componentDidMount() {
+    const that = this;
+    $(this.refs.normal).on('click', `img`, function() {
+      const url = $(this).attr('src');
+      if (!url) {
+        return false;
+      }
+      that.setState({
+        previewing: url
+      })
+    })
+  }
 
   render() {
-    const { overflow } = this.state;
+    const { overflow, previewing } = this.state;
     const { course, isDetail } = this.props;
 
     function createMarkupTeacher() { return { __html: course.speakerDescribe || '暂无' }; };
@@ -64,7 +79,20 @@ class CourseContent extends Component {
     </div>
 
     return (
-      <div className={styles.courseContent}>
+      <div className={styles.courseContent} ref={`normal`}>
+        {
+          previewing && <Lightbox
+            images={[
+              { src: previewing },
+            ]}
+            isOpen={previewing}
+            onClose={() => {
+              this.setState({
+                previewing: false,
+              })
+            }}
+          />
+        }
         { teacherDom }
         <div className={styles.block + ' ' + styles.courseIntro}>
           <div className={styles.label}>课程介绍</div>

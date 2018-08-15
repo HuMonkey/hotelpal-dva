@@ -2,9 +2,12 @@ import dva from 'dva';
 import './index.less';
 
 import {getToken} from './utils';
+import createHistory from 'history/createBrowserHistory';
 
 // 1. Initialize
-const app = dva();
+const app = dva({
+    history: createHistory(),
+});
 
 // 2. Plugins
 // app.use({});

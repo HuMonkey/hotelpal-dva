@@ -4,7 +4,8 @@ import { Link, withRouter } from 'dva/router';
 import styles from './index.less';
 
 import { message } from 'antd';
-import $ from 'jquery';
+import Lightbox from 'react-images';
+import $ from 'zepto-modules';
 
 import { AudioPlayer, ShareTips, PopupOrder, PopupLogin, Navs } from '../../components';
 import { formatNum, getAudioLength, formatTime, getParam, strip, throttle } from '../../utils';
@@ -25,6 +26,8 @@ class Lesson extends Component {
       orderShow: false,
       loginShow: false,
       scrollDown: false,
+
+      previewing: false,
     };
   }
 
@@ -201,10 +204,8 @@ class Lesson extends Component {
     const lid = detail.id;
     const redPacketNonce = detail.redPacketNonce;
     
-    history.push({
-      pathname: `/hongbao/${lid}`,
-      search: `?courseId=${cid}&nonce=${redPacketNonce}`,
-    })
+    const timeStamp = (new Date()).valueOf();
+    window.location.href = `/hongbao/${lid}?courseId=${cid}&nonce=${redPacketNonce}`;
   }
 
   hideHongbaoTips () {
@@ -290,10 +291,21 @@ class Lesson extends Component {
 
   componentDidMount() {
     document.getElementById('root').onscroll = throttle(this.onScroll.bind(this), 20);
+
+    const that = this;
+    $(this.refs.normal).on('click', `.${styles.article} img`, function() {
+      const url = $(this).attr('src');
+      if (!url) {
+        return false;
+      }
+      that.setState({
+        previewing: url
+      })
+    })
   }
 
   render () {
-    const { orderShow, loginShow, scrollDown } = this.state;
+    const { orderShow, loginShow, scrollDown, previewing } = this.state;
     const { lesson, dispatch, coupon, history, location } = this.props;
 
     if (!lesson) {
@@ -462,6 +474,19 @@ class Lesson extends Component {
 
     return (
       <div className={styles.normal} ref={`normal`}>
+        {
+          previewing && <Lightbox
+            images={[
+              { src: previewing },
+            ]}
+            isOpen={previewing}
+            onClose={() => {
+              this.setState({
+                previewing: false,
+              })
+            }}
+          />
+        }
         { 
           isHongbao && <ShareTips type="hongbao" clickCallBack={this.hideHongbaoTips.bind(this)} />
         }

@@ -199,7 +199,7 @@ class AudioPlayer extends Component {
     if (playing) {
       search += '&playing=1'
     }
-    location.href = `/?t=${(new Date()).valueOf()}#/lesson/${isCourse ? 'pay' : 'free'}/${previous}${search}`;
+    location.href = `/lesson/${isCourse ? 'pay' : 'free'}/${previous}${search}`;
   }
 
   nextLesson (goOn) {
@@ -224,7 +224,7 @@ class AudioPlayer extends Component {
       search.push('playing=1')
     }
     search = `?${search.join('&')}`
-    location.href = `/?t=${(new Date()).valueOf()}#/lesson/${isCourse ? 'pay' : 'free'}/${next}${search}`;
+    location.href = `/lesson/${isCourse ? 'pay' : 'free'}/${next}${search}`;
   }
 
   setSpeed () {

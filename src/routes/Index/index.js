@@ -109,7 +109,7 @@ class IndexPage extends Component {
                   + (d.freeEnrolledTimes || 0);
 
                 return <div className={styles.item} key={i} onClick={() => {
-                  location.href = `/?t=${(new Date()).valueOf()}#/live/${d.id}`
+                  location.href = `/live/${d.id}`
                 }}>
                   <div className={styles.top}>
                     <div className={styles.left}>

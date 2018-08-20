@@ -23,8 +23,8 @@ export default {
   },
   "proxy": {
     "/test": {
-      // "target": "http://v2.hotelpal.cn/",
-      "target": "http://hotelpal.cn/",
+      "target": "http://t.hotelpal.cn/",
+      // "target": "http://hotelpal.cn/",
       "changeOrigin": true,
       "pathRewrite": { "^/test": "" }
     }

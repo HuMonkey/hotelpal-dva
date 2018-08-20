@@ -2,11 +2,8 @@ import React, {Component, PureComponent} from 'react';
 import styles from './index.less';
 
 import moment from 'moment';
-import ReactHLS from 'react-hls';
-import { formatNum, ua, liveMemberCardUseful, loadScript } from '../../utils';
-import { message } from 'antd';
+import { formatNum, ua, liveMemberCardUseful } from '../../utils';
 
-import defaultPPT from '../../assets/live-banner-default.png';
 import liveAnimationSvg from '../../assets/live-play-animation.svg';
 
 class H5Video extends PureComponent {
@@ -91,7 +88,7 @@ class LivePlayer extends Component {
             </div>
           </div> 
         }
-        <div className={styles.cover} style={{ backgroundImage: `url(${live.bannerImg || defaultPPT})` }}></div>
+        <div className={styles.cover} style={{ backgroundImage: `url(${live.bannerImg})` }}></div>
       </div>
     } else if (status === 'ENDED') {
       dom = <div className={styles.player + ' ' + styles.bg}>
@@ -103,7 +100,7 @@ class LivePlayer extends Component {
       if (userInfo.enrolled === 'Y' || (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip))) {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
-            <img src={PPTImg || defaultPPT} />
+            <img src={PPTImg || live.bannerImg} />
           </div>
           <H5Video url={live.liveAudio}/>
           { 
@@ -118,7 +115,7 @@ class LivePlayer extends Component {
         dom = <div className={styles.player + ' ' + styles.bg}>
           <div className={styles.split}></div>
           <div className={styles.tips}>需要报名才能观看公开课</div>
-          <div className={styles.people}><span>{watchingPeopleNum}人正在收看</span></div>
+          <div className={styles.people}><span><img src={liveAnimationSvg} />{watchingPeopleNum}人正在收看</span></div>
         </div>
       }
     }

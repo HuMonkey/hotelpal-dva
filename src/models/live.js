@@ -79,7 +79,6 @@ export default {
             },
             onResult (res) {}
           });
-
           const inter = setInterval(() => {
             dispatch({
               type: 'save',
@@ -88,19 +87,16 @@ export default {
               }
             });
           }, 1000);
-
           // ws
-          const wsUri = `ws://hotelpal.cn:8080/hotelpal/live/chat/${liveId}/${getToken()}`;
+          const wsUri = `ws://t.hotelpal.cn:8081/live/chat`;
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
-            console.log(evt) 
+            websocket.send(JSON.stringify({courseId: liveId, token: getToken(), init:'Y'}))
           }; 
           websocket.onclose = function(evt) { 
-            console.log(evt);
             // message.error('socket 断开了');
           }; 
           websocket.onmessage = async function(evt) {
-            console.log(evt);
             const data = JSON.parse(evt.data);
             if (data.msgType === 'TYPE_USER_MESSAGE') {
               // 评论
@@ -171,7 +167,7 @@ export default {
             }
           }; 
           websocket.onerror = function(evt) { 
-            console.log(evt) 
+            // console.log(evt) 
           };
 
           dispatch({
@@ -297,7 +293,7 @@ export default {
       }
     },
     *addComment({ payload, onResult }, { call, put }) {  // eslint-disable-line
-      websocket.send(payload.data.msg || '');
+      websocket.send(JSON.stringify({msg: payload.data.msg || '', courseId: liveId, token: getToken()}))
       onResult && onResult();
     },
     * getSysCouponInfo({ payload: {data}, onResult }, { call, put }) {

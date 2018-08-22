@@ -178,7 +178,8 @@ class Live extends Component {
   }
 
   async submitComment () {
-    const { dispatch } = this.props;
+    const { dispatch, live } = this.props;
+    const { liveDetail } = live;
 
     const reply = this.refs.reply.value;
 
@@ -192,6 +193,7 @@ class Live extends Component {
       payload: {
         data: {
           msg: reply,
+          liveId: liveDetail.id
         }
       },
       onResult () {

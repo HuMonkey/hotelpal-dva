@@ -293,7 +293,7 @@ export default {
       }
     },
     *addComment({ payload, onResult }, { call, put }) {  // eslint-disable-line
-      websocket.send(JSON.stringify({msg: payload.data.msg || '', courseId: liveId, token: getToken()}))
+      websocket.send(JSON.stringify({msg: payload.data.msg || '', courseId: payload.data.liveId, token: getToken()}))
       onResult && onResult();
     },
     * getSysCouponInfo({ payload: {data}, onResult }, { call, put }) {

@@ -6,6 +6,8 @@ import moment from 'moment';
 import { Icon } from 'antd';
 import { getHtmlContent } from '../../utils';
 
+import arrowPng from '../../assets/live-close-arrow.svg';
+
 class TaComments extends Component {
   constructor(props) {
     super(props);
@@ -78,8 +80,8 @@ class TaComments extends Component {
           {taDom}
         </div>
         <div className={styles.more} onClick={() => this.switchTa.call(this)}>
-          { open && <Icon type="up" /> }
-          { !open && <Icon className={styles.openBtn} type="down" /> }
+          { open && <div className={styles.closeBtn}><img src={arrowPng} /></div> }
+          { !open && <Icon type="down" /> }
         </div>
       </div>
     )

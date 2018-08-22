@@ -4,7 +4,8 @@ import styles from './index.less';
 import moment from 'moment';
 import { formatNum, ua, liveMemberCardUseful } from '../../utils';
 
-import liveAnimationSvg from '../../assets/live-play-animation.svg';
+import liveAnimationSvg from '../../assets/live-play-icon.gif';
+import Wave from '../Wave';
 
 class H5Video extends PureComponent {
   constructor(props) {
@@ -49,8 +50,6 @@ class LivePlayer extends Component {
     };
   }
 
-  componentDidMount() {}
-
   autoPlay() {
     // document.querySelector('#myvideo video').play();
     document.querySelector('#myvideo').play();
@@ -70,6 +69,12 @@ class LivePlayer extends Component {
     let status = live.status;
 
     let dom;
+
+    const movingDot = <div className={styles.movingDot}>
+      <div className={styles.inner1}></div>
+      <div className={styles.inner2}></div>
+    </div>
+    
     if (status === 'ENROLLING') {
       // 如果报名中，显示海报
       dom = <div className={styles.player}>
@@ -94,7 +99,7 @@ class LivePlayer extends Component {
       dom = <div className={styles.player + ' ' + styles.bg}>
         <div className={styles.split}></div>
         <div className={styles.tips}>直播课已结束，下次早点来哦~</div>
-        <div className={styles.people}><span><img src={liveAnimationSvg} />累计{live.totalPeople}人收看</span></div>
+        <div className={styles.people}><span>{movingDot}累计{live.totalPeople}人收看</span></div>
       </div>
     } else if (status === 'ONGOING') {
       if (userInfo.enrolled === 'Y' || (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip))) {
@@ -109,19 +114,20 @@ class LivePlayer extends Component {
               点击进入直播
             </div>  
           }
-          <div className={styles.people}><span><img src={liveAnimationSvg} />{watchingPeopleNum}人正在收看</span></div>
+          <div className={styles.people}><span>{movingDot}{watchingPeopleNum}人正在收看</span></div>
         </div>
       } else {
         dom = <div className={styles.player + ' ' + styles.bg}>
           <div className={styles.split}></div>
           <div className={styles.tips}>需要报名才能观看公开课</div>
-          <div className={styles.people}><span><img src={liveAnimationSvg} />{watchingPeopleNum}人正在收看</span></div>
+          <div className={styles.people}><span>{movingDot}{watchingPeopleNum}人正在收看</span></div>
         </div>
       }
     }
     return (
       <div className={styles.livePlayer}>
         { dom }
+        <Wave />
       </div>
     )
   }

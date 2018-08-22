@@ -3,6 +3,74 @@
 .enrollPanel {
   width: 100%;
   height: 100%;
+  .helpPeople {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    .bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      background-image: url(../../assets/live-help-bg.png);
+      background-position: center;
+      background-repeat: no-repeat;
+      // animation: rotate 10s infinite;
+      transform-origin: center center;
+    }
+    .box {
+      width: 7.2rem;
+      height: 9.76rem;
+      background-image: url(../../assets/live-help-box.png);
+      background-position: center;
+      background-size: cover;
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      padding: 5.8rem 0.8rem 0.8rem 0.8rem; 
+      .name {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: @black3;
+        text-align: center;
+        font-size: 0.4rem;
+      }
+      .tips {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: @black1;
+        text-align: center;
+        font-size: 0.34666rem;
+        margin-top: 0.1rem;
+        span {
+          color: @black3;
+        }
+      }
+      .btn {
+        width: 3.3333rem;
+        height: 1.4rem;
+        margin-top: 20px;
+        margin: auto;
+        text-align: center;
+        line-height: 1.5rem;
+        margin-top: 0.6rem;
+        font-size: 0.6rem;
+        color: white;
+      }
+    }
+  }
   .course {
     width: 100%;
     height: 1.28rem;
@@ -259,5 +327,14 @@
       top: 0.26666rem;
       z-index: 1;
     }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

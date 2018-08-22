@@ -38,6 +38,12 @@ export default {
             onResult (res) {}
           });
           dispatch({
+            type: 'common/fetchUserInfo',
+            payload: {
+              token: invitor
+            },
+          });
+          dispatch({
             type: 'fetchLiveDetail',
             payload: {
               data: {

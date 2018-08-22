@@ -44,8 +44,6 @@ class EnrollPanel extends Component {
 
     this.openPoster();
 
-    this.enrollFor();
-
     if (userInfo.status === 'INVITING') {
       return false;
     }
@@ -91,7 +89,7 @@ class EnrollPanel extends Component {
         payload: {
           data: {
             id: live.id,
-            invitor,
+            invitor: invitor.wechatOpenId,
           }
         },
         onResult (res) {
@@ -119,8 +117,6 @@ class EnrollPanel extends Component {
 
     // VIP 或者免费课直接调用报名接口了
     if ((userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip)) || live.price === 0) {
-      this.enrollFor();
-
       await dispatch({
         type: 'live/liveEnroll',
         payload: {
@@ -177,9 +173,7 @@ class EnrollPanel extends Component {
                     tradeNo,
                   }
                 },
-                onResult(res) {
-                  that.enrollFor();
-                }
+                onResult(res) {}
               })
               await dispatch({
                 type: 'live/fetchLiveDetail',
@@ -201,13 +195,6 @@ class EnrollPanel extends Component {
       }
     })
     
-  }
-
-  componentDidMount () {
-    
-    setTimeout(() => {
-      enrollForShow = false;
-    }, 8000) // 8秒后隐藏提示
   }
 
   componentDidUpdate() {
@@ -243,9 +230,8 @@ class EnrollPanel extends Component {
   render() {
     const { posterShow, loginPopupShow } = this.state;
     const { live, userInfo, invitor, coupon, dispatch } = this.props;
-
     const showInvitorTips = this.canEnrollFor() && enrollForShow;
-    
+
     if (!helpedTipsShow && userInfo.enrolled === 'Y' && invitor) {
       message.error('你已报名本次课程，不能再为好友助力喽～');
       helpedTipsShow = true;
@@ -338,27 +324,44 @@ class EnrollPanel extends Component {
     return (
       <div className={styles.enrollPanel}>
         { loginPopupShow && <PopupLogin successCallback={this.loginCallback.bind(this)} dispatch={dispatch} closePopup={this.closePopup.bind(this)} /> }
-        <Popover placement="top" content={`点击「我要免费报名」帮你的好友助力`} visible={showInvitorTips}>
-          <div className={styles.course}>
-            <div className={styles.left}>
-              <div className={styles.tag + statusClass}>
-                {/* {liveStatus[status]} */}
-                {/* <div className={styles.tri}></div> */}
+        { 
+          showInvitorTips && <div className={styles.helpPeople}>
+            <div className={styles.bg}></div>
+            <div className={styles.box}>
+              <div className={styles.name}>
+                我是{invitor.nickname}
               </div>
-              {
-                status === 'ENROLLING' && <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
-              }
-              {
-                (status === 'ONGOING' || status === 'ENDED') && <div className={styles.time + statusClass}>{live.speakerNick}：{live.title}</div>
-              }
+              <div className={styles.tips}>
+                请帮我点击<span>[助力]</span>免费获取听课特权
+              </div>
+              <div className={styles.btn} onClick={() => {
+                this.enrollFor.call(this);
+                enrollForShow = false;
+              }}>
+                助力
+              </div>
             </div>
-            { 
-              status !== 'ENDED' && (signup === 'paid' || signup === 'free' || (signup === 'vip' && status === 'ONGOING') ? 
-                <div className={styles.paid}></div> : 
-                <div className={styles.right}>已有{enrollCount}人报名</div>)
+          </div> 
+        }
+        <div className={styles.course}>
+          <div className={styles.left}>
+            <div className={styles.tag + statusClass}>
+              {/* {liveStatus[status]} */}
+              {/* <div className={styles.tri}></div> */}
+            </div>
+            {
+              status === 'ENROLLING' && <div className={styles.time}>{openTimeStr}&nbsp;{openTimeWeekStr}&nbsp;{openTimeHourStr}</div>
+            }
+            {
+              (status === 'ONGOING' || status === 'ENDED') && <div className={styles.time + statusClass}>{live.speakerNick}：{live.title}</div>
             }
           </div>
-        </Popover>
+          { 
+            status !== 'ENDED' && (signup === 'paid' || signup === 'free' || (signup === 'vip' && status === 'ONGOING') ? 
+              <div className={styles.paid}></div> : 
+              <div className={styles.right}>已有{enrollCount}人报名</div>)
+          }
+        </div>
         { 
           status !== 'ENDED' && <div>
             { 

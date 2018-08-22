@@ -408,7 +408,7 @@ class Live extends Component {
         </div>
         {
           page === 'detail' && <div>
-            <EnrollPanel coupon={coupon} dispatch={dispatch} live={liveDetail} userInfo={userInfo} invitor={live.invitor} />
+            <EnrollPanel coupon={coupon} dispatch={dispatch} live={liveDetail} userInfo={userInfo} invitor={common.invitor} />
             <div className={styles.intro}>
               <IntroPanel title={'公开课介绍'} html={liveDetail.introduce} />
             </div>

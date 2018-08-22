@@ -35,8 +35,8 @@ export default {
                     const origin = encodeURIComponent(location.origin);
                     const search = encodeURIComponent(location.search);
                     const hash = encodeURIComponent(location.hash);
-                    const redirect = `http://hotelpal.cn/test.html?origin=${origin}`
-                    // const redirect = location.href;
+                    // const redirect = `http://hotelpal.cn/test.html?origin=${origin}`
+                    const redirect = location.href;
                     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
                         + config.appId + '&redirect_uri='
                         + encodeURIComponent(redirect)
@@ -68,7 +68,7 @@ export default {
             const result = yield call(commonService.receiveRedirect, data || {});
             onResult(result);
         },
-        * fetchUserInfo({ payload: data }, { call, put }) {
+        * fetchUserInfo({ payload: data, onResult }, { call, put }) {
             const result = yield call(commonService.fetchUserInfo, data || {});
             const userInfo = result.data.code === 0 ? result.data.data : {};
             if (data.token) {
@@ -86,6 +86,7 @@ export default {
                     userInfo
                 },
             });
+            onResult && onResult(userInfo)
         },
         * uploadAvatar({ payload: {data}, onResult }, { call, put }) {
             const result = yield call(commonService.uploadAvatar, data || {});

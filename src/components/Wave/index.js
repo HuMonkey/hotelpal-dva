@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import styles from './index.less';
 
+let inter;
+
 class Wave extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +23,7 @@ class Wave extends Component {
       }
       new Image().src = `//static.hotelpal.cn/wav/${number}.png`;
     }
-    setInterval(() => {
+    inter = setInterval(() => {
       let index = ++this.state.index;
       if (index > 199) {
         index = 0;
@@ -30,6 +32,10 @@ class Wave extends Component {
         index,
       })
     }, 50)
+  }
+  
+  componentWillUnmount() {
+    inter && clearInterval(inter);
   }
 
   render() {

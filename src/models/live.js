@@ -98,7 +98,7 @@ export default {
           const wsUri = `ws://hotelpal.cn:8081/live/chat`;
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
-            websocket.send(JSON.stringify({courseId: liveId, token: getToken(), init:'Y'}))
+            websocket.send(JSON.stringify({courseId: +liveId, token: getToken(), init:'Y'}))
           }; 
           websocket.onclose = function(evt) { 
             // message.error('socket 断开了');

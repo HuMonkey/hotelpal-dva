@@ -187,7 +187,6 @@ class Live extends Component {
       message.error('聊天内容不能超过100个字~');
       return false;
     }
-    console.log(liveDetail);
     await dispatch({
       type: 'live/addComment',
       payload: {
@@ -197,7 +196,7 @@ class Live extends Component {
         }
       },
       onResult () {
-        message.success('成功发布评论~');
+        // message.success('成功发布评论~');
       }
     });
     await this.setState({

@@ -174,7 +174,7 @@ export default {
             }
           }; 
           websocket.onerror = function(evt) { 
-            // console.log(evt) 
+            message.error(JSON.stringify(evt));
           };
 
           dispatch({

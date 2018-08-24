@@ -95,7 +95,11 @@ export default {
           }, 1000);
           // ws
           // const wsUri = `ws://t.hotelpal.cn:8081/live/chat`;
-          const wsUri = `ws://hotelpal.cn:8081/live/chat`;
+          let wsUri = `ws://hotelpal.cn/live/chat`;
+          const protocol = location.protocol;
+          if (protocol === 'https:') {
+            wsUri = 'wss://hotelpal.cn/live/chat'
+          }
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
             websocket.send(JSON.stringify({courseId: +liveId, token: getToken(), init:'Y'}))
@@ -174,7 +178,7 @@ export default {
             }
           }; 
           websocket.onerror = function(evt) { 
-            message.error(JSON.stringify(evt));
+            // message.error(JSON.stringify(evt));
           };
 
           dispatch({

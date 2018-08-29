@@ -11,16 +11,18 @@
     height: 100%;
     z-index: 999;
     .bg {
-      width: 100%;
-      height: 100%;
+      width: 25rem;
+      height: 25rem;
       position: absolute;
-      left: 0;
-      top: 0;
-      background-color: rgba(0, 0, 0, 0.8);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.6);
       background-image: url(../../assets/live-help-bg.png);
       background-position: center;
       background-repeat: no-repeat;
-      // animation: rotate 10s infinite;
+      background-size: 100% 100%;
+      animation: rotate 30s infinite;
       transform-origin: center center;
     }
     .box {
@@ -254,71 +256,50 @@
       width: 8.26666rem;
       background: white;
       border-radius: 6px;
-      padding: 0.53rem 0.4rem 0.53rem 1.28rem;
+      padding: 0.53rem 1.2rem 0.53rem 1.2rem;
       position: relative;
-      .header {
-        width: 90%;
-        height: 2.13333rem;
-        position: relative;
-        .numbers {
-          width: 0.4rem;
-          height: 2rem;
-          position: absolute;
-          top: 0;
-          left: 0;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          .item {
+      .ptips {
+        font-size: 0.32rem;
+        color: @black2;
+        text-align: center;
+        width: 100%;
+      }
+      .psteps {
+        width: 100%;
+        margin-top: 0.26666rem;
+        .item {
+          line-height: 0.4rem;
+          color: @black2;
+          font-size: 0.373333rem;
+          margin-top: 0.13333rem;
+          .index {
+            color: @red;
             width: 0.4rem;
             height: 0.4rem;
             border-radius: 50%;
-            border: @red solid thin;
-            line-height: 0.38rem;
+            border: @red thin solid;
+            line-height: 0.36rem;
             text-align: center;
-            color: @red;
-            background: white;
-            position: relative;
-            z-index: 1;
+            font-size: 0.3rem;
+            display: inline-block;
+            margin-right: 0.13333rem;
+            vertical-align: top;
           }
-          .vl {
-            height: 100%;
-            border-right: solid @red thin;
-            position: absolute;
-            top: 0;
-            left: 0.19rem;
+          .text {
+            display: inline-block;
+            vertical-align: top;
+            line-height: 0.44rem;
           }
-        }
-        .row {
-          font-size: 0.293333rem;
-          color: @black2;
-          width: 100%;
-          height: 0.8rem;
-          padding-left: 0.6rem;
-          line-height: 1;
-          padding-top: 0.06rem;
         }
       }
       .image {
-        min-height: 7.46666rem;
-        width: 5.573333rem;
-        margin-top: 0.4rem;
+        min-height: 10.4rem;
+        width: 5.86666rem;
+        margin-top: 0.13333rem;
         img {
           width: 100%;
           height: 100%;
         }
-      }
-      .btn {
-        margin-top: 0.4rem;
-        width: 4rem;
-        height: 1rem;
-        border-radius: 1rem;
-        border: @red solid thin;
-        color: @red;
-        text-align: center;
-        line-height: 0.98rem;
-        font-size: 0.4rem;
-        margin-left: 0.8rem;
       }
     }
     .close {
@@ -326,15 +307,16 @@
       right: 0.4rem;
       top: 0.26666rem;
       z-index: 1;
+      font-size: 0.4rem;
     }
   }
 }
 
 @keyframes rotate {
   0% {
-    transform: rotate(0);
+    transform: translate(-50%, -50%)rotate(0);
   }
   100% {
-    transform: rotate(360deg);
+    transform: translate(-50%, -50%)rotate(360deg);
   }
 }

@@ -14,15 +14,11 @@
         if (r != null) return (r[2]);
         return null;
     }
-    const origin = getParam('origin');
-    const search = getParam('search');
-    const hash = getParam('hash');
+    const redirect = getParam('r');
     const code = getParam('code');
     const state = getParam('state');
     if (code && state) {
-        location.href = decodeURIComponent(origin) + '/'
-            + decodeURIComponent(search) + `${search === '' ? '?' : '&'}code=${code}&state=${state}`
-            + decodeURIComponent(hash);
+        location.href = decodeURIComponent(redirect) + '?code=' + code + '&state=' + state;
     }
 </script>
 </html>

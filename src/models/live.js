@@ -22,7 +22,7 @@ export default {
     hbShow: false,
     PPTImg: null,
 
-    watchingPeopleNum: null,
+    watchingPeopleNum: 0,
     couponInfo: null,
   },
 
@@ -94,12 +94,12 @@ export default {
             });
           }, 1000);
           // ws
-          // const wsUri = `ws://t.hotelpal.cn:8081/live/chat`;
-          let wsUri = `ws://hotelpal.cn/live/chat`;
-          const protocol = location.protocol;
-          if (protocol === 'https:') {
-            wsUri = 'wss://hotelpal.cn/live/chat'
-          }
+          const wsUri = `ws://t.hotelpal.cn:8081/live/chat`;
+          // let wsUri = `ws://hotelpal.cn/live/chat`;
+          // const protocol = location.protocol;
+          // if (protocol === 'https:') {
+          //   wsUri = 'wss://hotelpal.cn/live/chat'
+          // }
           websocket = new WebSocket(wsUri); 
           websocket.onopen = function(evt) { 
             websocket.send(JSON.stringify({courseId: +liveId, token: getToken(), init:'Y'}))
@@ -172,7 +172,7 @@ export default {
               dispatch({
                 type: 'save',
                 payload: {
-                  watchingPeopleNum: data.msg
+                  watchingPeopleNum: data.msg || 0
                 }
               })
             }

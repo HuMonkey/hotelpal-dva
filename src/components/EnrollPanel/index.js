@@ -329,7 +329,7 @@ class EnrollPanel extends Component {
             <div className={styles.bg}></div>
             <div className={styles.box}>
               <div className={styles.name}>
-                我是{invitor.nickname}
+                我是{invitor && invitor.nickname}
               </div>
               <div className={styles.tips}>
                 请帮我点击<span>[助力]</span>免费获取听课特权
@@ -407,21 +407,24 @@ class EnrollPanel extends Component {
                   <div className={styles.close} onClick={this.closePoster.bind(this)}>
                     <Icon type="close" />
                   </div>
-                  <div className={styles.header}>
-                    <div className={styles.numbers}>
-                      <div className={styles.vl}></div>
-                      <div className={styles.item}>1</div>
-                      <div className={styles.item}>2</div>
-                      <div className={styles.item}>3</div>
-                    </div>
-                    <div className={styles.row}>将海报分享你的酒店好友</div>
-                    <div className={styles.row}>{live.inviteRequire}个好友扫码并点击免费报名</div>
-                    <div className={styles.row}>你即可获得免费听课特权</div>
-                  </div>
+                  <div className={styles.ptips}>长按保存图片</div>
                   <div className={styles.image}>
                     <img src={userInfo.invitePoster} />
                   </div>
-                  <div className={styles.btn}>长按上方海报</div>
+                  <div className={styles.psteps}>
+                    <div className={styles.item}>
+                      <div className={styles.index}>1</div>
+                      <div className={styles.text}>将<b>上图海报</b>分享到你的朋友圈</div>
+                    </div>
+                    <div className={styles.item}>
+                      <div className={styles.index}>2</div>
+                      <div className={styles.text}>获{live.inviteRequire}个好友扫码进直播间<b>[助力]</b></div>
+                    </div>
+                    <div className={styles.item}>
+                      <div className={styles.index}>3</div>
+                      <div className={styles.text}>助力成功后，你即可<b>免费听课</b></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             }

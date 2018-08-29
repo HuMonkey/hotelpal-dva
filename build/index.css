@@ -3175,13 +3175,13 @@ mark {
   background-repeat: no-repeat;
 }
 .normal___HDLY1 .open___Yp6tG .list___11eaj .item___3UYLJ .top___HYXt3 .left___dSfbC .tag___36V6c.ONGOING___ag7TJ {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/tag-ing.cd5864af.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/tag-ing.cd5864af.svg);
 }
 .normal___HDLY1 .open___Yp6tG .list___11eaj .item___3UYLJ .top___HYXt3 .left___dSfbC .tag___36V6c.ENROLLING___3BrfH {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/tag-before.28b87a17.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/tag-before.28b87a17.svg);
 }
 .normal___HDLY1 .open___Yp6tG .list___11eaj .item___3UYLJ .top___HYXt3 .left___dSfbC .tag___36V6c.ENDED___1Uo0R {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/tag-end.91cdadf6.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/tag-end.91cdadf6.svg);
 }
 .normal___HDLY1 .open___Yp6tG .list___11eaj .item___3UYLJ .top___HYXt3 .left___dSfbC .time___3v2Xo {
   margin-left: 0.13333rem;
@@ -3209,11 +3209,11 @@ mark {
   top: 0;
   width: 0.853333rem;
   height: 0.853333rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/live-play-ing.95e86458.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/live-play-ing.95e86458.svg);
   background-size: 100% 100%;
 }
 .normal___HDLY1 .open___Yp6tG .list___11eaj .item___3UYLJ .detail___24egC .rightEnd___2ozB7 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/live-play-end.b4f4efd6.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/live-play-end.b4f4efd6.svg);
 }
 .normal___HDLY1 .open___Yp6tG .list___11eaj .item___3UYLJ .detail___24egC .arrowRight___37YAH {
   position: absolute;
@@ -3225,7 +3225,7 @@ mark {
   background-size: 0.24rem 0.4rem;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
 }
 .normal___HDLY1 .open___Yp6tG .list___11eaj .item___3UYLJ .detail___24egC .title___1T4yF {
   font-size: 0.4rem;
@@ -3442,7 +3442,7 @@ mark {
   right: 0.4rem;
   width: 0.2rem;
   height: 100%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
   background-size: 0.2rem auto;
   background-position: center;
   background-repeat: no-repeat;
@@ -3559,10 +3559,10 @@ mark {
   color: #f8474d;
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .top___1HO8J .goOn___WEJNQ {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/goon-grey.abae2492.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/goon-grey.abae2492.svg);
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .top___1HO8J .goOn___WEJNQ.clicked___Sg8Ic {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/goon-red.516a0f52.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/goon-red.516a0f52.svg);
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .top___1HO8J .speed___NeYZ9 {
   border: #999999 solid thin;
@@ -3600,25 +3600,25 @@ mark {
   width: 1.28rem;
   height: 1.28rem;
   margin: auto;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/loading-play.9119b56b.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/loading-play.9119b56b.svg);
   background-size: auto 0.53333rem;
   background-position: 0.5rem center;
   background-repeat: no-repeat;
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .playOrPause___3KUTB .inner___1aae3.playing___LIiVd {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/pause.c268127c.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/pause.c268127c.svg);
   background-position: center;
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .playOrPause___3KUTB .inner___1aae3 .borderSolid___2dgCB {
   width: 1.28rem;
   height: 1.28rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/play-border.9a31e1fa.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/play-border.9a31e1fa.svg);
   background-size: 1.2rem 1.2rem;
   background-position: center;
   background-repeat: no-repeat;
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .playOrPause___3KUTB.loading___3zBbC .inner___1aae3 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/loading-bubbles.0aff57a7.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/loading-bubbles.0aff57a7.svg);
   background-position: center;
   background-size: 0.8rem auto;
 }
@@ -3642,7 +3642,7 @@ mark {
   top: 0;
   width: 100%;
   height: 100%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/previous15.8c8f7618.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/previous15.8c8f7618.svg);
   background-size: 0.75rem 0.75rem;
   background-position: center;
   background-repeat: no-repeat;
@@ -3656,7 +3656,7 @@ mark {
   float: right;
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .next15___QsHvW .bg___2Ym7t {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/next15.e49d2fc3.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/next15.e49d2fc3.svg);
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .previous___2R3GW,
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .next___OyfVB {
@@ -3665,19 +3665,19 @@ mark {
   margin-top: 0.37rem;
   margin-left: auto;
   margin-right: auto;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/previous.c69b5f5c.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/previous.c69b5f5c.svg);
   background-size: 0.52333rem 0.52333rem;
   background-position: center;
   background-repeat: no-repeat;
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .next___OyfVB {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/next.3e3717a9.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/next.3e3717a9.svg);
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .previous___2R3GW.empty___3sXrM {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/previous-grey.266ce4d2.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/previous-grey.266ce4d2.svg);
 }
 .audioPlayer___1ZzWb .wrapper___9-C_q .bottom___26jbI .next___OyfVB.empty___3sXrM {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/next-grey.f315d706.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/next-grey.f315d706.svg);
 }
 .rc-slider {
   position: relative;
@@ -4003,7 +4003,7 @@ mark {
 .navs .back___2FUu_ {
   width: .186666rem;
   height: .3rem;
-  background: url(//static.hotelpal.cn/1.0.24/static/arrow1.78cced47.svg);
+  background: url(//static.hotelpal.cn/1.0.25/static/arrow1.78cced47.svg);
   background-size: 100% 100%;
   -webkit-transform: scaleX(-1);
       -ms-transform: scaleX(-1);
@@ -4062,7 +4062,7 @@ mark {
   background-size: 0.8rem 0.8rem;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/close-circle.837974fd.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/close-circle.837974fd.svg);
   margin-top: 1.06666rem;
 }
 .erweimaModal___1vUjz .main___1ZBFq {
@@ -4143,25 +4143,25 @@ mark {
   color: #666666;
 }
 .bottomBar___13BX3 .item___2uNvK:first-child .img___27cN9 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/footer-1.db95f6fe.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/footer-1.db95f6fe.svg);
 }
 .bottomBar___13BX3 .item___2uNvK.selected___3ofCE:first-child .img___27cN9 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/footer-1-selected.6016c2bb.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/footer-1-selected.6016c2bb.svg);
 }
 .bottomBar___13BX3 .item___2uNvK:nth-child(2) {
   margin: 0 1.88rem;
 }
 .bottomBar___13BX3 .item___2uNvK:nth-child(2) .img___27cN9 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/footer-2.16c0a891.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/footer-2.16c0a891.svg);
 }
 .bottomBar___13BX3 .item___2uNvK.selected___3ofCE:nth-child(2) .img___27cN9 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/footer-2-selected.c7a04ef6.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/footer-2-selected.c7a04ef6.svg);
 }
 .bottomBar___13BX3 .item___2uNvK:nth-child(3) .img___27cN9 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/footer-3.7cf675d0.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/footer-3.7cf675d0.svg);
 }
 .bottomBar___13BX3 .item___2uNvK.selected___3ofCE:nth-child(3) .img___27cN9 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/footer-3-selected.e887f42a.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/footer-3-selected.e887f42a.svg);
 }
 .bottomBar___13BX3 .item___2uNvK.selected___3ofCE a {
   color: #f8474d;
@@ -6127,7 +6127,7 @@ a.ant-btn-sm {
   height: 1.146666rem;
   border-radius: 50%;
   background-color: #698af0;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-book.722903a5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-book.722903a5.svg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: 0.6rem 0.6rem;
@@ -6225,7 +6225,7 @@ a.ant-btn-sm {
 }
 .memberCard___2ZjOh .bottom___2jrX- .item___1COJ2 .logo___3UUy1 {
   position: absolute;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-logo1.9f0ab487.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-logo1.9f0ab487.svg);
   background-size: 0.32rem 0.32rem;
   top: 0.213333rem;
   left: 0;
@@ -6236,7 +6236,7 @@ a.ant-btn-sm {
   opacity: 0.6;
 }
 .memberCard___2ZjOh .bottom___2jrX- .item___1COJ2:last-child .logo___3UUy1 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-logo2.1b396f6d.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-logo2.1b396f6d.svg);
 }
 .memberCard___2ZjOh.vip___2-PSF {
   background: -webkit-gradient(linear, left top, right top, from(#313131), to(#303030));
@@ -6245,11 +6245,11 @@ a.ant-btn-sm {
   background: linear-gradient(to right, #313131, #303030);
 }
 .memberCard___2ZjOh.vip___2-PSF.useless___1mR-w .icon___hnKhu {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-vip-useless.612c89ea.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-vip-useless.612c89ea.svg);
 }
 .memberCard___2ZjOh.vip___2-PSF .icon___hnKhu {
   background: #202020;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-vip.3c71fe82.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-vip.3c71fe82.svg);
   background-size: 0.6rem 0.6rem;
   background-repeat: no-repeat;
   background-position: center center;
@@ -6272,10 +6272,10 @@ a.ant-btn-sm {
   border-top: solid thin rgba(202, 161, 102, 0.4);
 }
 .memberCard___2ZjOh.vip___2-PSF .bottom___2jrX- .item___1COJ2 .logo___3UUy1 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-logo1-yellow.7823a73d.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-logo1-yellow.7823a73d.svg);
 }
 .memberCard___2ZjOh.vip___2-PSF .bottom___2jrX- .item___1COJ2:last-child .logo___3UUy1 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-logo2-yellow.12ba9e22.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-logo2-yellow.12ba9e22.svg);
 }
 .memberCard___2ZjOh.useless___1mR-w {
   background: -webkit-gradient(linear, left top, right top, from(#bbbbbb), to(#aaaaaa));
@@ -6294,10 +6294,10 @@ a.ant-btn-sm {
   border-top: solid thin rgba(255, 255, 255, 0.4);
 }
 .memberCard___2ZjOh.useless___1mR-w .bottom___2jrX- .item___1COJ2 .logo___3UUy1 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-logo1.9f0ab487.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-logo1.9f0ab487.svg);
 }
 .memberCard___2ZjOh.useless___1mR-w .bottom___2jrX- .item___1COJ2:last-child .logo___3UUy1 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-logo2.1b396f6d.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-logo2.1b396f6d.svg);
 }
 .CouponItem___HMGNw {
   width: 9.2rem;
@@ -6319,14 +6319,14 @@ a.ant-btn-sm {
   top: -1px;
 }
 .CouponItem___HMGNw.useless___232Hi .bg___1dbV2 {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-bg-useless.bfae90cc.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-bg-useless.bfae90cc.svg);
 }
 .CouponItem___HMGNw.useless___232Hi .right___2r3QJ .top___2kqBu .tag___dsGq7 {
   background: #bbbbbb;
 }
 .CouponItem___HMGNw .bg___1dbV2 {
   width: 36%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-bg.4e00eb7a.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-bg.4e00eb7a.svg);
   background-size: cover;
   background-repeat: no-repeat;
   height: 100%;
@@ -6483,7 +6483,7 @@ a.ant-btn-sm {
   right: .4rem;
   width: .64rem;
   height: 100%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/circle-arrow.749b116d.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/circle-arrow.749b116d.svg);
   background-size: .64rem auto;
   background-position: 50%;
   background-repeat: no-repeat;
@@ -6515,15 +6515,21 @@ a.ant-btn-sm {
   z-index: 999;
 }
 .enrollPanel___1rWxR .helpPeople___2xPfT .bg___3D4kL {
-  width: 100%;
-  height: 100%;
+  width: 25rem;
+  height: 25rem;
   position: absolute;
-  left: 0;
-  top: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  background-image: url(//static.hotelpal.cn/1.0.24/static/live-help-bg.2c31aa8f.png);
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/live-help-bg.2c31aa8f.png);
   background-position: center;
   background-repeat: no-repeat;
+  background-size: 100% 100%;
+  -webkit-animation: rotate___33Igt 30s infinite;
+          animation: rotate___33Igt 30s infinite;
   -webkit-transform-origin: center center;
       -ms-transform-origin: center center;
           transform-origin: center center;
@@ -6531,7 +6537,7 @@ a.ant-btn-sm {
 .enrollPanel___1rWxR .helpPeople___2xPfT .box___2jQj0 {
   width: 7.2rem;
   height: 9.76rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/live-help-box.7fb03346.png);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/live-help-box.7fb03346.png);
   background-position: center;
   background-size: cover;
   position: absolute;
@@ -6601,13 +6607,13 @@ a.ant-btn-sm {
   background-size: 100% 100%;
 }
 .enrollPanel___1rWxR .course___2ObKC .left___3dKJH .tag___v5--R.before___ZbZEO {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/tag-before.28b87a17.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/tag-before.28b87a17.svg);
 }
 .enrollPanel___1rWxR .course___2ObKC .left___3dKJH .tag___v5--R.ing___38kIi {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/tag-ing.cd5864af.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/tag-ing.cd5864af.svg);
 }
 .enrollPanel___1rWxR .course___2ObKC .left___3dKJH .tag___v5--R.end___3ofwc {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/tag-end.91cdadf6.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/tag-end.91cdadf6.svg);
 }
 .enrollPanel___1rWxR .course___2ObKC .left___3dKJH .time___kGiNy {
   margin-left: 0.24rem;
@@ -6629,7 +6635,7 @@ a.ant-btn-sm {
   bottom: 0;
   width: 1.493333rem;
   height: 1.493333rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/paid-mark.7431d550.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/paid-mark.7431d550.svg);
   background-size: 100% 100%;
 }
 .enrollPanel___1rWxR .course___2ObKC .right___33rLl {
@@ -6761,104 +6767,77 @@ a.ant-btn-sm {
   width: 8.26666rem;
   background: white;
   border-radius: 6px;
-  padding: 0.53rem 0.4rem 0.53rem 1.28rem;
+  padding: 0.53rem 1.2rem 0.53rem 1.2rem;
   position: relative;
 }
-.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .header___-EgkD {
-  width: 90%;
-  height: 2.13333rem;
-  position: relative;
+.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .ptips___2epai {
+  font-size: 0.32rem;
+  color: #666666;
+  text-align: center;
+  width: 100%;
 }
-.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .header___-EgkD .numbers___2GyFs {
-  width: 0.4rem;
-  height: 2rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .psteps___1_1wQ {
+  width: 100%;
+  margin-top: 0.26666rem;
 }
-.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .header___-EgkD .numbers___2GyFs .item___2h5Ks {
+.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .psteps___1_1wQ .item___2h5Ks {
+  line-height: 0.4rem;
+  color: #666666;
+  font-size: 0.373333rem;
+  margin-top: 0.13333rem;
+}
+.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .psteps___1_1wQ .item___2h5Ks .index___3bFc6 {
+  color: #f8474d;
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
-  border: #f8474d solid thin;
-  line-height: 0.38rem;
+  border: #f8474d thin solid;
+  line-height: 0.36rem;
   text-align: center;
-  color: #f8474d;
-  background: white;
-  position: relative;
-  z-index: 1;
+  font-size: 0.3rem;
+  display: inline-block;
+  margin-right: 0.13333rem;
+  vertical-align: top;
 }
-.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .header___-EgkD .numbers___2GyFs .vl___sKdFH {
-  height: 100%;
-  border-right: solid #f8474d thin;
-  position: absolute;
-  top: 0;
-  left: 0.19rem;
-}
-.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .header___-EgkD .row___1aHps {
-  font-size: 0.293333rem;
-  color: #666666;
-  width: 100%;
-  height: 0.8rem;
-  padding-left: 0.6rem;
-  line-height: 1;
-  padding-top: 0.06rem;
+.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .psteps___1_1wQ .item___2h5Ks .text___2mNla {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 0.44rem;
 }
 .enrollPanel___1rWxR .poster___38eeK .main___m7Irt .image___3EghI {
-  min-height: 7.46666rem;
-  width: 5.573333rem;
-  margin-top: 0.4rem;
+  min-height: 10.4rem;
+  width: 5.86666rem;
+  margin-top: 0.13333rem;
 }
 .enrollPanel___1rWxR .poster___38eeK .main___m7Irt .image___3EghI img {
   width: 100%;
   height: 100%;
-}
-.enrollPanel___1rWxR .poster___38eeK .main___m7Irt .btn___-zTQc {
-  margin-top: 0.4rem;
-  width: 4rem;
-  height: 1rem;
-  border-radius: 1rem;
-  border: #f8474d solid thin;
-  color: #f8474d;
-  text-align: center;
-  line-height: 0.98rem;
-  font-size: 0.4rem;
-  margin-left: 0.8rem;
 }
 .enrollPanel___1rWxR .poster___38eeK .close___h9bhB {
   position: absolute;
   right: 0.4rem;
   top: 0.26666rem;
   z-index: 1;
+  font-size: 0.4rem;
 }
 @-webkit-keyframes rotate___33Igt {
   0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0);
+    -webkit-transform: translate(-50%, -50%) rotate(0);
+            transform: translate(-50%, -50%) rotate(0);
   }
   100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+            transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 @keyframes rotate___33Igt {
   0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0);
+    -webkit-transform: translate(-50%, -50%) rotate(0);
+            transform: translate(-50%, -50%) rotate(0);
   }
   100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+            transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 .TaComments___3VEWJ {
@@ -6934,7 +6913,7 @@ a.ant-btn-sm {
   height: 0.453333rem;
   margin-right: 0.13333rem;
   float: left;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/assist.0dd519fc.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/assist.0dd519fc.svg);
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
@@ -7103,13 +7082,13 @@ a.ant-btn-sm {
 .livePlayer___2NkGg .player___1XIP6 .btn___Qoo_e .playBtn___12sCM {
   width: 1.28rem;
   height: 1.28rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/live-play-icon.bcdeb5ca.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/live-play-icon.bcdeb5ca.svg);
   background-size: 100% 100%;
   margin: auto;
   margin-bottom: 0.26666rem;
 }
 .livePlayer___2NkGg .player___1XIP6.bg___ueNep {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/live-banner.84b76d69.png);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/live-banner.84b76d69.png);
 }
 .livePlayer___2NkGg .player___1XIP6 .cover___2Vv0S {
   width: 100%;
@@ -7216,7 +7195,7 @@ a.ant-btn-sm {
 .livePlayer___2NkGg .count___3qg19 .icon___3O9qf {
   width: 0.4rem;
   height: 0.4rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/countdown.06b31e4c.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/countdown.06b31e4c.svg);
   background-size: 100% 100%;
   float: left;
   position: relative;
@@ -7589,7 +7568,7 @@ a.ant-btn-sm {
   top: 0.2rem;
   width: 0.53333rem;
   height: 0.53333rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/pen.3d82d5bb.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/pen.3d82d5bb.svg);
   background-size: 0.53333rem 0.53333rem;
   background-repeat: no-repeat;
 }
@@ -7656,7 +7635,7 @@ a.ant-btn-sm {
 .normal___KaXhL .hb___2zUjy .close___3mZ7N {
   width: 0.8rem;
   height: 0.8rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/close-circle.837974fd.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/close-circle.837974fd.svg);
   background-size: cover;
   margin-top: 0.4rem;
 }
@@ -7814,7 +7793,7 @@ a.ant-btn-sm {
   right: 0;
   width: .2rem;
   height: 100%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
   background-size: .2rem auto;
   background-position: 50%;
   background-repeat: no-repeat;
@@ -7899,7 +7878,7 @@ a.ant-btn-sm {
   right: .4rem;
   width: .2rem;
   height: 100%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
   background-size: .2rem auto;
   background-position: 50%;
   background-repeat: no-repeat;
@@ -7990,13 +7969,13 @@ a.ant-btn-sm {
   vertical-align: middle;
 }
 .normal___-HA7Q .paid___3Wm0C .main___21iaP .infos___xtp-_ .other___3Yrme > span .time___B3HGA {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/time.82ba96df.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/time.82ba96df.svg);
 }
 .normal___-HA7Q .paid___3Wm0C .main___21iaP .infos___xtp-_ .other___3Yrme > span .download___38GcT {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/download.d26c1f38.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/download.d26c1f38.svg);
 }
 .normal___-HA7Q .paid___3Wm0C .main___21iaP .infos___xtp-_ .other___3Yrme > span .read____hR4z {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/read.05fa825a.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/read.05fa825a.svg);
 }
 .normal___-HA7Q .paid___3Wm0C .main___21iaP .content___owWtv {
   line-height: 1.8;
@@ -8084,7 +8063,7 @@ a.ant-btn-sm {
   right: 0;
   width: 0.2rem;
   height: 100%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
   background-size: 0.2rem auto;
   background-position: center;
   background-repeat: no-repeat;
@@ -8247,7 +8226,7 @@ a.ant-btn-sm {
 .normal___-HA7Q .discuss___ne5T0 .item___1dCJs .bottom___1oYmf .box___1sd_0 .like___3L1Wv .icon___3ETU_ {
   width: 0.32rem;
   height: 0.32rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/like.c3fe3755.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/like.c3fe3755.svg);
   background-size: 0.32rem auto;
   background-repeat: no-repeat;
   display: inline-block;
@@ -8255,7 +8234,7 @@ a.ant-btn-sm {
   margin-right: 0.12rem;
 }
 .normal___-HA7Q .discuss___ne5T0 .item___1dCJs .bottom___1oYmf .box___1sd_0 .like___3L1Wv.liked___3XX70 .icon___3ETU_ {
-  background-image: url(//static.hotelpal.cn/1.0.24/static/liked.cbff3878.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/liked.cbff3878.svg);
 }
 .normal___-HA7Q .commentBox___28lIF {
   height: 1.3333rem;
@@ -8296,7 +8275,7 @@ a.ant-btn-sm {
   top: 0.4rem;
   width: 0.53333rem;
   height: 0.53333rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/pen.3d82d5bb.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/pen.3d82d5bb.svg);
   background-size: 0.53333rem 0.53333rem;
   background-repeat: no-repeat;
 }
@@ -8438,7 +8417,7 @@ a.ant-btn-sm {
   height: 1rem;
   margin: auto;
   margin-top: 0.4rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/finish-arrow.85d7343e.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/finish-arrow.85d7343e.svg);
   background-size: 1rem 1rem;
   background-position: center;
   background-repeat: no-repeat;
@@ -8658,7 +8637,7 @@ a.ant-btn-sm {
   display: inline-block;
   width: 0.4rem;
   height: 0.4rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/sort.6f1bbefa.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/sort.6f1bbefa.svg);
   background-size: 0.4rem 0.4rem;
   background-position: center;
   background-repeat: no-repeat;
@@ -8727,7 +8706,7 @@ a.ant-btn-sm {
   right: 0.4rem;
   width: 0.2rem;
   height: 100%;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
   background-size: 0.2rem auto;
   background-position: center;
   background-repeat: no-repeat;
@@ -8772,7 +8751,7 @@ a.ant-btn-sm {
 .normal___Re_fo .btns___Mn_fp .home___2csc_ .icon___vEYLI {
   width: 0.48rem;
   height: 0.48rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/home.39e6de76.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/home.39e6de76.svg);
   background-size: 0.48rem 0.48rem;
   background-position: center;
   background-repeat: no-repeat;
@@ -8801,7 +8780,7 @@ a.ant-btn-sm {
   display: inline-block;
   width: 0.6rem;
   height: 0.6rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/play-icon.05d2735c.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/play-icon.05d2735c.svg);
   background-size: 0.5rem 0.5rem;
   background-position: center;
   background-repeat: no-repeat;
@@ -8868,7 +8847,7 @@ a.ant-btn-sm {
   display: inline-block;
   background-size: 0.16rem 0.346666rem;
   background-position: center;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
 }
 .normal___3nqvf .header___2m12m .record___2ZNiE {
   width: 100%;
@@ -8881,7 +8860,7 @@ a.ant-btn-sm {
   width: 0.4rem;
   height: 0.4rem;
   background-size: 0.4rem auto;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/book.9b5dea70.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/book.9b5dea70.svg);
   background-repeat: no-repeat;
   background-position: center;
   display: inline-block;
@@ -8944,15 +8923,15 @@ a.ant-btn-sm {
 }
 .normal___3nqvf .row___3Iggr .couponIcon___2OpS3 {
   background-color: #ed574f;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/coupon-icon.f1d11c2b.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/coupon-icon.f1d11c2b.svg);
 }
 .normal___3nqvf .row___3Iggr .inviteIcon___3zYOi {
   background-color: #6951ec;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/invite-icon.0cdbb8d5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/invite-icon.0cdbb8d5.svg);
 }
 .normal___3nqvf .row___3Iggr .shoppingcar___2sRCQ {
   background-color: #f0944b;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/shoppingcar.856ddc90.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/shoppingcar.856ddc90.svg);
 }
 .normal___3nqvf .row___3Iggr .jiudianbang___3U5tQ {
   background-size: 0.64rem 0.64rem;
@@ -8960,7 +8939,7 @@ a.ant-btn-sm {
 }
 .normal___3nqvf .row___3Iggr .gongzhonghao___2akXk {
   background-color: #49ab54;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/public.e7488e82.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/public.e7488e82.svg);
 }
 .normal___3nqvf .row___3Iggr .arrowRight___zl2dS {
   position: absolute;
@@ -8971,7 +8950,7 @@ a.ant-btn-sm {
   background-size: 0.16rem 0.346666rem;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
 }
 .normal___3nqvf .row___3Iggr .arrowRight___zl2dS span {
   position: absolute;
@@ -9114,7 +9093,7 @@ a.ant-btn-sm {
   position: relative;
   top: 0.12rem;
   background-size: 0.5rem 0.5rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/magnifier.bfe518fa.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/magnifier.bfe518fa.svg);
   margin-right: 0.2rem;
 }
 .normal___1Cbp7 {
@@ -9230,7 +9209,7 @@ a.ant-btn-sm {
   position: relative;
   top: 0.12rem;
   background-size: 0.5rem 0.5rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/magnifier.bfe518fa.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/magnifier.bfe518fa.svg);
   margin-right: 0.2rem;
 }
 .normal___Ruc-A {
@@ -9248,7 +9227,7 @@ a.ant-btn-sm {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/bubble.5a372422.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/bubble.5a372422.svg);
   line-height: 0.6666rem;
   text-align: center;
   color: white;
@@ -9299,7 +9278,7 @@ a.ant-btn-sm {
   background-size: 0.48rem 0.48rem;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/erweima.43b78f3f.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/erweima.43b78f3f.svg);
   float: right;
   position: relative;
   top: 0.4rem;
@@ -9313,7 +9292,7 @@ a.ant-btn-sm {
   background-size: 0.16rem 0.346666rem;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/arrow-right.bf8accb5.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/arrow-right.bf8accb5.svg);
 }
 .normal___Ruc-A .item___30f2l span {
   float: right;
@@ -9358,7 +9337,7 @@ a.ant-btn-sm {
   background-size: 0.8rem 0.8rem;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/close-circle.837974fd.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/close-circle.837974fd.svg);
   margin-top: 1.06666rem;
 }
 .normal___Ruc-A .erweimaWindow___3kBc4 .box___1XaxR {
@@ -9648,7 +9627,7 @@ a.ant-btn-sm {
           transform: translate(-50%, 0);
   width: 0.8rem;
   height: 0.8rem;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/close-circle.837974fd.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/close-circle.837974fd.svg);
   background-size: 100% 100%;
 }
 .normal___1GKFh .rules___A8ua7 .main___1c1Md .stitle___2pQES {
@@ -10088,7 +10067,7 @@ a.ant-btn-sm {
   background: #f5f5f5;
   overflow: auto;
   line-height: 1;
-  background-image: url(//static.hotelpal.cn/1.0.24/static/gongzhonghao_bg.fb1d64eb.svg);
+  background-image: url(//static.hotelpal.cn/1.0.25/static/gongzhonghao_bg.fb1d64eb.svg);
   background-size: 100% auto;
   background-repeat: repeat-y;
 }

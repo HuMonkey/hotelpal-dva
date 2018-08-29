@@ -147,11 +147,11 @@ class IndexPage extends Component {
               innerCourseList.map((d, i) => {
                 const time = moment(d.publishTime).format('MM-DD');
                 return <div key={i} className={styles.item}>
-                  <div className={styles.cell}>
-                    <Link to={`/lesson/free/${d.id}`}>
-                      <div className={styles.arrow}></div>
-                      {d.title}
-                    </Link>
+                  <div className={styles.cell} onClick={() => {
+                    location.href = `/lesson/free/${d.id}`;
+                  }}>
+                    <div className={styles.arrow}></div>
+                    {d.title}
                   </div>
                   <div className={styles.cell}>
                     {/* {time} */}

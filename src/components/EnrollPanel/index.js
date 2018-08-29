@@ -78,7 +78,12 @@ class EnrollPanel extends Component {
   }
 
   async enrollFor () {
-    const { dispatch, live, invitor } = this.props;
+    const { dispatch, live, invitor, userInfo } = this.props;
+    // 不能帮自己助力
+    if (invitor.wechatOpenId === userInfo.wechatOpenId) {
+      message.error('很抱歉，你不能为自己助力~');
+      return false;
+    }
     // 判断是否能帮助别人报名
     const canEnrollFor = this.canEnrollFor();
     helpedTipsShow = true;
@@ -232,6 +237,8 @@ class EnrollPanel extends Component {
     const { live, userInfo, invitor, coupon, dispatch } = this.props;
     const showInvitorTips = this.canEnrollFor() && enrollForShow;
 
+    console.log(userInfo, invitor, 111)
+
     if (!helpedTipsShow && userInfo.enrolled === 'Y' && invitor) {
       message.error('你已报名本次课程，不能再为好友助力喽～');
       helpedTipsShow = true;
@@ -337,6 +344,7 @@ class EnrollPanel extends Component {
               <div className={styles.btn} onClick={() => {
                 this.enrollFor.call(this);
                 enrollForShow = false;
+                this.forceUpdate();
               }}>
                 助力
               </div>

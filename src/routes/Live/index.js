@@ -16,8 +16,6 @@ import hbBg from '../../assets/hb-bg.png';
 
 import { getHtmlContent, configWechat, updateWechatShare, formatNum, ua } from '../../utils';
 
-let interval;
-
 class Live extends Component {
   constructor(props) {
     super(props);
@@ -266,7 +264,6 @@ class Live extends Component {
     dispatch({
       type: 'live/reset',
     });
-    interval && clearInterval(interval);
   }
 
   paySuccessCallback () {

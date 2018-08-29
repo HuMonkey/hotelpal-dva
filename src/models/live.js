@@ -43,6 +43,14 @@ export default {
               token: invitor
             },
           });
+          const inter = setInterval(() => {
+            dispatch({
+              type: 'save',
+              payload: {
+                now: moment(),
+              }
+            });
+          }, 1000);
           dispatch({
             type: 'fetchLiveDetail',
             payload: {
@@ -61,6 +69,9 @@ export default {
                   },
                   onResult() {}
                 })
+              }
+              if (res.status !== 'ENROLLING') {
+                inter && clearInterval(inter)
               }
             }
           });
@@ -85,14 +96,6 @@ export default {
             },
             onResult (res) {}
           });
-          const inter = setInterval(() => {
-            dispatch({
-              type: 'save',
-              payload: {
-                now: moment(),
-              }
-            });
-          }, 1000);
           // ws
           const wsUri = `ws://t.hotelpal.cn:8081/live/chat`;
           // let wsUri = `ws://hotelpal.cn/live/chat`;
@@ -184,7 +187,7 @@ export default {
           dispatch({
             type: 'save',
             payload: {
-              ƒ: inter,
+              countDownInter: inter,
               invitor,
             }
           });

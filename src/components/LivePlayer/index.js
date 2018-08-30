@@ -76,7 +76,7 @@ class LivePlayer extends Component {
     </div>
 
     const userCanListen = userInfo.enrolled === 'Y' || (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip));
-    
+
     if (status === 'ENROLLING') {
       // 如果报名中，显示海报
       dom = <div className={styles.player}>

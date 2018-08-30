@@ -28,7 +28,7 @@ class Wave extends Component {
       this.setState({
         index,
       })
-    }, 50)
+    }, 100)
   }
   
   componentWillUnmount() {

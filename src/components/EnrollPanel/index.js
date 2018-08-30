@@ -121,7 +121,9 @@ class EnrollPanel extends Component {
       // history.push('/login');
       return false;
     }
-
+    if (userInfo.enrolled === 'Y') {
+      return false;
+    }
     // VIP 或者免费课直接调用报名接口了
     if ((userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip)) || live.price === 0) {
       await dispatch({

@@ -129,7 +129,7 @@ class LivePlayer extends Component {
     return (
       <div className={styles.livePlayer}>
         { dom }
-        {status === 'ONGOING' && userCanListen || true && <Wave />}
+        {status === 'ONGOING' && userCanListen && <Wave />}
       </div>
     )
   }

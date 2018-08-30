@@ -32,8 +32,8 @@ export default {
                     return false;
                 }
                 if (!code) {
-                    const redirect = `http://hotelpal.cn/test.html?r=${location.href}`
-                    // const redirect = location.href;
+                    // const redirect = `http://hotelpal.cn/test.html?r=${location.href}`
+                    const redirect = location.href;
                     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
                         + config.appId + '&redirect_uri='
                         + encodeURIComponent(redirect)

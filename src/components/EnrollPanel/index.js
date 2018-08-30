@@ -7,6 +7,8 @@ import moment from 'moment';
 import { getToken, liveMemberCardUseful } from '../../utils';
 import PopupLogin from '../PopupLogin';
 import simleLogo from '../../assets/smile.svg';
+import posterHeaderPng from '../../assets/live-poster-header.png';
+import closeSvg from '../../assets/live-poster-close.svg';
 
 const liveStatus = {
   ENROLLING: '报名中',
@@ -237,8 +239,6 @@ class EnrollPanel extends Component {
     const { live, userInfo, invitor, coupon, dispatch } = this.props;
     const showInvitorTips = this.canEnrollFor() && enrollForShow;
 
-    console.log(userInfo, invitor, 111)
-
     if (!helpedTipsShow && userInfo.enrolled === 'Y' && invitor) {
       message.error('你已报名本次课程，不能再为好友助力喽～');
       helpedTipsShow = true;
@@ -413,9 +413,9 @@ class EnrollPanel extends Component {
               posterShow && <div className={styles.poster}>
                 <div className={styles.main}>
                   <div className={styles.close} onClick={this.closePoster.bind(this)}>
-                    <Icon type="close" />
+                    <img src={closeSvg} />
                   </div>
-                  <div className={styles.ptips}>长按保存图片</div>
+                  <div className={styles.ptips}><img src={posterHeaderPng} /></div>
                   <div className={styles.image}>
                     <img src={userInfo.invitePoster} />
                   </div>

@@ -74,6 +74,8 @@ class LivePlayer extends Component {
       <div className={styles.inner1}></div>
       <div className={styles.inner2}></div>
     </div>
+
+    const userCanListen = userInfo.enrolled === 'Y' || (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip));
     
     if (status === 'ENROLLING') {
       // 如果报名中，显示海报
@@ -102,7 +104,7 @@ class LivePlayer extends Component {
         <div className={styles.people}><span>{movingDot}累计{live.totalPeople}人收看</span></div>
       </div>
     } else if (status === 'ONGOING') {
-      if (userInfo.enrolled === 'Y' || (userInfo.liveVip === 'Y' && liveMemberCardUseful(coupon.liveVip))) {
+      if (userCanListen) {
         dom = <div className={styles.player}>
           <div className={styles.ppt}>
             <img src={PPTImg || live.bannerImg} />
@@ -127,7 +129,7 @@ class LivePlayer extends Component {
     return (
       <div className={styles.livePlayer}>
         { dom }
-        {status === 'ONGOING' && <Wave />}
+        {status === 'ONGOING' && userCanListen || true && <Wave />}
       </div>
     )
   }

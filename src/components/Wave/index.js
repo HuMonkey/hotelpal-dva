@@ -13,19 +13,16 @@ class Wave extends Component {
 
   componentDidMount() {
     // preload
-    for (let i = 1; i < 200; i++) {
+    for (let i = 0; i < 64; i++) {
       let number = i;
-      if (number < 100) {
-        number = '0' + number;
-      }
       if (number < 10) {
         number = '0' + number;
       }
-      new Image().src = `//static.hotelpal.cn/wav/${number}.png`;
+      new Image().src = `//static.hotelpal.cn/wave-1.0.0/${number}.png`;
     }
     inter = setInterval(() => {
       let index = ++this.state.index;
-      if (index > 199) {
+      if (index > 63) {
         index = 0;
       }
       this.setState({
@@ -41,15 +38,12 @@ class Wave extends Component {
   render() {
     const { index } = this.state;
     let number = index;
-    if (number < 100) {
-      number = '0' + number;
-    }
     if (number < 10) {
       number = '0' + number;
     }
     return (
       <div className={styles.wave}>
-        <img src={`//static.hotelpal.cn/wav/${number}.png`} />
+        <img src={`//static.hotelpal.cn/wave-1.0.0/${number}.png`} />
       </div>
     )
   }

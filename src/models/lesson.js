@@ -72,6 +72,7 @@ export default {
         // 微信分享
         // 成长专栏、红包、未购买、正常
         let dict;
+        const protocol = location.protocol;
         if (inHongbao) {
           const nonce = getParam('nonce', search);
           let desc = getHtmlContent(detail.content);
@@ -81,7 +82,7 @@ export default {
           dict = {
             title: '「红包分享」' + course.userName + '：' + detail.title,
             link: `${location.origin}/hb/${nonce}?courseId=${courseId}&lessonId=${detail.id}`,
-            imgUrl: course.headImg,
+            imgUrl: protocol + course.headImg,
             desc
           }
         } else {
@@ -94,14 +95,14 @@ export default {
             dict = {
               title: '成长专栏：' + detail.title,
               link: location.href,
-              imgUrl: detail.coverImg,
+              imgUrl: protocol + detail.coverImg,
               desc,
             }
           } else if (!course.purchased && (!detail.freeListen) && !fromHongbao) {
             dict = {
               title: course.userName + '：' + course.title,
               link: `${location.origin}/lesson/pay/${lessonId}?courseId=${courseId}`,
-              imgUrl: course.headImg,
+              imgUrl: protocol + course.headImg,
               desc: course.subtitle,
             }
           } else {
@@ -112,7 +113,7 @@ export default {
             dict = {
               title: course.userName + '：' + detail.title,
               link: `${location.origin}/lesson/pay/${lessonId}?courseId=${courseId}`,
-              imgUrl: course.headImg,
+              imgUrl: protocol + course.headImg,
               desc
             }
           }

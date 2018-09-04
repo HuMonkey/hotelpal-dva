@@ -19,10 +19,11 @@ class Profile extends Component {
 
   async componentDidMount () {
     const { dispatch } = this.props;
+    const protocol = location.protocol;
     const dict = {
       title: '酒店邦成长营',
-      link: location.protocol + '//' + location.hostname,
-      imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
+      link: protocol + '//' + location.hostname,
+      imgUrl: protocol + '//hotelpal.cn/static/jiudianbang-big.png',
       desc: '为你提供高效、有价值的行业知识服务。',
     }
     dispatchWechatShare(dict, dispatch);

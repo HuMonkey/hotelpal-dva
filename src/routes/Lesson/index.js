@@ -179,16 +179,6 @@ class Lesson extends Component {
       },
       onResult (res) {
         if (res.data.code === 0) {
-          // dispatch({
-          //   type: 'lesson/fetchLessonDetail',
-          //   payload: {
-          //     data: {
-          //       id: lid,
-          //       zan: true,
-          //     }
-          //   },
-          //   onResult() {}
-          // });
           // TODO
         }
       }
@@ -196,7 +186,7 @@ class Lesson extends Component {
   }
 
   showHongbaoTips () {
-    const { lesson, history } = this.props;
+    const { lesson } = this.props;
 
     const { detail, courseDetail } = lesson;
 
@@ -204,7 +194,6 @@ class Lesson extends Component {
     const lid = detail.id;
     const redPacketNonce = detail.redPacketNonce;
     
-    const timeStamp = (new Date()).valueOf();
     window.location.href = `/hongbao/${lid}?courseId=${cid}&nonce=${redPacketNonce}`;
   }
 

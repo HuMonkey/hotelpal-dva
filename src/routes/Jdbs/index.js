@@ -23,11 +23,11 @@ class Jdbs extends Component {
     this.updateCourse([]);
 
     const { dispatch } = this.props;
-
+    const protocol = location.protocol;
     const dict = {
       title: '成长专栏',
       link: location.href,
-      imgUrl: 'http://hotelpal.cn/static/jiudianbang-big.png',
+      imgUrl: protocol + '//hotelpal.cn/static/jiudianbang-big.png',
       desc: '给你新的启发与思考，周一到周五更新。',
     }
 

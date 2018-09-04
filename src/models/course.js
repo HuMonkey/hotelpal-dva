@@ -37,10 +37,11 @@ export default {
             course = res;
           }
         });
+        const protocol = location.protocol;
         const dict = {
           title: course.userName + '：' + course.title,
           link: `${location.origin}/course/${courseId}`,
-          imgUrl: course.headImg,
+          imgUrl: protocol + course.headImg,
           desc: course.subtitle,
         }
         dispatchWechatShare(dict, dispatch);

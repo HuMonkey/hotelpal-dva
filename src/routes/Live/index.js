@@ -230,11 +230,11 @@ class Live extends Component {
     const openMonth = openTime.month();
     const openDate = openTime.date();
     const openTimeHourStr = openTime.format('HH:mm');
-
+    const protocol = location.protocol;
     const dict = {
       title: `${common.userInfo.nickname} | 邀请你参加【酒店邦成长营直播课】`,
       link: location.href,
-      imgUrl: liveDetail.bannerImg || 'http://hotelpal.cn/static/jiudianbang-big.png',
+      imgUrl: liveDetail.bannerImg ? protocol + liveDetail.bannerImg : protocol + '//hotelpal.cn/static/jiudianbang-big.png',
       desc: `${openMonth + 1}月${openDate}日${openTimeHourStr}${liveDetail.speakerTitle}${liveDetail.speakerNick}，${liveDetail.title}`,
     }
 

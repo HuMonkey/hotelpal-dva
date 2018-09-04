@@ -31,7 +31,7 @@ class IndexPage extends Component {
     const dict = {
       title: '酒店邦成长营',
       link: protocol + '//' + location.hostname,
-      imgUrl: protocol + '//hotelpal.cn/static/jiudianbang-big.png',
+      imgUrl: protocol + '//static.hotelpal.cn/jiudianbang-big.png',
       desc: '为你提供高效、有价值的行业知识服务。',
     }
     dispatchWechatShare(dict, dispatch);

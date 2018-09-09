@@ -103,12 +103,14 @@ export default {
           if (protocol === 'https:') {
             wsUri = 'wss://hotelpal.cn/live/chat'
           }
-          websocket = new WebSocket(wsUri); 
+          // websocket = new WebSocket(wsUri); 
+          websocket = new ReconnectingWebSocket(wsUri); 
           websocket.onopen = function(evt) { 
             websocket.send(JSON.stringify({courseId: +liveId, token: getToken(), init:'Y'}))
           }; 
           websocket.onclose = function(evt) { 
             // message.error('socket 断开了');
+            console.log('socket 断开了');
           }; 
           websocket.onmessage = async function(evt) {
             const data = JSON.parse(evt.data);
@@ -223,6 +225,7 @@ export default {
       const res = yield call(liveService.fetchChatHistory, payload.data || {});
       if (res.data.code === 0) {
         const chats = res.data.data;
+        chats.timeStamp = (new Date()).valueOf();
         yield put({
           type: 'save',
           payload: {
@@ -368,11 +371,9 @@ export default {
         }
       }
 
-      // if (chats.some(d => d.id === newComment.id)) {
-      //   return state;
-      // }
-
-      return {...state, chats: [newComment, ...chats]};
+      const newChats = [newComment, ...chats];
+      chats.timeStamp = (new Date()).valueOf();
+      return {...state, chats: newChats};
     },
   },
 

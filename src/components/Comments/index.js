@@ -10,6 +10,12 @@ class Comments extends Component {
     this.state = {};
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const timeStamp = this.props.chats && this.props.chats.timeStamp;
+    const nextTimeStamp = nextProps.chats && nextProps.chats.timeStamp;
+    return timeStamp !== nextTimeStamp;
+  }
+
   render() {
     const { chats } = this.props;
     const comments = chats.sort((a, b) => {

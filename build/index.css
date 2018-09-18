@@ -7120,15 +7120,14 @@ a.ant-btn-sm {
 .livePlayer___2NkGg .player___1XIP6 .ppt___290cn img {
   height: 100%;
 }
-.livePlayer___2NkGg .player___1XIP6 #myvideo {
+.livePlayer___2NkGg .player___1XIP6 .video___2C0Jh {
+  width: 100%;
+  height: 100%;
   position: absolute;
-  z-index: -1;
-  opacity: 0;
-  display: none;
-  -o-object-fit: fill;
-     object-fit: fill;
+  left: 0;
+  top: 0;
 }
-.livePlayer___2NkGg .player___1XIP6 #myvideo video {
+.livePlayer___2NkGg .player___1XIP6 .video___2C0Jh #myvideo {
   -o-object-fit: fill;
      object-fit: fill;
 }

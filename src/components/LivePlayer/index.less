@@ -53,14 +53,13 @@
         height: 100%;
       }
     }
-    :global(#myvideo) {
+    .video {
+      width: 100%;
+      height: 100%;
       position: absolute;
-      z-index: -1;
-      // display: none;
-      opacity: 0;
-      display: none;
-      object-fit: fill;
-      video {
+      left: 0;
+      top: 0;
+      :global(#myvideo) {
         object-fit: fill;
       }
     }

@@ -106,9 +106,9 @@ class LivePlayer extends Component {
     } else if (status === 'ONGOING') {
       if (userCanListen) {
         dom = <div className={styles.player}>
-          <div className={styles.ppt}>
+          {/* <div className={styles.ppt}>
             <img src={PPTImg || live.bannerImg} />
-          </div>
+          </div> */}
           <H5Video url={live.liveAudio}/>
           { 
             ua.android && !beginShow && <div className={styles.btn} onClick={this.autoPlay.bind(this)}>

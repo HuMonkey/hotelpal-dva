@@ -13,6 +13,7 @@ class Wave extends Component {
     return (
       <div className={styles.wave}>
         <div className={styles.ocean}>
+          <div className={styles.inner2}></div>
           <div className={styles.inner}></div>
         </div>
       </div>

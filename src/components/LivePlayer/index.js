@@ -6,6 +6,7 @@ import { formatNum, ua, liveMemberCardUseful } from '../../utils';
 
 import liveAnimationSvg from '../../assets/live-play-icon.gif';
 import Wave from '../Wave';
+import { message } from 'antd';
 
 class H5Video extends PureComponent {
   constructor(props) {
@@ -37,6 +38,7 @@ class H5Video extends PureComponent {
         ` 
       }; 
     };
+    // message.error(url);
     // return <div id="myvideo"></div>
     return <div className={styles.video} key="video" dangerouslySetInnerHTML={createMarkupVideo()}></div>
   }

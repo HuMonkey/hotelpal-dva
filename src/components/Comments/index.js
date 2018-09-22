@@ -18,7 +18,6 @@ class Comments extends Component {
   }
 
   render() {
-    message.info('cccc');
     const { chats } = this.props;
     const comments = chats.sort((a, b) => {
       return a.updateTime - b.updateTime;

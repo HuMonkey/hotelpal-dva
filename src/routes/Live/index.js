@@ -33,11 +33,17 @@ class Live extends Component {
   }
 
   scrollToBottom () {
-    document.getElementById('root').scrollTop = 20000000;
+    window.scrollTo({ 
+      top: 1000000, 
+      behavior: "smooth" 
+  });
   }
 
   scrollToTop () {
-    document.getElementById('root').scrollTop = 0;
+    window.scrollTo({ 
+      top: 0, 
+      behavior: "smooth" 
+    });
   }
 
   showHongbao () {

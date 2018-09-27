@@ -22,21 +22,29 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 0.54rem;
-  animation: wave 30s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
-  transform: translate3d(0, 0, 0);
+  height: 1rem;
+  animation: wave1 2.5s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
 }
 .inner2 {
-  height: 0.8rem;
+  height: 1.4rem;
   background-image: url(../../assets/wave2.png); 
-  animation: wave 40s cubic-bezier( 0.36, 0.45, 0.63, 0.53) infinite;
+  animation: wave2 3s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
 }
 
-@keyframes wave {
+@keyframes wave1 {
   0% {
     margin-left: 0;
   }
   100% {
-    margin-left: -50rem;
+    margin-left: -10rem;
+  }
+}
+
+@keyframes wave2 {
+  0% {
+    margin-left: -10rem;
+  }
+  100% {
+    margin-left: 0;
   }
 }

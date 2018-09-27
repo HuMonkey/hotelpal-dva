@@ -27,6 +27,7 @@ class H5Video extends PureComponent {
           >
             <p>你的浏览器不支持 <code>video</code> 标签.</p>
           </video>` : `<video 
+            ${true && `x5-video-player-type='h5'`}
             preload="auto" 
             autoplay
             x5-playsinline

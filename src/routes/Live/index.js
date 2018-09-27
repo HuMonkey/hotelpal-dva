@@ -35,14 +35,14 @@ class Live extends Component {
   scrollToBottom () {
     window.scrollTo({ 
       top: 1000000, 
-      behavior: "smooth" 
+      // behavior: "smooth" 
   });
   }
 
   scrollToTop () {
     window.scrollTo({ 
       top: 0, 
-      behavior: "smooth" 
+      // behavior: "smooth" 
     });
   }
 

@@ -27,6 +27,7 @@ class H5Video extends PureComponent {
           >
             <p>你的浏览器不支持 <code>video</code> 标签.</p>
           </video>` : `<video 
+            class="${styles.isAndroid}"
             preload="auto" 
             autoplay
             x5-playsinline
@@ -128,21 +129,6 @@ class LivePlayer extends Component {
         </div>
       }
     }
-
-    // 测试
-    dom = <div className={styles.player}>
-      {/* <div className={styles.ppt}>
-        <img src={PPTImg || live.bannerImg} />
-      </div> */}
-      <H5Video url={live.liveAudio}/>
-      { 
-        ua.android && !beginShow && <div className={styles.btn} onClick={this.autoPlay.bind(this)}>
-          <div className={styles.playBtn}></div>
-          点击进入直播
-        </div>  
-      }
-      <div className={styles.people}><span>{movingDot}{watchingPeopleNum}人正在收看</span></div>
-    </div>
 
     return (
       <div className={styles.livePlayer}>

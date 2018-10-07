@@ -26,6 +26,7 @@ class PopupOrder extends Component {
     const { paying, couponSelected } = this.state;
     const { dispatch, course, paySuccessCallback } = this.props;
     if (paying) {
+      message.error('操作过于频繁，请等待支付完成~');
       return false;
     }
     await this.setState({
@@ -63,13 +64,13 @@ class PopupOrder extends Component {
         payload: {
           data
         },
-        onResult: async (res) => {
-          await this.setState({
-            paying: false,
-          });
+        onResult: (res) => {
           if (res.data.code === 0) {
             if (res.data.data.purchased === 'Y') {
               paySuccessCallback && paySuccessCallback();
+              this.setState({
+                paying: false,
+              });
               return false;
             }
             const { appId, nonceStr, paySign, timeStamp, tradeNo } = res.data.data;
@@ -81,6 +82,7 @@ class PopupOrder extends Component {
               signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
               paySign: paySign, // 支付签名
               success: (res) => {
+                paySuccessCallback && paySuccessCallback();
                 dispatch({
                   type: 'common/paySuccess',
                   payload: {
@@ -90,7 +92,6 @@ class PopupOrder extends Component {
                   },
                   onResult(res) {
                     message.success('支付成功~');
-                    paySuccessCallback && paySuccessCallback()
                   }
                 })
               },
@@ -98,8 +99,14 @@ class PopupOrder extends Component {
                 message.error('支付出了点问题，请稍后再试~');
               }
             });
+            this.setState({
+              paying: false,
+            });
           } else {
             message.error('支付出了点问题，请稍后再试~');
+            this.setState({
+              paying: false,
+            });
           }
         }
       })

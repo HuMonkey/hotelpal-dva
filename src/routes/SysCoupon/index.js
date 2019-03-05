@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Link, withRouter } from 'dva/router';
 import { Icon, Input, message } from 'antd';
 import styles from './index.less';
-import isMobilePhone from 'validator/lib/isMobilePhone';
+import moment from 'moment';
 
 import moneyIcon from '../../assets/invite-money.svg';
 import couponEmpty from '../../assets/coupon-empty.png';
@@ -85,19 +85,80 @@ class SysCoupon extends Component {
     }
   }
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'course/getRecommendCourse',
+    //   payload: {},
+    //   onResult(data) {}
+    // })
+  }
+
+  gotoCourse(id) {
+    location.href = `/course/${id}`;
+  }
+
   render() {
     const { result } = this.state;
-    const { common } = this.props;
+    const { common, recommendCourse } = this.props;
 
-    const couponInfo = common.couponInfo || null;
+    const couponInfo = common.couponInfo || {};
+
+    const applyToCoursePO = couponInfo.applyToCoursePO;
 
     let rp;
+    let recommendDom = null;
     if (couponInfo) {
       let tips;
       if (couponInfo.apply === 'PARTICULAR') {
         tips = '部分订阅专栏可用';
+        recommendDom = applyToCoursePO && applyToCoursePO.map((d, i) => {
+          const className = !d.purchased ? '' : ' ' + styles.gotit;
+          return <div key={i} className={styles.course} onClick={() => {
+            this.gotoCourse.call(this, d.id);
+          }}>
+            <div className={styles.box + className}>
+              <div className={styles.arrow}></div>
+              <div className={styles.avatar} style={{ backgroundImage: `url(${d.bannerImg})` }}></div>
+              <div className={styles.desc}>
+                <div className={styles.title}>{d.title}·{d.speaker.nick}</div>
+                {
+                  !d.purchased && <div className={styles.tips}>
+                    <span className={styles.after}>券后仅需{d.price / 100 - couponInfo.value / 100}元&nbsp;</span>
+                    <span className={styles.before}>原价￥{d.price / 100}</span>
+                  </div>
+                }
+                {
+                  d.purchased && <div className={styles.tips}>
+                    <span className={styles.got}>你已购买这个课程</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        })
       } else if (couponInfo.apply === 'ALL') {
         tips = '所有订阅专栏可用';
+        if (!recommendCourse) {
+          recommendDom = null;
+        } else {
+          const course = recommendCourse.vo;
+          recommendDom = <div className={styles.course} onClick={() => {
+            this.gotoCourse.call(this, course.id);
+          }}>
+            <div className={styles.box}>
+              <div className={styles.arrow}></div>
+              <div className={styles.avatar} style={{ backgroundImage: `url(${course.bannerImg})` }}></div>
+              <div className={styles.desc}>
+                <div className={styles.title}>{course.title}·{course.speaker.nick}</div>
+                  <div className={styles.tips}>
+                    <span className={styles.after}>券后仅需{course.price / 100 - couponInfo.value / 100}元&nbsp;</span>
+                    <span className={styles.before}>原价￥{course.price / 100}</span>
+                  </div>
+              </div>
+            </div>
+          </div>;
+        }
       }
       rp = <div className={styles.rp}>
         <div className={styles.stitle}>{couponInfo.name}</div>
@@ -106,6 +167,14 @@ class SysCoupon extends Component {
       </div>;
     }
 
+    let validity;
+    if (couponInfo.validityType === 'FIXED_DAYS') {
+      validity = (moment().add(+couponInfo.validityDays, 'days')).format('YYYY-MM-DD');
+    } else {
+      validity = moment(couponInfo.validity).format('YYYY-MM-DD');
+    }
+    const validityDom = <div className={styles.label0}>有效期至 {validity}</div>;
+
     // 页面初始化
     const initDom = <div className={styles.resultPage}>
       { rp }
@@ -113,12 +182,23 @@ class SysCoupon extends Component {
     </div>;
 
     const ucan = <div>
-      <div className={styles.label}>您可以</div>
-      <Link to='/invite'><div className={styles.sbtn}>
-        推荐好友得40元
-        <img src={moneyIcon} className={styles.money} />
-        <Icon className={styles.icon} type="right" />
-      </div></Link>
+      <div className={styles.label}>
+        { result !== 'late' && couponInfo.apply === 'PARTICULAR' && '以下课程可用' }
+        { result !== 'late' && couponInfo.apply === 'ALL' && '所有订阅专栏可用' + ( recommendCourse ? '，为你推荐' : '' ) }
+        { 
+          result === 'late' && '你可以'
+        }
+      </div>
+      {
+        result === 'late' && <Link to='/invite'><div className={styles.sbtn}>
+          推荐好友得40元
+          <img src={moneyIcon} className={styles.money} />
+          <Icon className={styles.icon} type="right" />
+        </div></Link>
+      }
+      {
+        result !== 'late' && recommendDom
+      }
       <BackBtn />
     </div>
 
@@ -129,6 +209,7 @@ class SysCoupon extends Component {
         <div className={styles.text}>获得一张优惠券</div>
       </div>
       { rp }
+      { validityDom }
       <div className={styles.label1}>优惠券已经放入您的账号{common.userInfo && common.userInfo.phone}</div>
       { ucan }
     </div>;
@@ -147,6 +228,7 @@ class SysCoupon extends Component {
     const alreadyDom = <div className={styles.resultPage}>
       <div><div className={styles.text}>您已获取过该优惠券</div></div>
       { rp }
+      { validityDom }
       <div className={styles.label1}>优惠券已经放入您的账号{common.userInfo && common.userInfo.phone}</div>
       { ucan }
     </div>;
@@ -168,7 +250,11 @@ SysCoupon.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return { invite: state.invite, common: state.common };
+  return { 
+    invite: state.invite, 
+    recommendCourse: state.course.recommendCourse, 
+    common: state.common 
+  };
 }
 
 export default connect(mapStateToProps)(withRouter(SysCoupon));

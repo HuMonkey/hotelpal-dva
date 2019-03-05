@@ -63,7 +63,7 @@ class PopupCourse extends Component {
                 <div className={styles.text} dangerouslySetInnerHTML={createMarkupSubscribe()}></div>
               </div>
             </div>
-            { userInfo.relateCoursePurchased !== 'Y' && <div className={styles.buy} onClick={onSubmit}>立即订阅：{course.price / 100} / {course.lessonNum} 课时</div> }
+            { userInfo.relateCoursePurchased !== 'Y' && <div className={styles.buy} onClick={onSubmit}>立即订阅：￥ {course.price / 100} {course.lessonNum > 0 ? `/ ${course.lessonNum} 课时` : ''}</div> }
             { userInfo.relateCoursePurchased === 'Y' && <div className={styles.buy + ' ' + styles.already}>已购买</div> }
           </div>
         </div>

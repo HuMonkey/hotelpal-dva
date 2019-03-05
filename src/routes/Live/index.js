@@ -238,7 +238,7 @@ class Live extends Component {
     const openTimeHourStr = openTime.format('HH:mm');
     const protocol = location.protocol;
     const dict = {
-      title: `${common.userInfo.nickname} | 邀请你参加【酒店邦成长营直播课】`,
+      title: `${common.userInfo && common.userInfo.nickname} | 邀请你参加【酒店邦成长营直播课】`,
       link: location.href,
       imgUrl: liveDetail.bannerImg ? protocol + liveDetail.bannerImg : protocol + '//static.hotelpal.cn/jiudianbang-big.png',
       desc: `${openMonth + 1}月${openDate}日${openTimeHourStr}${liveDetail.speakerTitle}${liveDetail.speakerNick}，${liveDetail.title}`,
@@ -405,7 +405,11 @@ class Live extends Component {
               onClick={() => this.changePage.call(this, 'detail')}>
               课程
             </div>
-            <div className={styles.item + chatClass} onClick={() => this.changePage.call(this, 'chat')}>互动</div>
+            <div className={styles.item + chatClass} onClick={() => this.changePage.call(this, 'chat')}>
+              {
+                liveDetail.status === 'ONGOING' ? `${watchingPeopleNum}人正在收看` : '互动'
+              }
+            </div>
           </div>
         </div>
         {

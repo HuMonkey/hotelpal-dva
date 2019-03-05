@@ -119,13 +119,13 @@ class LivePlayer extends Component {
               点击进入直播
             </div>  
           }
-          <div className={styles.people}><span>{movingDot}{watchingPeopleNum}人正在收看</span></div>
+          {/* <div className={styles.people}><span>{movingDot}{watchingPeopleNum}人正在收看</span></div> */}
         </div>
       } else {
         dom = <div className={styles.player + ' ' + styles.bg}>
           <div className={styles.split}></div>
           <div className={styles.tips}>需要报名才能观看公开课</div>
-          <div className={styles.people}><span>{movingDot}{watchingPeopleNum}人正在收看</span></div>
+          {/* <div className={styles.people}><span>{movingDot}{watchingPeopleNum}人正在收看</span></div> */}
         </div>
       }
     }
@@ -133,7 +133,7 @@ class LivePlayer extends Component {
     return (
       <div className={styles.livePlayer}>
         { dom }
-        {status === 'ONGOING' && userCanListen && <Wave />}
+        {/* {status === 'ONGOING' && userCanListen && <Wave />} */}
       </div>
     )
   }

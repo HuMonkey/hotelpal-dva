@@ -19,3 +19,8 @@ export function createPayOrder(data) {
   }
   return request(url);
 }
+
+export function getRecommendCourse() {
+  const jdbtk = getToken();
+  return request(config.host + '/hotelpal/course/getRecommendCourse?token=' + jdbtk);
+}

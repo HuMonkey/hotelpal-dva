@@ -9,7 +9,8 @@ export default {
   namespace: 'course',
 
   state: {
-    detail: {}
+    detail: {},
+    recommendCourse: null
   },
 
   subscriptions: {
@@ -71,6 +72,17 @@ export default {
     },
     *createPayOrder({ payload, onResult }, { call, put }) {  // eslint-disable-line
       const res = yield call(courseService.createPayOrder, payload.data || {});
+      onResult(res);
+    },
+    *getRecommendCourse({ payload, onResult }, { call, put }) {  // eslint-disable-line
+      const res = yield call(courseService.getRecommendCourse, payload.data || {});
+      const detail = res.data;
+      yield put({
+        type: 'save',
+        payload: {
+          recommendCourse: detail
+        },
+      });
       onResult(res);
     },
   },

@@ -254,7 +254,7 @@
     z-index: 99;
     .main {
       width: 8.26666rem;
-      background: white;
+      // background: white;
       border-radius: 6px;
       padding: 0.53rem 0 0.53rem 0;
       position: relative;
@@ -294,10 +294,13 @@
             float: left;
             margin-right: 0.13333rem;
             vertical-align: top;
+            color: white;
+            border: white thin solid;
           }
           .text {
             float: left;
             vertical-align: top;
+            color: white;
             // line-height: 1.4;
           }
         }
@@ -306,21 +309,32 @@
         min-height: 8.8rem;
         width: 4.95rem;
         margin: auto;
+        border-radius: 8px;
+        overflow: hidden;
         img {
           width: 100%;
           height: 100%;
         }
       }
     }
+    // .close {
+    //   position: absolute;
+    //   right: 0.4rem;
+    //   top: 0.26666rem;
+    //   z-index: 1;
+    //   width: 0.32rem;
+    //   img {
+    //     width: 100%;
+    //   }
+    // }
     .close {
-      position: absolute;
-      right: 0.4rem;
-      top: 0.26666rem;
-      z-index: 1;
-      width: 0.32rem;
-      img {
-        width: 100%;
-      }
+      width: 100%;
+      height: 0.8rem;
+      background-size: 0.8rem 0.8rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("../../assets/close-circle.svg");
+      margin-top: 0.8rem;
     }
   }
 }

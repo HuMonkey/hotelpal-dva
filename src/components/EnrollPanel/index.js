@@ -414,9 +414,6 @@ class EnrollPanel extends Component {
             {
               posterShow && <div className={styles.poster}>
                 <div className={styles.main}>
-                  <div className={styles.close} onClick={this.closePoster.bind(this)}>
-                    <img src={closeSvg} />
-                  </div>
                   <div className={styles.ptips}><img src={posterHeaderPng} /></div>
                   <div className={styles.image}>
                     <img src={userInfo.invitePoster} />
@@ -435,6 +432,7 @@ class EnrollPanel extends Component {
                       <div className={styles.text}>助力成功后，你即可<b>免费听课</b></div>
                     </div>
                   </div>
+                  <div className={styles.close} onClick={this.closePoster.bind(this)}></div>
                 </div>
               </div>
             }
